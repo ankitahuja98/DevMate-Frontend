@@ -1,0 +1,101 @@
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #3c4b70;
+  backdrop-filter: blur(4px);
+  width: 50%;
+  transition: transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.slider.SignIn {
+  transform: translateX(100%) scale(1.02);
+}
+
+.slider.SignUp {
+  transform: translateX(0%) scale(1.02);
+}
+
+.forms-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  /* padding: 20px; */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.forms-container.active {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+/********  SIGNIN PAGE  **********/
+
+.SigninPage {
+  width: 50%;
+  height: 100%;
+  float: right;
+  background-color: white;
+  padding: 25px;
+}
+.SignupPage {
+  width: 50%;
+  height: 100%;
+  background-color: white;
+  float: left;
+  padding: 25px;
+}
+
+.sliderBtn {
+  border: 1px solid white;
+  padding: 4px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.signinBtn {
+  width: 100%;
+  background-color: #3c4b70;
+  color: white;
+  border-radius: 10px;
+  font-size: medium;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.signinBtn:hover {
+  background-color: #3c4b70e6;
+}
+
+.googleBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(213, 213, 213);
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.googleBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(213, 213, 213);
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.googleBtn:hover {
+  background-color: rgba(244, 244, 244, 0.937);
+}
