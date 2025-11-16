@@ -2,9 +2,10 @@ import { useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import "./Login.css";
+import AppLogo from "../../Images/devmateLogo.png";
 
 const LoginSignup = () => {
-  const [isSignIn, setIsSignIn] = useState(true);
+  const [isSignIn, setIsSignIn] = useState<boolean>(true);
 
   const handleTypeChange = () => {
     setIsSignIn(!isSignIn);
@@ -13,9 +14,12 @@ const LoginSignup = () => {
     <div className="bg-gray-200 h-screen flex justify-center items-center">
       <div className="relative h-8/12 w-7/12 rounded-2xl overflow-hidden shadow-xl bg-white">
         {/* Sliding Panel Start*/}
-        <div className={`slider  ${isSignIn ? "SignUp" : "SignIn"} `}>
+        <div className={`slider ${isSignIn ? "SignUp" : "SignIn"} `}>
+          <div className="px-5">
+            <img src={AppLogo} alt="DevMate" />
+          </div>
           {isSignIn ? (
-            <div className="text-center p-7">
+            <div className="text-center p-7 ">
               <p className="text-2xl font-bold mb-3">Welcome Back to DevMate</p>
               <p className="text-sm mb-5">
                 Your space to meet developers, share ideas, discover
@@ -53,7 +57,6 @@ const LoginSignup = () => {
         {/* Forms Start*/}
         <div className={`forms-container ${isSignIn ? "active" : "active"}`}>
           {isSignIn ? <SignIn /> : <SignUp />}
-          {/* <SignIn /> <SignUp /> */}
         </div>
         {/* Forms Ends*/}
       </div>

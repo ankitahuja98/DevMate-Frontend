@@ -1,7 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
+import googleLogo from "../../Images/googleLogo.png";
+import { useDispatch } from "react-redux";
+import { signup } from "../../redux/slices/authSlice";
+import type { AppDispatch } from "../../redux/store/store";
 
 const SignUp = () => {
+  const [singupform, setSignupform] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleSignup = (e: React.FormEvent) => {
+    e.preventDefault(); // ⛔ stop page refresh
+
+    dispatch(signup(singupform));
+  };
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+
+    setSignupform((prev) => ({ ...prev, [name]: value }));
+  };
+  console.log(singupform);
+
   return (
     <div className="SignupPage p-10 flex flex-col justify-center">
       <form className="flex flex-col gap-5">
@@ -11,6 +35,9 @@ const SignUp = () => {
           label="Full Name"
           variant="outlined"
           size="small"
+          name="name"
+          value={singupform.name}
+          onChange={handleInputChange}
         />
         <TextField
           required
@@ -18,6 +45,9 @@ const SignUp = () => {
           label="Email"
           variant="outlined"
           size="small"
+          name="email"
+          value={singupform.email}
+          onChange={handleInputChange}
         />
         <TextField
           required
@@ -26,9 +56,12 @@ const SignUp = () => {
           type="password"
           variant="outlined"
           size="small"
+          name="password"
+          value={singupform.password}
+          onChange={handleInputChange}
         />
 
-        <button type="submit" className="signinBtn">
+        <button type="submit" className="signinBtn" onClick={handleSignup}>
           Sign up
         </button>
       </form>
@@ -42,12 +75,8 @@ const SignUp = () => {
 
       {/* Google Sign-up */}
       <button className="googleBtn">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/0/09/Google_Icon.svg"
-          alt="Google"
-          className="w-5 h-5"
-        />
-        <span className="text-gray-700 font-medium">Sign up with Google</span>
+        <img src={googleLogo} alt="Google" className="w-10 h-5" />
+        <span className="text-gray-700 font-medium">Sign in with Google</span>
       </button>
     </div>
   );
