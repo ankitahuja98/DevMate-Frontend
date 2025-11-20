@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import googleLogo from "../../Images/googleLogo.png";
 import { useDispatch } from "react-redux";
-import { signup } from "../../redux/slices/authSlice";
+import { signup } from "../../redux/actions/authAction";
 import type { AppDispatch } from "../../redux/store/store";
 
 const SignUp = () => {
@@ -24,7 +24,6 @@ const SignUp = () => {
 
     setSignupform((prev) => ({ ...prev, [name]: value }));
   };
-  console.log(singupform);
 
   return (
     <div className="SignupPage p-10 flex flex-col justify-center">

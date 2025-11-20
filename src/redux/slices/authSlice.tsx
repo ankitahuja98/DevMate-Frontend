@@ -1,55 +1,65 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
+import { login, signup } from "../actions/authAction";
 
-interface authInitialState {
-  isLoading: boolean;
-  data: any | null;
-  isError: boolean;
+interface singupInitialState {
+  signupIsLoading: boolean;
+  signupData: any | null;
+  signupIsError: boolean;
 }
 
-interface signupformData {
-  name: string;
-  email: string;
-  password: string;
+interface loginInitialState {
+  loginIsLoading: boolean;
+  loginData: any | null;
+  loginIsError: boolean;
 }
 
-const initialState: authInitialState = {
-  isLoading: false,
-  data: null as any,
-  isError: false,
+interface AuthInitialState {
+  signup: singupInitialState;
+  login: loginInitialState;
+}
+
+const initialState: AuthInitialState = {
+  signup: {
+    signupIsLoading: false,
+    signupData: null,
+    signupIsError: false,
+  },
+  login: {
+    loginIsLoading: false,
+    loginData: null,
+    loginIsError: false,
+  },
 };
-
-//Action
-export const signup = createAsyncThunk<any, signupformData>(
-  "signup",
-  async (formData) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/signup",
-        formData
-      );
-      return response.data;
-    } catch (error) {
-      console.log("Signup Failed", error);
-    }
-  }
-);
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    // for signup
     builder.addCase(signup.pending, (state, action) => {
-      state.isLoading = true;
+      state.signup.signupIsLoading = true;
     });
     builder.addCase(signup.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.data = action.payload;
+      state.signup.signupIsLoading = false;
+      state.signup.signupData = action.payload;
     });
     builder.addCase(signup.rejected, (state, action) => {
-      state.isLoading = false;
-      state.isError = true;
+      state.signup.signupIsLoading = false;
+      state.signup.signupIsError = true;
+    });
+
+    // for login
+    builder.addCase(login.pending, (state, action) => {
+      state.login.loginIsLoading = true;
+    });
+    builder.addCase(login.fulfilled, (state, action) => {
+      state.login.loginIsLoading = false;
+      state.login.loginData = action.payload;
+    });
+    builder.addCase(login.rejected, (state, action) => {
+      state.login.loginIsLoading = false;
+      state.login.loginIsError = true;
     });
   },
 });
