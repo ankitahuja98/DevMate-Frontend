@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import googleLogo from "../../Images/googleLogo.png";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  store,
-  type AppDispatch,
-  type RootState,
-} from "../../redux/store/store";
+import { useDispatch } from "react-redux";
+import { useAppSelector, type AppDispatch } from "../../redux/store/store";
 import { login } from "../../redux/actions/authAction";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [loginformData, setloginformData] = useState({
@@ -15,6 +12,7 @@ const SignIn = () => {
     password: "",
   });
   const dispatch = useDispatch<AppDispatch>();
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -27,7 +25,18 @@ const SignIn = () => {
     setloginformData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const data = useSelector((store: RootState) => store.auth.login.loginData);
+  const navigate = useNavigate();
+
+  const data = useAppSelector((store) => store.auth.login.loginData);
+  const isUser = useAppSelector(
+    (store) => store.profile.userProfile.userProfileData
+  );
+
+  useEffect(() => {
+    if (isUser) {
+      navigate("/feed");
+    }
+  }, [isUser]);
 
   console.log("logindata", data);
 

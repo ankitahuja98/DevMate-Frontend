@@ -1,22 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login, signup } from "../actions/authAction";
-
-interface singupInitialState {
-  signupIsLoading: boolean;
-  signupData: any | null;
-  signupIsError: boolean;
-}
-
-interface loginInitialState {
-  loginIsLoading: boolean;
-  loginData: any | null;
-  loginIsError: boolean;
-}
-
-interface AuthInitialState {
-  signup: singupInitialState;
-  login: loginInitialState;
-}
+import type { AuthInitialState } from "../types/authType";
 
 const initialState: AuthInitialState = {
   signup: {

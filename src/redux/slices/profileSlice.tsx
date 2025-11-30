@@ -1,0 +1,40 @@
+import { createSlice } from "@reduxjs/toolkit";
+import type { ProfileInitialState } from "../types/profileType";
+import { fetchUserProfile } from "../actions/profileAction";
+import { logout } from "../actions/authAction";
+
+const initialState: ProfileInitialState = {
+  userProfile: {
+    userProfileIsloading: false,
+    userProfileData: null,
+    userProfileIserror: false,
+  },
+};
+
+const profileSlice = createSlice({
+  name: "profile",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchUserProfile.pending, (state, action) => {
+      state.userProfile.userProfileIsloading = true;
+      state.userProfile.userProfileIserror = false;
+    });
+    builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
+      state.userProfile.userProfileData = action.payload;
+      state.userProfile.userProfileIsloading = false;
+      state.userProfile.userProfileIserror = false;
+    });
+    builder.addCase(fetchUserProfile.rejected, (state, action) => {
+      state.userProfile.userProfileIserror = true;
+      state.userProfile.userProfileIsloading = false;
+    });
+
+    // for logout
+    builder.addCase(logout.fulfilled, (state, action) => {
+      state.userProfile.userProfileData = null;
+    });
+  },
+});
+
+export default profileSlice.reducer;
