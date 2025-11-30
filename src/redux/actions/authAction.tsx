@@ -37,6 +37,6 @@ export const logout = createAsyncThunk<any>("logout", async () => {
     let response = await callApi.post("/auth/logout");
     return response.data;
   } catch (error) {
-    console.log("logout Failed", error);
+    console.log("logout Failed..", error);
   }
 });
