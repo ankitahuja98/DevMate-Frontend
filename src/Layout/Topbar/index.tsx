@@ -11,6 +11,10 @@ import { useEffect, useState, type RefObject } from "react";
 import TooltipWrapper from "../../utils/TooltipWrapper";
 // import { useTheme } from "../Context/ThemeContext";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../redux/store/store";
+import { logout } from "../../redux/actions/authAction";
 
 const useStyle = {
   barStyle: {
@@ -19,7 +23,7 @@ const useStyle = {
     display: "flex",
     alignItems: "center",
     borderRadius: "22px",
-    margin: "10px",
+    margin: "10px 10px 0px 10px",
     boxShadow: "rgb(45 45 45 / 85%) 1px 3px 5px",
   },
   iconStyle: {
@@ -45,6 +49,8 @@ const TopBar = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   //   const { theme, toggleTheme } = useTheme();
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const toggleFullscreen = () => {
     if (!isFullscreen) {
@@ -56,6 +62,11 @@ const TopBar = ({
         document.exitFullscreen();
       }
     }
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
   };
 
   useEffect(() => {
@@ -78,8 +89,8 @@ const TopBar = ({
       <div>
         {/* <img src={TopBarLogo} alt="Logo" style={useStyle.logoStyle} /> */}
       </div>
-      <div className="pr-10 text-white w-full">
-        <div className="float-right flex items-center">
+      <div className="text-white w-full">
+        <div className="p-3 float-right flex items-center">
           <TooltipWrapper
             title="Notification"
             arrow
@@ -146,7 +157,7 @@ const TopBar = ({
               container: editorRef.current,
             }}
           >
-            <Button>
+            <Button onClick={handleLogout}>
               <LogoutIcon
                 style={{ fontSize: "21px", color: "white" }}
                 className="cursor-pointer"

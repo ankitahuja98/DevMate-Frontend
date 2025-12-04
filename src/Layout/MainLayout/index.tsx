@@ -14,7 +14,7 @@ const index = () => {
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} editorRef={editorRef} />
 
       {/* Right Section (Topbar + Page Content) */}
-      <div className="flex flex-col flex-1 overflow-hidden rounded-tl-3xl bg-white border-2">
+      <div className="flex flex-col flex-1 overflow-hidden rounded-tl-3xl bg-white">
         {/* Top bar */}
         <Topbar
           NotificationIsOpen={NotificationIsOpen}

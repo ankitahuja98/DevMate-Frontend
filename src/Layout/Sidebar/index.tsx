@@ -1,9 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, type RefObject } from "react";
 import type { Variants } from "framer-motion";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ChatIcon from "@mui/icons-material/Chat";
+import SettingsIcon from "@mui/icons-material/Settings";
+import Diversity2Icon from "@mui/icons-material/Diversity2";
+import InterestsOutlinedIcon from "@mui/icons-material/InterestsOutlined";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link, useLocation } from "react-router-dom";
@@ -52,9 +54,11 @@ export default function SideBar({
 }
 
 const menuItems = [
-  { id: 0, name: "Dashboard", path: "/", icon: DashboardIcon },
-  { id: 1, name: "Add Snippet", path: "/addSnippet", icon: AddBoxIcon },
-  { id: 2, name: "Library", path: "/library", icon: LibraryBooksIcon },
+  { id: 0, name: "Explore", path: "/", icon: Diversity2Icon },
+  { id: 1, name: "Liked You", path: "/likedyou", icon: FavoriteIcon },
+  { id: 2, name: "Chats", path: "/chats", icon: ChatIcon },
+  { id: 3, name: "Discover", path: "/discover", icon: InterestsOutlinedIcon },
+  { id: 4, name: "Settings", path: "/setting", icon: SettingsIcon },
 ];
 
 const Navigation = ({

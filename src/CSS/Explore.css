@@ -1,0 +1,18 @@
+.ExploreContainer {
+  height: 84vh;
+  /* border: 2px solid black; */
+  margin: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.ExploreCard {
+  height: 100%;
+  /* border: 2px solid pink; */
+  width: 25rem;
+  border-radius: 15px;
+  /* overflow: hidden; */
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
