@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": "Aarav Shah",
+    "age": 24,
+    "about": "Software developer who loves football, anime, and travelling.",
+    "photo": "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e"
+  },
+  {
+    "id": 2,
+    "name": "Priya Mehta",
+    "age": 22,
+    "about": "Fitness enthusiast and foodie. Love hiking and coffee.",
+    "photo": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1"
+  },
+  {
+    "id": 3,
+    "name": "Rohan Patel",
+    "age": 26,
+    "about": "Tech geek, gamer, and amateur photographer.",
+    "photo": "https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+  },
+  {
+    "id": 4,
+    "name": "Ananya Gupta",
+    "age": 23,
+    "about": "Bookworm, artist, and nature lover.",
+    "photo": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f"
+  },
+  {
+    "id": 5,
+    "name": "Kabir Singh",
+    "age": 28,
+    "about": "Entrepreneur, loves gyming and road trips.",
+    "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
+  },
+  {
+    "id": 6,
+    "name": "Sara Khan",
+    "age": 21,
+    "about": "Fashion student & part-time model, loves pets.",
+    "photo": "https://images.unsplash.com/photo-1521119989659-a83eee488004"
+  },
+  {
+    "id": 7,
+    "name": "Yash Verma",
+    "age": 25,
+    "about": "Music producer and travel vlogger.",
+    "photo": "https://images.unsplash.com/photo-1544005313-94ddf0286df2"
+  },
+  {
+    "id": 8,
+    "name": "Isha Roy",
+    "age": 24,
+    "about": "Loves dancing, movies, and exploring new cultures.",
+    "photo": "https://images.unsplash.com/photo-1544725176-7c40e5a2c9f9"
+  },
+  {
+    "id": 9,
+    "name": "Krish Malhotra",
+    "age": 27,
+    "about": "Car lover, gym freak, and cricket fan.",
+    "photo": "https://images.unsplash.com/photo-1520813792240-56fc4a3765a7"
+  },
+  {
+    "id": 10,
+    "name": "Neha Desai",
+    "age": 23,
+    "about": "Designer, minimalist, and loves photography.",
+    "photo": "https://images.unsplash.com/photo-1552058544-f2b08422138a"
+  }
+]
