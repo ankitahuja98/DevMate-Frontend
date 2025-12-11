@@ -8,6 +8,7 @@ import LikedYou from "./Pages/LikedYou";
 import Chat from "./Pages/Chat";
 import Discover from "./Pages/Discover";
 import Settings from "./Pages/Settings";
+import Profile from "./Pages/Profile";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route element={<ProtectedRoutes />}>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Explore />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/likedyou" element={<LikedYou />} />
           <Route path="/chats" element={<Chat />} />
           <Route path="/discover" element={<Discover />} />

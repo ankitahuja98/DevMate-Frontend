@@ -1,0 +1,25 @@
+.profileContainer {
+  /* border: "2px solid black"; */
+  margin: 20px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.leftSection {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.RightSection {
+  padding: 10px;
+}
+
+.userImage {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+}

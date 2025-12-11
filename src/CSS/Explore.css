@@ -2,7 +2,7 @@
   height: 84vh;
   /* border: 2px solid black; */
   margin: 15px;
-  display: flex;
+  display: grid;
   justify-content: center;
 }
 
@@ -12,7 +12,15 @@
   width: 25rem;
   border-radius: 15px;
   /* overflow: hidden; */
-  overflow-x: hidden;
+  touch-action: pan-y;
+  /* overflow-x: hidden; */
   overflow-y: auto;
   scrollbar-width: none;
+  grid-row: 1;
+  grid-column: 1;
+  background-color: aliceblue;
+}
+
+.ExploreCard:hover {
+  cursor: grab;
 }

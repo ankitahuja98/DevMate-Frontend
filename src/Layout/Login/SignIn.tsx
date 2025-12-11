@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [loginformData, setloginformData] = useState({
-    email: "",
-    password: "",
+    email: "Test3@gmail.com",
+    password: "Test3",
   });
   const dispatch = useDispatch<AppDispatch>();
 

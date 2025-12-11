@@ -1,16 +1,13 @@
 import "../CSS/Explore.css";
 import users from "../utils/dummyuser.json";
+import Card from "../Components/Card";
 
 const Explore = () => {
-  console.log(users);
   return (
     <div className="ExploreContainer">
-      <div className="ExploreCard">
-        {users.map((val) => {
-          const { id, name, age, about, photo } = val;
-          return <div>{name}</div>;
-        })}
-      </div>
+      {users.map((val) => {
+        return <Card key={val.id} val={val} />;
+      })}
     </div>
   );
 };

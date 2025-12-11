@@ -13,8 +13,9 @@ import TooltipWrapper from "../../utils/TooltipWrapper";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../redux/store/store";
+import { useAppSelector, type AppDispatch } from "../../redux/store/store";
 import { logout } from "../../redux/actions/authAction";
+import "../../CSS/Topbar.css";
 
 const useStyle = {
   barStyle: {
@@ -84,6 +85,11 @@ const TopBar = ({
   const handleNotification = () => {
     setNotificationIsOpen((prev) => !prev);
   };
+
+  const userProfile = useAppSelector(
+    (store) => store.profile.userProfile.userProfileData
+  );
+
   return (
     <div style={useStyle.barStyle}>
       <div>
@@ -164,6 +170,13 @@ const TopBar = ({
               />
             </Button>
           </TooltipWrapper>
+
+          <img
+            className="userProfile"
+            src="https://images.unsplash.com/photo-1552058544-f2b08422138a"
+            alt="user profile"
+            onClick={() => navigate("/profile")}
+          />
         </div>
       </div>
     </div>
