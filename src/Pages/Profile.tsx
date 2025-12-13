@@ -57,13 +57,15 @@ const Profile = () => {
   return (
     <div className="profileContainer">
       <div className="leftSection">
-        <img
-          className="userImage"
-          src={profilePhoto || Dummyuser}
-          alt="user profile"
-        />
-        <div className="EditProfile">
-          <EditIcon />
+        <div className="profileImageWrapper">
+          <img
+            className="userImage"
+            src={profilePhoto || Dummyuser}
+            alt="user profile"
+          />
+          <div className="EditProfile">
+            <EditIcon />
+          </div>
         </div>
 
         <p className="text-2xl font-bold mt-4">

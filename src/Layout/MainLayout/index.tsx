@@ -23,7 +23,7 @@ const index = () => {
         />
 
         {/* Page content */}
-        <div>
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
           <Outlet />
         </div>
       </div>

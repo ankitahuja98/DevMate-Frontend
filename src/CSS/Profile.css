@@ -5,7 +5,7 @@
   overflow: hidden;
   height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: minmax(280px, 380px) 1fr;
   box-shadow: 0px 0px 10px rgba(158, 158, 158, 0.285);
 }
 
@@ -21,7 +21,7 @@
 }
 
 .leftSection {
-  padding: 20px;
+  padding: clamp(20px, 4vw, 40px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,17 +30,23 @@
   grid-column: span 1;
   overflow-y: auto;
 }
+.profileImageWrapper {
+  position: relative;
+  width: fit-content;
+}
 
 .EditProfile {
   border: 1px solid black;
   padding: 6px;
   border-radius: 50%;
   background-color: #001f44;
-  position: relative;
-  bottom: 8%;
-  left: 16%;
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
   box-shadow: 0px 0px 7px rgb(203, 203, 203);
+  cursor: pointer;
 }
+
 .techstackItem {
   /* border: 2px solid black; */
   width: fit-content;
@@ -48,7 +54,7 @@
   backdrop-filter: blur(10px);
   padding: 8px 14px;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: clamp(12px, 1.2vw, 13px);
   font-weight: 600;
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
@@ -80,23 +86,21 @@
 }
 
 .userImage {
-  width: 10rem;
-  height: 10rem;
+  width: clamp(100px, 15vw, 160px);
+  height: clamp(100px, 15vw, 160px);
   border-radius: 50%;
 }
 
 .RightSection {
-  padding: 20px;
-  margin-bottom: 85px;
+  padding: clamp(20px, 4vw, 40px);
   grid-column: span 1;
-  /* border: 2px solid black; */
   overflow-y: auto;
 }
 
 .userTag {
   padding: 7px 18px;
   border-radius: 15px;
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
 }
 .userTag1 {
   background-color: #dbeafe;
@@ -114,7 +118,7 @@
 .looking-for {
   background: #fef3c7;
   border-left: 4px solid #f59e0b;
-  padding: 20px;
+  padding: clamp(15px, 2vw, 20px);
   border-radius: 12px;
   margin: 20px 0px;
 }
@@ -137,7 +141,7 @@
 }
 
 .SectionTitle {
-  font-size: 18px;
+  font-size: clamp(16px, 2vw, 20px);
   font-weight: 700;
   margin-bottom: 10px;
 }
@@ -149,7 +153,7 @@
 
 .interestsContent {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
   gap: 15px;
 }
 .interest-card {
@@ -248,4 +252,36 @@
   font-size: 12px;
   font-weight: 600;
   border: 1px solid #e0e7ff;
+}
+
+@media (max-width: 768px) {
+  .profileContainer {
+    grid-template-columns: 1fr;
+    height: auto; /* Remove fixed height */
+    min-height: auto; /* Allow natural height */
+    overflow-y: auto; /* Scroll the entire container */
+  }
+
+  .leftSection {
+    border-radius: 16px 16px 0 0;
+    overflow-y: visible; /* Remove individual scroll */
+    height: auto; /* Natural height */
+  }
+
+  .RightSection {
+    margin-bottom: 0;
+    overflow-y: visible; /* Remove individual scroll */
+    height: auto; /* Natural height */
+  }
+
+  /* Optional: Stack tags on mobile */
+  .flex.gap-5 {
+    flex-direction: column;
+    gap: 10px !important;
+  }
+
+  .userTag {
+    width: 100%;
+    text-align: center;
+  }
 }
