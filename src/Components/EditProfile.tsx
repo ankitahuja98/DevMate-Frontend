@@ -48,6 +48,8 @@ const EditProfile = () => {
     projects: [], // Projects
   });
 
+  console.log("userData", userData);
+
   const Tabs = [
     {
       name: "Basic Info",
@@ -76,6 +78,27 @@ const EditProfile = () => {
 
   const handleClose = () => {
     setactivetabs(0);
+    setUserData({
+      name: "",
+      age: null,
+      profilePhoto: "",
+      tagline: "",
+      bio: "",
+      location: "",
+      currentRole: "",
+      experience: null,
+      socialLinks: {
+        github: "",
+        linkedin: "",
+        portfolio: "",
+      },
+      techStack: [],
+      interests: [],
+      lookingForTitle: "",
+      lookingForDesc: "",
+      availability: "",
+      projects: [],
+    });
     dispatch(setEditProfileDialogOpen(false));
   };
 
@@ -160,17 +183,9 @@ const EditProfile = () => {
           <DialogActions
             sx={{
               padding: "16px 24px",
-              justifyContent: "space-between",
+              // justifyContent: "space-between",
             }}
           >
-            <div>
-              {activetabs === Tabs.length - 1 && (
-                <Button onClick={handleClose} color="inherit" variant="text">
-                  Skip for now
-                </Button>
-              )}
-            </div>
-
             <div style={{ display: "flex", gap: "12px" }}>
               {activetabs > 0 && (
                 <Button onClick={handleBack} color="inherit" variant="outlined">

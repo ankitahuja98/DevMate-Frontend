@@ -30,3 +30,8 @@ export interface userData {
   projects: Project[];
   socialLinks: SocialLinks;
 }
+
+export interface userDataProps {
+  userData: userData;
+  setUserData: React.Dispatch<React.SetStateAction<userData>>;
+}
