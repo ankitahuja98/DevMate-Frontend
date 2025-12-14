@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import Sidebar from "../Sidebar/index";
 import Topbar from "../Topbar/index";
 import { Outlet } from "react-router-dom";
+import EditProfile from "../../Components/EditProfile";
 
 const index = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +26,7 @@ const index = () => {
         {/* Page content */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden">
           <Outlet />
+          <EditProfile />
         </div>
       </div>
     </div>

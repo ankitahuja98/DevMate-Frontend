@@ -6,4 +6,5 @@ interface userprofileInitialState {
 
 export interface ProfileInitialState {
   userProfile: userprofileInitialState;
+  isEditProfileDialogOpen: boolean;
 }

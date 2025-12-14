@@ -9,12 +9,17 @@ const initialState: ProfileInitialState = {
     userProfileData: null,
     userProfileIserror: false,
   },
+  isEditProfileDialogOpen: false,
 };
 
 const profileSlice = createSlice({
   name: "profile",
   initialState,
-  reducers: {},
+  reducers: {
+    setEditProfileDialogOpen: (state, action) => {
+      state.isEditProfileDialogOpen = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchUserProfile.pending, (state, action) => {
       state.userProfile.userProfileIsloading = true;
@@ -37,4 +42,5 @@ const profileSlice = createSlice({
   },
 });
 
+export const { setEditProfileDialogOpen } = profileSlice.actions;
 export default profileSlice.reducer;

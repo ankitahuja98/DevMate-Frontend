@@ -1,0 +1,128 @@
+/* STEPPER */
+.stepper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* background: #f9fafb; */
+  /* border-bottom: 1px solid #e5e7eb; */
+  position: relative;
+}
+
+/* STEP ITEM */
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+/* CONNECTOR LINE - USING ::before */
+.step:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  left: calc(50% + 20px);
+  width: calc(100% - 40px);
+  height: 2px;
+  background: #e5e7eb;
+  z-index: -1;
+  transition: background 0.3s ease;
+}
+
+/* ACTIVE STEP LINE */
+.step.active:not(:last-child)::before {
+  background: #6366f1;
+}
+
+/* COMPLETED STEP LINE */
+.step.completed:not(:last-child)::before {
+  background: #10b981;
+}
+
+/* STEP CIRCLE */
+.step-circle {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #9ca3af;
+  transition: all 0.3s;
+  position: relative;
+  z-index: 2;
+}
+
+/* ACTIVE CIRCLE */
+.step.active .step-circle {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: white;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* COMPLETED CIRCLE */
+.step.completed .step-circle {
+  background: #10b981;
+  border-color: #10b981;
+  color: white;
+}
+
+/* STEP LABEL */
+.step-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  text-align: center;
+  transition: color 0.3s;
+}
+
+.step.active .step-label {
+  color: #1f2937;
+  font-weight: 700;
+}
+
+.step.completed .step-label {
+  color: #10b981;
+}
+
+/* RESPONSIVE - MOBILE */
+@media (max-width: 768px) {
+  .stepper {
+    padding: 20px 16px;
+  }
+
+  .step-label {
+    font-size: 11px;
+    max-width: 70px;
+    line-height: 1.2;
+  }
+
+  .step-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .step:not(:last-child)::before {
+    top: 14px;
+  }
+}
+
+/* EXTRA SMALL MOBILE */
+@media (max-width: 480px) {
+  .step-label {
+    display: none; /* Hide labels on very small screens */
+  }
+
+  .stepper {
+    padding: 16px;
+  }
+}

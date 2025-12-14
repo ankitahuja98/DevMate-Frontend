@@ -1,11 +1,13 @@
 import "../CSS/Profile.css";
-import { useAppSelector } from "../redux/store/store";
+import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import WorkIcon from "@mui/icons-material/Work";
 import Dummyuser from "../Images/Dummyuser.png";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import EditIcon from "@mui/icons-material/Edit";
+import { useDispatch } from "react-redux";
+import { setEditProfileDialogOpen } from "../redux/slices/profileSlice";
 
 interface Projects {
   title: string;
@@ -39,6 +41,7 @@ const Profile = () => {
   } = userprofile;
 
   const { github, linkedin, portfolio } = socialLinks;
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSocialLinks = (name: string) => {
     if (name === "github") {
@@ -54,6 +57,10 @@ const Profile = () => {
     window.open(link, "_blank", "noopener,noreferrer");
   };
 
+  const handleEditProfile = () => {
+    dispatch(setEditProfileDialogOpen(true));
+  };
+
   return (
     <div className="profileContainer">
       <div className="leftSection">
@@ -63,7 +70,7 @@ const Profile = () => {
             src={profilePhoto || Dummyuser}
             alt="user profile"
           />
-          <div className="EditProfile">
+          <div className="EditProfile" onClick={handleEditProfile}>
             <EditIcon />
           </div>
         </div>
