@@ -24,10 +24,10 @@ const EditProfile = () => {
   const [activetabs, setactivetabs] = useState(0);
 
   const [userData, setUserData] = useState<userData>({
-    name: "", // basic info
-    age: null, // basic info
-    profilePhoto: "", // basic info
-    tagline: "", // basic info
+    name: "", // basic info  - required
+    age: null, // basic info - required
+    profilePhoto: "", // basic info - required
+    tagline: "", // basic info - required
     bio: "", // basic info
     location: "", // basic info
     currentRole: "", // basic info
@@ -39,12 +39,12 @@ const EditProfile = () => {
       portfolio: "",
     },
 
-    techStack: [], // skills
-    interests: [], // skills
+    techStack: [], // skills - required
+    interests: [], // skills - required
 
-    lookingForTitle: "", // Goals
+    lookingForTitle: "", // Goals - required
     lookingForDesc: "", // Goals
-    availability: "", // Goals
+    availability: "", // Goals - required
     projects: [], // Projects
   });
 
