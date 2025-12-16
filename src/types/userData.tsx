@@ -33,5 +33,6 @@ export interface userData {
 
 export interface userDataProps {
   userData: userData;
+  errors: any;
   setUserData: React.Dispatch<React.SetStateAction<userData>>;
 }

@@ -4,7 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import type { userDataProps } from "../../types/userData";
 
-const Projects = ({ userData, setUserData }: userDataProps) => {
+const Projects = ({ userData, setUserData, errors }: userDataProps) => {
   const [techInputs, setTechInputs] = useState<{ [key: number]: string }>({});
 
   const handleAddProject = () => {
@@ -77,6 +77,19 @@ const Projects = ({ userData, setUserData }: userDataProps) => {
     setTechInputs({ ...techInputs, [projectIndex]: value });
   };
 
+  // Helper component for error display
+  const ErrorMessage = ({ error }: { error?: string }) => {
+    if (!error) return null;
+    return <p style={{ fontSize: "11px", color: "red" }}>{error}</p>;
+  };
+
+  const getProjectError = (projectIndex: number, field: string) => {
+    if (errors.projects && Array.isArray(errors.projects)) {
+      return errors.projects[projectIndex]?.[field];
+    }
+    return undefined;
+  };
+
   return (
     <div className="space-y-5">
       <div className="flex justify-between items-center">
@@ -103,147 +116,184 @@ const Projects = ({ userData, setUserData }: userDataProps) => {
         </div>
       ) : (
         <div className="space-y-4">
-          {userData.projects.map((project, index) => (
-            <div
-              key={index}
-              className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 hover:border-indigo-300 transition-all"
-            >
-              {/* Project Header */}
-              <div className="flex justify-between items-center mb-3">
-                <h4 className="text-sm font-bold text-indigo-600">
-                  Project #{index + 1}
-                </h4>
-                <IconButton
-                  size="small"
-                  onClick={() => handleRemoveProject(index)}
-                  sx={{
-                    color: "#ef4444",
-                    "&:hover": { backgroundColor: "#fee2e2" },
-                  }}
-                >
-                  <DeleteIcon sx={{ fontSize: 18 }} />
-                </IconButton>
-              </div>
+          {userData.projects.map((project, index) => {
+            const hasErrors = errors.projects && errors.projects[index];
+            return (
+              <div
+                key={index}
+                className={`bg-gray-50 rounded-lg p-4 transition-all ${
+                  hasErrors
+                    ? "border-2 border-red-300 hover:border-red-400"
+                    : "border-2 border-gray-200 hover:border-indigo-300"
+                }`}
+              >
+                {/* Project Header */}
+                <div className="flex justify-between items-center mb-3">
+                  <h4
+                    className={`text-sm font-bold ${
+                      hasErrors ? "text-red-600" : "text-indigo-600"
+                    }`}
+                  >
+                    Project #{index + 1}
+                  </h4>
 
-              {/* Project Fields */}
-              <div className="space-y-3">
-                {/* Title and Role Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <IconButton
+                    size="small"
+                    onClick={() => handleRemoveProject(index)}
+                    sx={{
+                      color: "#ef4444",
+                      "&:hover": { backgroundColor: "#fee2e2" },
+                    }}
+                  >
+                    <DeleteIcon sx={{ fontSize: 18 }} />
+                  </IconButton>
+                </div>
+
+                {/* Project Fields */}
+                <div className="space-y-3">
+                  {/* Title and Role Row */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="form-group">
+                      <label className="form-label">Project Title</label>
+                      <input
+                        type="text"
+                        className={`form-input ${
+                          getProjectError(index, "title")
+                            ? "border-red-500 border-2"
+                            : ""
+                        }`}
+                        value={project.title}
+                        onChange={(e) =>
+                          handleProjectChange(index, "title", e.target.value)
+                        }
+                        placeholder="AI Content Generator"
+                      />
+                      <ErrorMessage error={getProjectError(index, "title")} />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">Your Role</label>
+                      <input
+                        type="text"
+                        className={`form-input ${
+                          getProjectError(index, "role")
+                            ? "border-red-500 border-2"
+                            : ""
+                        }`}
+                        value={project.role}
+                        onChange={(e) =>
+                          handleProjectChange(index, "role", e.target.value)
+                        }
+                        placeholder="Full-stack Developer"
+                      />
+                      <ErrorMessage error={getProjectError(index, "role")} />
+                    </div>
+                  </div>
+
+                  {/* Description */}
                   <div className="form-group">
-                    <label className="form-label">Project Title</label>
+                    <label className="form-label">Description</label>
+                    <textarea
+                      className={`form-input resize-none ${
+                        getProjectError(index, "role")
+                          ? "border-red-500 border-2"
+                          : ""
+                      }`}
+                      value={project.description}
+                      onChange={(e) =>
+                        handleProjectChange(
+                          index,
+                          "description",
+                          e.target.value
+                        )
+                      }
+                      placeholder="Brief description of the project, its purpose, and your contributions..."
+                      rows={2}
+                    />
+                    <ErrorMessage
+                      error={getProjectError(index, "description")}
+                    />
+                  </div>
+
+                  {/* Tech Used */}
+                  <div className="form-group">
+                    <label className="form-label">Technologies Used</label>
                     <input
                       type="text"
                       className="form-input"
-                      value={project.title}
+                      placeholder="Type and press Enter..."
+                      value={techInputs[index] || ""}
                       onChange={(e) =>
-                        handleProjectChange(index, "title", e.target.value)
+                        handleTechInputChange(index, e.target.value)
                       }
-                      placeholder="AI Content Generator"
+                      onKeyDown={(e) => handleAddTech(index, e)}
                     />
+
+                    {/* Display Added Technologies */}
+                    <div className="flex flex-wrap gap-1.5 mt-2 min-h-[40px] p-2 border-2 border-dashed border-gray-200 rounded-lg bg-white">
+                      {project.techUsed.length === 0 ? (
+                        <p className="text-gray-400 text-xs">
+                          No technologies added
+                        </p>
+                      ) : (
+                        project.techUsed.map((tech, techIndex) => (
+                          <Chip
+                            key={techIndex}
+                            label={tech}
+                            onDelete={() => handleRemoveTech(index, tech)}
+                            size="small"
+                            sx={{
+                              backgroundColor: "#e0e7ff",
+                              color: "#4f46e5",
+                              fontWeight: 600,
+                              height: "24px",
+                              fontSize: "12px",
+                              "& .MuiChip-deleteIcon": {
+                                fontSize: "16px",
+                              },
+                            }}
+                          />
+                        ))
+                      )}
+                    </div>
                   </div>
 
-                  <div className="form-group">
-                    <label className="form-label">Your Role</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={project.role}
-                      onChange={(e) =>
-                        handleProjectChange(index, "role", e.target.value)
-                      }
-                      placeholder="Full-stack Developer"
-                    />
-                  </div>
-                </div>
+                  {/* URLs Row */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                    <div className="form-group">
+                      <label className="form-label">GitHub URL</label>
+                      <input
+                        type="url"
+                        className="form-input"
+                        value={project.githubUrl}
+                        onChange={(e) =>
+                          handleProjectChange(
+                            index,
+                            "githubUrl",
+                            e.target.value
+                          )
+                        }
+                        placeholder="https://github.com/..."
+                      />
+                    </div>
 
-                {/* Description */}
-                <div className="form-group">
-                  <label className="form-label">Description</label>
-                  <textarea
-                    className="form-input resize-none"
-                    value={project.description}
-                    onChange={(e) =>
-                      handleProjectChange(index, "description", e.target.value)
-                    }
-                    placeholder="Brief description of the project, its purpose, and your contributions..."
-                    rows={2}
-                  />
-                </div>
-
-                {/* Tech Used */}
-                <div className="form-group">
-                  <label className="form-label">Technologies Used</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="Type and press Enter..."
-                    value={techInputs[index] || ""}
-                    onChange={(e) =>
-                      handleTechInputChange(index, e.target.value)
-                    }
-                    onKeyDown={(e) => handleAddTech(index, e)}
-                  />
-
-                  {/* Display Added Technologies */}
-                  <div className="flex flex-wrap gap-1.5 mt-2 min-h-[40px] p-2 border-2 border-dashed border-gray-200 rounded-lg bg-white">
-                    {project.techUsed.length === 0 ? (
-                      <p className="text-gray-400 text-xs">
-                        No technologies added
-                      </p>
-                    ) : (
-                      project.techUsed.map((tech, techIndex) => (
-                        <Chip
-                          key={techIndex}
-                          label={tech}
-                          onDelete={() => handleRemoveTech(index, tech)}
-                          size="small"
-                          sx={{
-                            backgroundColor: "#e0e7ff",
-                            color: "#4f46e5",
-                            fontWeight: 600,
-                            height: "24px",
-                            fontSize: "12px",
-                            "& .MuiChip-deleteIcon": {
-                              fontSize: "16px",
-                            },
-                          }}
-                        />
-                      ))
-                    )}
-                  </div>
-                </div>
-
-                {/* URLs Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div className="form-group">
-                    <label className="form-label">GitHub URL</label>
-                    <input
-                      type="url"
-                      className="form-input"
-                      value={project.githubUrl}
-                      onChange={(e) =>
-                        handleProjectChange(index, "githubUrl", e.target.value)
-                      }
-                      placeholder="https://github.com/..."
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Live URL</label>
-                    <input
-                      type="url"
-                      className="form-input"
-                      value={project.liveUrl}
-                      onChange={(e) =>
-                        handleProjectChange(index, "liveUrl", e.target.value)
-                      }
-                      placeholder="https://..."
-                    />
+                    <div className="form-group">
+                      <label className="form-label">Live URL</label>
+                      <input
+                        type="url"
+                        className="form-input"
+                        value={project.liveUrl}
+                        onChange={(e) =>
+                          handleProjectChange(index, "liveUrl", e.target.value)
+                        }
+                        placeholder="https://..."
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {/* Add Another Project Button */}
           {userData.projects.length < 5 && (

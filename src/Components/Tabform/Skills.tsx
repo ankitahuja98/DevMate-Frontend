@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { userDataProps } from "../../types/userData";
 import { Chip } from "@mui/material";
 
-const Skills = ({ userData, setUserData }: userDataProps) => {
+const Skills = ({ userData, setUserData, errors }: userDataProps) => {
   const [techInput, setTechInput] = useState("");
   const [interestInput, setInterestInput] = useState("");
 
@@ -96,6 +96,12 @@ const Skills = ({ userData, setUserData }: userDataProps) => {
     }
   };
 
+  // Helper component for error display
+  const ErrorMessage = ({ error }: { error?: string }) => {
+    if (!error) return null;
+    return <p style={{ fontSize: "11px", color: "red" }}>{error}</p>;
+  };
+
   return (
     <div className="space-y-5">
       <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
@@ -152,6 +158,7 @@ const Skills = ({ userData, setUserData }: userDataProps) => {
             ))
           )}
         </div>
+        <ErrorMessage error={errors.techStack} />
 
         {/* Suggested Tech Stack */}
         <div className="mt-3">
@@ -238,6 +245,7 @@ const Skills = ({ userData, setUserData }: userDataProps) => {
             ))
           )}
         </div>
+        <ErrorMessage error={errors.interests} />
 
         {/* Suggested Interests */}
         <div className="mt-3">

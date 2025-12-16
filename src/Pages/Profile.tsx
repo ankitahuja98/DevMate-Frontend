@@ -83,7 +83,7 @@ const Profile = () => {
         <p className="text-md mt-3">📍 {location}</p>
         {/* TechStack  */}
         <div className="mt-5 w-full overflow-hidden">
-          <p className="text-md font-semibold ">💻 Tech Stack</p>
+          <p className="text-md font-semibold ">Tech Stack</p>
           <div className="flex gap-3 flex-wrap mt-2">
             {techStack.length !== 0 &&
               techStack.map((val: string) => {
@@ -94,24 +94,32 @@ const Profile = () => {
 
         {/* Social Links  */}
         <div className="social-links">
-          <div
-            className="social-icon"
-            onClick={() => handleSocialLinks("github")}
-          >
-            <GitHubIcon />
-          </div>
-          <div
-            className="social-icon"
-            onClick={() => handleSocialLinks("linkedin")}
-          >
-            <LinkedInIcon />
-          </div>
-          <div
-            className="social-icon"
-            onClick={() => handleSocialLinks("portfolio")}
-          >
-            <WorkIcon />
-          </div>
+          {socialLinks.github && (
+            <div
+              className="social-icon"
+              onClick={() => handleSocialLinks("github")}
+            >
+              <GitHubIcon />
+            </div>
+          )}
+
+          {socialLinks.linkedin && (
+            <div
+              className="social-icon"
+              onClick={() => handleSocialLinks("linkedin")}
+            >
+              <LinkedInIcon />
+            </div>
+          )}
+
+          {socialLinks.portfolio && (
+            <div
+              className="social-icon"
+              onClick={() => handleSocialLinks("portfolio")}
+            >
+              <WorkIcon />
+            </div>
+          )}
         </div>
       </div>
       <div className="RightSection">
@@ -130,11 +138,11 @@ const Profile = () => {
           <div className="looking-for-text">{lookingForDesc}</div>
         </div>
         <div className="ProfileSection">
-          <p className="SectionTitle">👋 About Me</p>
+          <p className="SectionTitle">About Me</p>
           <p className="userBio">{bio}</p>
         </div>
         <div className="ProfileSection">
-          <p className="SectionTitle">🎨 Interests</p>
+          <p className="SectionTitle">Interests</p>
           <div className="interestsContent">
             {interests.length !== 0 &&
               interests.map((val: String, id: any) => {
@@ -147,7 +155,7 @@ const Profile = () => {
           </div>
         </div>
         <div className="ProfileSection">
-          <p className="SectionTitle">🚀 Featured Projects</p>
+          <p className="SectionTitle">Featured Projects</p>
           <div className="projects-grid">
             {projects.length !== 0 &&
               projects.map((val: Projects) => {
@@ -168,18 +176,22 @@ const Profile = () => {
                       </div>
 
                       <div className="project-links">
-                        <div
-                          className="project-link"
-                          onClick={() => handleProjectLink(githubUrl)}
-                        >
-                          <GitHubIcon />
-                        </div>
-                        <div
-                          className="project-link"
-                          onClick={() => handleProjectLink(liveUrl)}
-                        >
-                          <OpenInNewIcon />
-                        </div>
+                        {githubUrl && (
+                          <div
+                            className="project-link"
+                            onClick={() => handleProjectLink(githubUrl)}
+                          >
+                            <GitHubIcon />
+                          </div>
+                        )}
+                        {liveUrl && (
+                          <div
+                            className="project-link"
+                            onClick={() => handleProjectLink(liveUrl)}
+                          >
+                            <OpenInNewIcon />
+                          </div>
+                        )}
                       </div>
                     </div>
 

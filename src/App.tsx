@@ -19,7 +19,7 @@ function App() {
       {/* Protected Routes */}
       <Route element={<ProtectedRoutes />}>
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Explore />} />
+          <Route index element={<Explore />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/likedyou" element={<LikedYou />} />
           <Route path="/chats" element={<Chat />} />

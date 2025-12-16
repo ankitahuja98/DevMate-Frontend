@@ -3,7 +3,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import type { userDataProps } from "../../types/userData";
 import { Avatar, IconButton } from "@mui/material";
 
-const BasicInfo = ({ userData, setUserData }: userDataProps) => {
+const BasicInfo = ({ userData, setUserData, errors }: userDataProps) => {
   const handleChange = (name: string, value: any) => {
     setUserData({ ...userData, [name]: value });
   };
@@ -27,6 +27,12 @@ const BasicInfo = ({ userData, setUserData }: userDataProps) => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  // Helper component for error display
+  const ErrorMessage = ({ error }: { error?: string }) => {
+    if (!error) return null;
+    return <p style={{ fontSize: "11px", color: "red" }}>{error}</p>;
   };
 
   return (
@@ -78,6 +84,9 @@ const BasicInfo = ({ userData, setUserData }: userDataProps) => {
           </label>
         </div>
       </div>
+      <div className="flex justify-center">
+        <ErrorMessage error={errors.profilePhoto} />
+      </div>
 
       {/* form */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -93,6 +102,7 @@ const BasicInfo = ({ userData, setUserData }: userDataProps) => {
             placeholder="Full Name"
             required
           />
+          <ErrorMessage error={errors.name} />
         </div>
 
         <div className="form-group">
@@ -109,6 +119,7 @@ const BasicInfo = ({ userData, setUserData }: userDataProps) => {
             placeholder="25"
             required
           />
+          <ErrorMessage error={errors.age} />
         </div>
 
         <div className="form-group">
@@ -123,6 +134,7 @@ const BasicInfo = ({ userData, setUserData }: userDataProps) => {
             placeholder="New Delhi, IN"
             required
           />
+          <ErrorMessage error={errors.location} />
         </div>
       </div>
 
@@ -141,9 +153,7 @@ const BasicInfo = ({ userData, setUserData }: userDataProps) => {
             maxLength={100}
             required
           />
-          {/* <p className="text-xs text-gray-500 text-right mt-1">
-            {userData.tagline.length} / 100
-          </p> */}
+          <ErrorMessage error={errors.tagline} />
         </div>
 
         <div className="form-group">
@@ -158,6 +168,7 @@ const BasicInfo = ({ userData, setUserData }: userDataProps) => {
             placeholder="Full-stack Developer"
             required
           />
+          <ErrorMessage error={errors.currentRole} />
         </div>
 
         <div className="form-group">
@@ -173,12 +184,13 @@ const BasicInfo = ({ userData, setUserData }: userDataProps) => {
             required
           >
             <option value="">Select experience</option>
-            <option value="0">Less than 1 year</option>
-            <option value="1">1-2 years</option>
+            <option value="1">Less than 1 year</option>
+            <option value="2">1-2 years</option>
             <option value="3">3-5 years</option>
             <option value="6">6-10 years</option>
             <option value="10">10+ years</option>
           </select>
+          <ErrorMessage error={errors.experience} />
         </div>
       </div>
 
@@ -196,13 +208,16 @@ const BasicInfo = ({ userData, setUserData }: userDataProps) => {
           rows={1}
           required
         />
-        <p className="text-xs text-gray-500 text-right mt-1">
-          {userData.bio.length} / 500
-        </p>
+        <div className="flex justify-between">
+          <ErrorMessage error={errors.bio} />
+          <p className="text-xs text-gray-500 text-right">
+            {userData.bio.length} / 500
+          </p>
+        </div>
       </div>
 
       {/* Social Links Section */}
-      <div className="pt-4 border-t border-gray-200 mt-3">
+      <div className="pt-4 border-t border-gray-200 mt-4">
         <h3 className="text-base font-semibold text-gray-800 mb-4 flex items-center gap-2">
           <span className="text-xl">🔗</span> Social Links
         </h3>

@@ -1,6 +1,6 @@
 import type { userDataProps } from "../../types/userData";
 
-const Goals = ({ userData, setUserData }: userDataProps) => {
+const Goals = ({ userData, setUserData, errors }: userDataProps) => {
   const handleChange = (field: string, value: string) => {
     setUserData({ ...userData, [field]: value });
   };
@@ -35,6 +35,12 @@ const Goals = ({ userData, setUserData }: userDataProps) => {
     { value: "flexible", label: "Flexible" },
   ];
 
+  // Helper component for error display
+  const ErrorMessage = ({ error }: { error?: string }) => {
+    if (!error) return null;
+    return <p style={{ fontSize: "11px", color: "red" }}>{error}</p>;
+  };
+
   return (
     <div className="space-y-5">
       <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
@@ -60,6 +66,7 @@ const Goals = ({ userData, setUserData }: userDataProps) => {
               </option>
             ))}
           </select>
+          <ErrorMessage error={errors.lookingForTitle} />
         </div>
 
         <div className="form-group">
@@ -79,6 +86,7 @@ const Goals = ({ userData, setUserData }: userDataProps) => {
               </option>
             ))}
           </select>
+          <ErrorMessage error={errors.availability} />
         </div>
       </div>
 
@@ -95,13 +103,16 @@ const Goals = ({ userData, setUserData }: userDataProps) => {
           maxLength={500}
           required
         />
-        <p className="text-xs text-gray-500 text-right mt-1">
-          {userData.lookingForDesc.length} / 500
-        </p>
+        <div className="flex justify-between">
+          <ErrorMessage error={errors.lookingForDesc} />
+          <p className="text-xs text-gray-500 text-right">
+            {userData.lookingForDesc.length} / 500
+          </p>
+        </div>
       </div>
 
       {/* Info Box */}
-      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-md">
+      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-md mt-4">
         <p className="text-sm text-yellow-800">
           <strong>💡 Tip:</strong> Be specific about what you're looking for!
           Mention your project ideas, preferred tech stack, and what you can

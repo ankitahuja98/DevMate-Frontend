@@ -17,6 +17,8 @@ import Goals from "./Tabform/Goals";
 import Projects from "./Tabform/Projects";
 import type { userData } from "../types/userData";
 import "../CSS/EditProfile.css";
+import { validateStep } from "../utils/validations/profilevalidation";
+import { editprofile } from "../redux/actions/profileAction";
 
 const EditProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,7 +30,7 @@ const EditProfile = () => {
     age: null, // basic info - required
     profilePhoto: "", // basic info - required
     tagline: "", // basic info - required
-    bio: "", // basic info
+    bio: "", // basic info - required
     location: "", // basic info
     currentRole: "", // basic info
     experience: null, // basic info
@@ -47,6 +49,9 @@ const EditProfile = () => {
     availability: "", // Goals - required
     projects: [], // Projects
   });
+
+  const [errors, setErrors] = useState({});
+  const errorLength = Object.keys(errors).length;
 
   console.log("userData", userData);
 
@@ -78,6 +83,7 @@ const EditProfile = () => {
 
   const handleClose = () => {
     setactivetabs(0);
+    setErrors({});
     setUserData({
       name: "",
       age: null,
@@ -103,6 +109,22 @@ const EditProfile = () => {
   };
 
   const handleNext = () => {
+    const stepErrors = validateStep(activetabs, userData);
+
+    if (Object.keys(stepErrors).length > 0) {
+      setErrors(stepErrors);
+      return;
+    }
+
+    setErrors({});
+
+    if (activetabs === 3) {
+      dispatch(editprofile(userData)); // edit user profile api call
+      handleClose();
+      window.location.href = "/profile"; // page refresh
+      return;
+    }
+
     if (activetabs < Tabs.length - 1) {
       setactivetabs(activetabs + 1);
     }
@@ -175,7 +197,11 @@ const EditProfile = () => {
 
             {/* Form Content */}
             <div style={{ padding: "30px" }}>
-              <ActiveComponent userData={userData} setUserData={setUserData} />
+              <ActiveComponent
+                userData={userData}
+                setUserData={setUserData}
+                errors={errors}
+              />
             </div>
           </DialogContent>
 
@@ -197,6 +223,7 @@ const EditProfile = () => {
                 <Button
                   variant="contained"
                   onClick={handleNext}
+                  // disabled={errorLength > 0}
                   sx={{
                     background:
                       "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
@@ -211,7 +238,7 @@ const EditProfile = () => {
               ) : (
                 <Button
                   variant="contained"
-                  onClick={handleClose}
+                  onClick={handleNext}
                   sx={{
                     background:
                       "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
