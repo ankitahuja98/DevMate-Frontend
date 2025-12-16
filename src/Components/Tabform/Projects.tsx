@@ -23,23 +23,19 @@ const Projects = ({ userData, setUserData }: userDataProps) => {
   };
 
   const handleRemoveProject = (index: number) => {
-    const updatedProjects = userData.projects.filter((_, i) => i !== index);
     setUserData({
       ...userData,
-      projects: updatedProjects,
+      projects: userData.projects.filter((_, idx) => idx !== index),
     });
   };
 
   const handleProjectChange = (index: number, field: string, value: string) => {
-    const updatedProjects = [...userData.projects];
-    updatedProjects[index] = {
-      ...updatedProjects[index],
-      [field]: value,
-    };
-    setUserData({
-      ...userData,
-      projects: updatedProjects,
-    });
+    setUserData((prev) => ({
+      ...prev,
+      projects: prev.projects.map((val, ind) =>
+        ind === index ? { ...val, [field]: value } : val
+      ),
+    }));
   };
 
   const handleAddTech = (
