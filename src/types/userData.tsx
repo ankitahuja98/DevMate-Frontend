@@ -29,6 +29,7 @@ export interface userData {
   techStack: string[];
   projects: Project[];
   socialLinks: SocialLinks;
+  isNewUser: boolean;
 }
 
 export interface userDataProps {

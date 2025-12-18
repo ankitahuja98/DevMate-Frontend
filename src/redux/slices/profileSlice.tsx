@@ -29,6 +29,10 @@ const profileSlice = createSlice({
       state.userProfile.userProfileData = action.payload;
       state.userProfile.userProfileIsloading = false;
       state.userProfile.userProfileIserror = false;
+
+      if (action.payload.isNewUser) {
+        state.isEditProfileDialogOpen = true;
+      }
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
       state.userProfile.userProfileIserror = true;

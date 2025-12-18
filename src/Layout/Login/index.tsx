@@ -56,7 +56,7 @@ const LoginSignup = () => {
 
         {/* Forms Start*/}
         <div className={`forms-container ${isSignIn ? "active" : "active"}`}>
-          {isSignIn ? <SignIn /> : <SignUp />}
+          {isSignIn ? <SignIn /> : <SignUp setIsSignIn={setIsSignIn} />}
         </div>
         {/* Forms Ends*/}
       </div>

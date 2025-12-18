@@ -18,7 +18,7 @@ import Projects from "./Tabform/Projects";
 import type { userData } from "../types/userData";
 import "../CSS/EditProfile.css";
 import { validateStep } from "../utils/validations/profilevalidation";
-import { editprofile } from "../redux/actions/profileAction";
+import { editprofile, fetchUserProfile } from "../redux/actions/profileAction";
 import { allowedProps } from "../utils/allowedProps";
 
 const EditProfile = () => {
@@ -49,12 +49,14 @@ const EditProfile = () => {
     lookingForDesc: "", // Goals
     availability: "", // Goals - required
     projects: [], // Projects
+    isNewUser: true,
   });
   const userprofile = useAppSelector(
     (store) => store.profile.userProfile.userProfileData
   );
 
-  console.log("userData", userData);
+  // console.log("userData", userData);
+  // console.log("userprofile", userprofile);
 
   useEffect(() => {
     if (userprofile) {
@@ -114,11 +116,14 @@ const EditProfile = () => {
     setErrors({});
 
     if (activetabs === 3) {
-      dispatch(editprofile(userData))
+      const updatedUserData = { ...userData, isNewUser: false };
+      setUserData(updatedUserData);
+      dispatch(editprofile(updatedUserData))
         .unwrap()
         .then(() => {
+          dispatch(fetchUserProfile()); // refresh the profile data
           handleClose();
-          // window.location.href = "/profile"; // page refresh
+          dispatch(setEditProfileDialogOpen(false));
         })
         .catch((err) => console.log(err));
 
@@ -171,9 +176,11 @@ const EditProfile = () => {
                 partner
               </p>
             </div>
-            <IconButton sx={{ color: "#000" }} onClick={handleClose}>
-              <CloseIcon />
-            </IconButton>
+            {!userData.isNewUser && (
+              <IconButton sx={{ color: "#000" }} onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            )}
           </DialogTitle>
 
           {/* Content */}

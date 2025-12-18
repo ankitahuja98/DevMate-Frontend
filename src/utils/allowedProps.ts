@@ -16,4 +16,5 @@ export const allowedProps: (keyof userData)[] = [
   "techStack",
   "projects",
   "socialLinks",
+  "isNewUser",
 ];
