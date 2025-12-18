@@ -173,7 +173,7 @@ const TopBar = ({
 
           <img
             className="userProfile"
-            src="https://images.unsplash.com/photo-1552058544-f2b08422138a"
+            src={userProfile.profilePhoto}
             alt="user profile"
             onClick={() => navigate("/profile")}
           />

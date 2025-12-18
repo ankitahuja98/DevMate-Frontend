@@ -47,10 +47,11 @@ const BasicInfo = ({ userData, setUserData, errors }: userDataProps) => {
           <Avatar
             src={userData.profilePhoto || ""}
             sx={{
-              width: 100,
-              height: 100,
+              width: 130,
+              height: 130,
               border: "3px solid #e5e7eb",
               boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+              marginTop: "5px",
             }}
           />
           <input

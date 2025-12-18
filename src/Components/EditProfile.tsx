@@ -10,7 +10,7 @@ import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useDispatch } from "react-redux";
 import { setEditProfileDialogOpen } from "../redux/slices/profileSlice";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BasicInfo from "./Tabform/BasicInfo";
 import Skills from "./Tabform/Skills";
 import Goals from "./Tabform/Goals";
@@ -19,6 +19,7 @@ import type { userData } from "../types/userData";
 import "../CSS/EditProfile.css";
 import { validateStep } from "../utils/validations/profilevalidation";
 import { editprofile } from "../redux/actions/profileAction";
+import { allowedProps } from "../utils/allowedProps";
 
 const EditProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -49,11 +50,26 @@ const EditProfile = () => {
     availability: "", // Goals - required
     projects: [], // Projects
   });
-
-  const [errors, setErrors] = useState({});
-  const errorLength = Object.keys(errors).length;
+  const userprofile = useAppSelector(
+    (store) => store.profile.userProfile.userProfileData
+  );
 
   console.log("userData", userData);
+
+  useEffect(() => {
+    if (userprofile) {
+      const filteredData: Partial<userData> = {};
+
+      allowedProps.forEach((key) => {
+        if (userprofile[key] !== undefined) {
+          filteredData[key] = userprofile[key];
+        }
+      });
+      setUserData(filteredData as userData);
+    }
+  }, []);
+
+  const [errors, setErrors] = useState({});
 
   const Tabs = [
     {
@@ -84,27 +100,6 @@ const EditProfile = () => {
   const handleClose = () => {
     setactivetabs(0);
     setErrors({});
-    setUserData({
-      name: "",
-      age: null,
-      profilePhoto: "",
-      tagline: "",
-      bio: "",
-      location: "",
-      currentRole: "",
-      experience: null,
-      socialLinks: {
-        github: "",
-        linkedin: "",
-        portfolio: "",
-      },
-      techStack: [],
-      interests: [],
-      lookingForTitle: "",
-      lookingForDesc: "",
-      availability: "",
-      projects: [],
-    });
     dispatch(setEditProfileDialogOpen(false));
   };
 
@@ -119,9 +114,14 @@ const EditProfile = () => {
     setErrors({});
 
     if (activetabs === 3) {
-      dispatch(editprofile(userData)); // edit user profile api call
-      handleClose();
-      window.location.href = "/profile"; // page refresh
+      dispatch(editprofile(userData))
+        .unwrap()
+        .then(() => {
+          handleClose();
+          // window.location.href = "/profile"; // page refresh
+        })
+        .catch((err) => console.log(err));
+
       return;
     }
 
@@ -141,7 +141,12 @@ const EditProfile = () => {
       {isEditProfileDialogOpen && (
         <Dialog
           open={isEditProfileDialogOpen}
-          onClose={handleClose}
+          disableEscapeKeyDown
+          onClose={(event, reason) => {
+            if (reason !== "backdropClick") {
+              handleClose();
+            }
+          }}
           fullWidth
           maxWidth="md"
           PaperProps={{

@@ -96,6 +96,7 @@ const Projects = ({ userData, setUserData, errors }: userDataProps) => {
         <h3 className="text-base font-semibold text-gray-800 flex items-center gap-2">
           <span className="text-xl">🚀</span> Featured Projects
         </h3>
+
         {/* <span className="text-xs text-gray-500 font-medium">(Optional)</span> */}
       </div>
 

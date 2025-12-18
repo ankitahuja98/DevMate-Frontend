@@ -155,7 +155,10 @@ const Profile = () => {
           </div>
         </div>
         <div className="ProfileSection">
-          <p className="SectionTitle">Featured Projects</p>
+          {projects.length !== 0 && (
+            <p className="SectionTitle">Featured Projects</p>
+          )}
+
           <div className="projects-grid">
             {projects.length !== 0 &&
               projects.map((val: Projects) => {
