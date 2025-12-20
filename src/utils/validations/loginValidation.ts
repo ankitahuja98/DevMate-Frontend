@@ -4,6 +4,11 @@ export interface signupdata {
   password?: string;
 }
 
+export interface logindata {
+  email?: string;
+  password?: string;
+}
+
 interface validationErrors {
   [key: string]: any;
 }
@@ -24,5 +29,21 @@ export const validateSignup = (data: signupdata) => {
   if (!data.password || data.password.trim().length < 5) {
     errors.password = "Password must be at least 5 characters";
   }
+  return errors;
+};
+
+export const validateLogin = (data: logindata) => {
+  const errors: validationErrors = {};
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!data.email || !emailRegex.test(data.email)) {
+    errors.email = "Enter a valid email";
+  }
+
+  if (!data.password || data.password.trim().length < 1) {
+    errors.password = "Enter a Password";
+  }
+
   return errors;
 };

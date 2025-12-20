@@ -5,18 +5,42 @@ import { useDispatch } from "react-redux";
 import { useAppSelector, type AppDispatch } from "../../redux/store/store";
 import { login } from "../../redux/actions/authAction";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import {
+  validateLogin,
+  type logindata,
+} from "../../utils/validations/loginValidation";
+import { Box } from "@mui/material";
 
 const SignIn = () => {
   const [loginformData, setloginformData] = useState({
     email: "Rahul@gmail.com",
     password: "Rahul",
   });
+  const [errors, setErros] = useState<logindata>({});
+
   const dispatch = useDispatch<AppDispatch>();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    dispatch(login(loginformData));
+    const isErrors = validateLogin(loginformData);
+    setErros(isErrors);
+
+    if (Object.keys(isErrors).length !== 0) {
+      return;
+    } else {
+      dispatch(login(loginformData))
+        .unwrap()
+        .then((res) => {
+          toast.success(res.message);
+          setloginformData({
+            email: "",
+            password: "",
+          });
+        })
+        .catch((err) => toast.error(err.message));
+    }
   };
 
   const handleInputChange = (e: any) => {
@@ -38,33 +62,42 @@ const SignIn = () => {
     }
   }, [isUser]);
 
-  console.log("logindata", data);
+  const ErrorMessage = ({ error }: { error?: string }) => {
+    if (!error) return null;
+    return <p style={{ fontSize: "11px", color: "red" }}>{error}</p>;
+  };
 
   return (
     <div className="SigninPage p-10 flex flex-col justify-center">
       <form className="flex flex-col gap-5">
-        <TextField
-          required
-          fullWidth
-          label="Email"
-          variant="outlined"
-          size="small"
-          name="email"
-          value={loginformData.email}
-          onChange={handleInputChange}
-        />
+        <Box>
+          <TextField
+            required
+            fullWidth
+            label="Email"
+            variant="outlined"
+            size="small"
+            name="email"
+            value={loginformData.email}
+            onChange={handleInputChange}
+          />
+          <ErrorMessage error={errors.email} />
+        </Box>
 
-        <TextField
-          required
-          fullWidth
-          label="Password"
-          type="password"
-          variant="outlined"
-          size="small"
-          name="password"
-          value={loginformData.password}
-          onChange={handleInputChange}
-        />
+        <Box>
+          <TextField
+            required
+            fullWidth
+            label="Password"
+            type="password"
+            variant="outlined"
+            size="small"
+            name="password"
+            value={loginformData.password}
+            onChange={handleInputChange}
+          />
+          <ErrorMessage error={errors.password} />
+        </Box>
 
         <button type="submit" className="signinBtn" onClick={handleLogin}>
           Sign in

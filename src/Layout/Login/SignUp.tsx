@@ -9,6 +9,7 @@ import {
   type signupdata,
 } from "../../utils/validations/loginValidation";
 import { Box } from "@mui/material";
+import { toast } from "react-toastify";
 
 const SignUp = ({
   setIsSignIn,
@@ -28,8 +29,6 @@ const SignUp = ({
     e.preventDefault(); // ⛔ stop page refresh
 
     const isErrors = validateSignup(singupform);
-    console.log("isErrors", isErrors);
-    console.log("errors", errors);
 
     setErros(isErrors);
     if (Object.keys(isErrors).length !== 0) {
@@ -37,8 +36,8 @@ const SignUp = ({
     } else {
       dispatch(signup(singupform))
         .unwrap()
-        .then(() => {
-          alert("user created");
+        .then((res) => {
+          toast.success(res.message);
           setIsSignIn((prev: boolean) => !prev);
           setSignupform({
             name: "",
@@ -46,7 +45,7 @@ const SignUp = ({
             password: "",
           });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => toast.error(err.message));
     }
   };
 
