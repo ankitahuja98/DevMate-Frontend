@@ -20,6 +20,7 @@ import "../CSS/EditProfile.css";
 import { validateStep } from "../utils/validations/profilevalidation";
 import { editprofile, fetchUserProfile } from "../redux/actions/profileAction";
 import { allowedProps } from "../utils/allowedProps";
+import { toast } from "react-toastify";
 
 const EditProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -120,12 +121,13 @@ const EditProfile = () => {
       setUserData(updatedUserData);
       dispatch(editprofile(updatedUserData))
         .unwrap()
-        .then(() => {
+        .then((res) => {
+          toast.success(res.message);
           dispatch(fetchUserProfile()); // refresh the profile data
           handleClose();
           dispatch(setEditProfileDialogOpen(false));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => toast.error(err.message));
 
       return;
     }

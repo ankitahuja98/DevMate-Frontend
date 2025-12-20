@@ -14,12 +14,12 @@ export const fetchUserProfile = createAsyncThunk<any>(
   }
 );
 
-export const editprofile = createAsyncThunk<userData, userData>(
+export const editprofile = createAsyncThunk<any, userData>(
   "editprofile",
   async (userData) => {
     try {
       const response = await callApi.patch("/profile/edit", userData);
-      return response.data.data;
+      return response.data;
     } catch (error) {
       console.log("User data update failed", error);
     }
