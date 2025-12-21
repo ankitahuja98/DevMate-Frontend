@@ -24,3 +24,11 @@
 .ExploreCard:hover {
   cursor: grab;
 }
+
+.UserTopContaienr {
+  position: relative;
+  bottom: 80px;
+  background-color: rgb(20, 20, 20);
+  opacity: 70%;
+  padding: 8px;
+}

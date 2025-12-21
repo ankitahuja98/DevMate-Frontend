@@ -1,7 +1,8 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 
 const Card = ({ val }: { val: any }) => {
-  const { name, age, about, photo } = val;
+  const { name, age, about, profilePhoto, location } = val;
   const x = useMotionValue(0);
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
   const rotate = useTransform(x, [-150, 150], [-18, 18]);
@@ -32,18 +33,25 @@ const Card = ({ val }: { val: any }) => {
       }}
     >
       <img
-        src={photo}
+        src={profilePhoto}
         alt="user photo"
         draggable="false"
+        width="100%"
+        height="100%"
         style={{
           userSelect: "none",
           pointerEvents: "none",
         }}
       />
-
-      <p className="username">{name}</p>
-      <p>{age}</p>
-      <p>{about}</p>
+      <div className="UserTopContaienr">
+        <span className="font-bold text-2xl text-white">{name}</span>
+        <span className="font-semibold text-xl text-white pl-2">{age}</span>
+        <p className="font-base text-lg text-white mt-1">
+          <LocationOnOutlinedIcon sx={{ fontSize: 22 }} />
+          {location}
+        </p>
+      </div>
+      {/* <p>{about}</p> */}
     </motion.div>
   );
 };

@@ -14,8 +14,8 @@ import { Box } from "@mui/material";
 
 const SignIn = () => {
   const [loginformData, setloginformData] = useState({
-    email: "Rahul@gmail.com",
-    password: "Rahul",
+    email: "john.michael@example.com",
+    password: "securePass123",
   });
   const [errors, setErros] = useState<logindata>({});
 
