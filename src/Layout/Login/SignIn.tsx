@@ -17,6 +17,7 @@ const SignIn = () => {
     email: "neha@gmail.com",
     password: "neha",
   });
+  const [isForgetPassword, setIsForgetPassword] = useState(false);
   const [errors, setErros] = useState<logindata>({});
 
   const dispatch = useDispatch<AppDispatch>();
@@ -88,7 +89,7 @@ const SignIn = () => {
           <TextField
             required
             fullWidth
-            label="Password"
+            label={isForgetPassword ? "Set new password" : "password"}
             type="password"
             variant="outlined"
             size="small"
@@ -97,10 +98,19 @@ const SignIn = () => {
             onChange={handleInputChange}
           />
           <ErrorMessage error={errors.password} />
+          {!isForgetPassword && (
+            <Box
+              className="text-xs text-end font-semibold mt-1 cursor-pointer"
+              style={{ color: "#3C4B70" }}
+              onClick={() => setIsForgetPassword(true)}
+            >
+              Forget password?
+            </Box>
+          )}
         </Box>
 
         <button type="submit" className="signinBtn" onClick={handleLogin}>
-          Sign in
+          {isForgetPassword ? "Submit" : "Sign in"}
         </button>
       </form>
 

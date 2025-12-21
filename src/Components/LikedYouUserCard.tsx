@@ -1,13 +1,13 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LanguageIcon from "@mui/icons-material/Language";
-import { Chip } from "@mui/material";
+import { useState } from "react";
 
 const LikedYouUserCard = ({ val }: { val: any }) => {
   const {
+    _id,
     name,
     age,
     bio,
@@ -23,6 +23,8 @@ const LikedYouUserCard = ({ val }: { val: any }) => {
     availability,
     projects,
   } = val;
+  const [activeCard, setActiveCard] = useState(null);
+
   const x = useMotionValue(0);
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
   const rotate = useTransform(x, [-150, 150], [-18, 18]);
@@ -39,14 +41,14 @@ const LikedYouUserCard = ({ val }: { val: any }) => {
 
   return (
     <motion.div
-      className="LikedYouCard"
+      className={`LikedYouCard ${activeCard === _id ? "active" : ""}`}
+      onClick={() => setActiveCard(activeCard === _id ? null : _id)}
       drag="x"
       onDragEnd={handleDragEnd}
       style={{
         x,
         opacity,
         rotate,
-        border: "2px solid black",
       }}
       dragConstraints={{
         left: 0,

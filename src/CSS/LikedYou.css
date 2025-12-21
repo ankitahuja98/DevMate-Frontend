@@ -5,24 +5,35 @@
   display: grid;
   padding: 10px;
   gap: 30px;
-  grid-template-columns: repeat(2, 1fr);
-  /* justify-content: center; */
+  grid-template-columns: repeat(2, 25rem);
+  justify-content: space-evenly;
 }
 
 .LikedYouCard {
-  width: 100%; /* MUST be 100% */
+  width: 25rem;
   height: 84vh;
 
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 12px;
   background-color: white;
   position: relative;
 
-  overflow-y: auto;
+  overflow-y: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
 
-  box-shadow: 0px 0px 10px rgba(219, 219, 219, 0.255);
+  box-shadow: 0px 0px 10px rgba(174, 174, 174, 0.785);
 }
+
+/* When active (clicked) */
+.LikedYouCard.active {
+  overflow-y: auto; /* ✅ becomes scrollable */
+}
+
+/* Hide scrollbar (optional) */
+.LikedYouCard.active::-webkit-scrollbar {
+  display: none;
+}
+
 /* Tablet and smaller */
 @media (max-width: 768px) {
   .LikedyouContainer {
