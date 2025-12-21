@@ -6,7 +6,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LanguageIcon from "@mui/icons-material/Language";
 import { Chip } from "@mui/material";
 
-const Card = ({ val }: { val: any }) => {
+const LikedYouUserCard = ({ val }: { val: any }) => {
   const {
     name,
     age,
@@ -39,13 +39,14 @@ const Card = ({ val }: { val: any }) => {
 
   return (
     <motion.div
-      className="ExploreCard"
+      className="LikedYouCard"
       drag="x"
       onDragEnd={handleDragEnd}
       style={{
         x,
         opacity,
         rotate,
+        border: "2px solid black",
       }}
       dragConstraints={{
         left: 0,
@@ -282,4 +283,4 @@ const Card = ({ val }: { val: any }) => {
   );
 };
 
-export default Card;
+export default LikedYouUserCard;

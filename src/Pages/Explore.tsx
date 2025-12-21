@@ -1,5 +1,4 @@
 import "../CSS/Explore.css";
-import users from "../utils/dummyuser.json";
 import Card from "../Components/Card";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useEffect } from "react";

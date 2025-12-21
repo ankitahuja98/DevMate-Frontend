@@ -44,33 +44,41 @@ const Projects = ({ userData, setUserData, errors }: userDataProps) => {
   ) => {
     if (e.key === "Enter" && techInputs[projectIndex]?.trim()) {
       e.preventDefault();
+
       const tech = techInputs[projectIndex].trim();
-      const updatedProjects = [...userData.projects];
 
-      if (!updatedProjects[projectIndex].techUsed.includes(tech)) {
-        updatedProjects[projectIndex].techUsed = [
-          ...updatedProjects[projectIndex].techUsed,
-          tech,
-        ];
-        setUserData({
-          ...userData,
-          projects: updatedProjects,
-        });
-      }
+      setUserData((prev) => ({
+        ...prev,
+        projects: prev.projects.map((project, index) =>
+          index === projectIndex
+            ? {
+                ...project,
+                techUsed: project.techUsed.includes(tech)
+                  ? project.techUsed
+                  : [...project.techUsed, tech],
+              }
+            : project
+        ),
+      }));
 
-      setTechInputs({ ...techInputs, [projectIndex]: "" });
+      setTechInputs((prev) => ({ ...prev, [projectIndex]: "" }));
     }
   };
 
   const handleRemoveTech = (projectIndex: number, techToRemove: string) => {
-    const updatedProjects = [...userData.projects];
-    updatedProjects[projectIndex].techUsed = updatedProjects[
-      projectIndex
-    ].techUsed.filter((tech) => tech !== techToRemove);
-    setUserData({
-      ...userData,
-      projects: updatedProjects,
-    });
+    setUserData((prev) => ({
+      ...prev,
+      projects: prev.projects.map((project, index) =>
+        index === projectIndex
+          ? {
+              ...project,
+              techUsed: project.techUsed.filter(
+                (tech) => tech !== techToRemove
+              ),
+            }
+          : project
+      ),
+    }));
   };
 
   const handleTechInputChange = (projectIndex: number, value: string) => {
