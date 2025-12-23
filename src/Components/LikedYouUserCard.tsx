@@ -4,8 +4,20 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LanguageIcon from "@mui/icons-material/Language";
 import { useState } from "react";
+import { reviewConnectionReq } from "../redux/actions/connectionAction";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../redux/store/store";
+import { toast } from "react-toastify";
 
-const LikedYouUserCard = ({ val }: { val: any }) => {
+const LikedYouUserCard = ({
+  val,
+  filterRequestData,
+  requestId,
+}: {
+  val: any;
+  filterRequestData: any;
+  requestId: string;
+}) => {
   const {
     _id,
     name,
@@ -23,7 +35,9 @@ const LikedYouUserCard = ({ val }: { val: any }) => {
     availability,
     projects,
   } = val;
+  console.log("requestId", requestId);
   const [activeCard, setActiveCard] = useState(null);
+  const dispatch = useDispatch<AppDispatch>();
 
   const x = useMotionValue(0);
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
@@ -32,16 +46,34 @@ const LikedYouUserCard = ({ val }: { val: any }) => {
   const handleDragEnd = () => {
     if (x.get() > 50) {
       console.log("swipe right");
+      dispatch(
+        reviewConnectionReq({ status: "accepted", requestId: `${requestId}` })
+      )
+        .unwrap()
+        .then(() => {
+          filterRequestData(requestId);
+          toast.success(`You liked ${name}`);
+        })
+        .catch((err) => console.log(err));
     } else if (x.get() < -50) {
       console.log("swipe left");
-    } else {
-      console.log("back to center");
+      dispatch(
+        reviewConnectionReq({ status: "rejected", requestId: `${requestId}` })
+      )
+        .unwrap()
+        .then(() => {
+          filterRequestData(requestId);
+          toast.warning(`You passed ${name}`);
+        })
+        .catch((err) => console.log(err));
     }
   };
 
   return (
     <motion.div
-      className={`LikedYouCard ${activeCard === _id ? "active" : ""}`}
+      className={`LikedYouCard ${
+        activeCard === _id ? "active border-2 border-gray-400" : ""
+      }`}
       onClick={() => setActiveCard(activeCard === _id ? null : _id)}
       drag="x"
       onDragEnd={handleDragEnd}

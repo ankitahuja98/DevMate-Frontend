@@ -52,8 +52,6 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
           toast.warning(`You passed ${name}`);
         })
         .catch((err) => console.log(err));
-    } else {
-      console.log("back to center");
     }
   };
 

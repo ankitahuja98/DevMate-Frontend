@@ -28,6 +28,7 @@ const EditProfile = () => {
   const [activetabs, setactivetabs] = useState(0);
 
   const [userData, setUserData] = useState<userData>({
+    _id: "",
     name: "", // basic info  - required
     age: null, // basic info - required
     profilePhoto: "", // basic info - required

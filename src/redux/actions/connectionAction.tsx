@@ -19,9 +19,10 @@ export const sendConnectionReq = createAsyncThunk<any, ConnectionReqData>(
 export const reviewConnectionReq = createAsyncThunk<any, ConnectionReqData>(
   "reviewConnectionReq",
   async ({ status, requestId }, { rejectWithValue }) => {
+    console.log("status", status);
     try {
       const response = await callApi.post(
-        `/connectionReq/send/${status}/${requestId}`
+        `/connectionReq/review/${status}/${requestId}`
       );
       return response.data.message;
     } catch (error: any) {
