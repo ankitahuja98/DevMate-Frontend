@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { userDataInitialState } from "../types/userType";
-import { getAllUsers, getAllRequests } from "../actions/userAction";
+import {
+  getAllUsers,
+  getAllRequests,
+  getAllMatches,
+} from "../actions/userAction";
 
 const initialState: userDataInitialState = {
   userDataIsloading: false,
@@ -9,6 +13,9 @@ const initialState: userDataInitialState = {
   requestDataIsloading: false,
   requestData: null,
   requestDataIserror: false,
+  matchesDataIsloading: false,
+  matchesData: null,
+  matchesDataIserror: false,
 };
 
 const userSlice = createSlice({
@@ -37,6 +44,18 @@ const userSlice = createSlice({
     builder.addCase(getAllRequests.rejected, (state, action) => {
       state.requestDataIsloading = false;
       state.requestDataIserror = true;
+    });
+
+    builder.addCase(getAllMatches.pending, (state, action) => {
+      state.matchesDataIsloading = true;
+    });
+    builder.addCase(getAllMatches.fulfilled, (state, action) => {
+      state.matchesDataIsloading = false;
+      state.matchesData = action.payload;
+    });
+    builder.addCase(getAllMatches.rejected, (state, action) => {
+      state.matchesDataIsloading = false;
+      state.matchesDataIserror = true;
     });
   },
 });

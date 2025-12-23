@@ -5,4 +5,7 @@ export interface userDataInitialState {
   requestDataIsloading: boolean;
   requestData: any | null;
   requestDataIserror: boolean;
+  matchesDataIsloading: boolean;
+  matchesData: any | null;
+  matchesDataIserror: boolean;
 }

@@ -24,3 +24,15 @@ export const getAllRequests = createAsyncThunk<any>(
     }
   }
 );
+
+export const getAllMatches = createAsyncThunk<any>(
+  "getAllMatches",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await callApi.get("/user/matches");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data || "Get matches failed");
+    }
+  }
+);

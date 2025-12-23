@@ -15,8 +15,8 @@ const LikedYouUserCard = ({
   requestId,
 }: {
   val: any;
-  filterRequestData: any;
-  requestId: string;
+  filterRequestData?: any;
+  requestId?: string;
 }) => {
   const {
     _id,
