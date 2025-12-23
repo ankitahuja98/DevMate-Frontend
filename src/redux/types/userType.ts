@@ -1,5 +1,5 @@
 export interface userprofileInitialState {
-  userProfileIsloading: boolean;
-  userProfileData: any | null;
-  userProfileIserror: boolean;
+  userDataIsloading: boolean;
+  userData: any | null;
+  userDataIserror: boolean;
 }

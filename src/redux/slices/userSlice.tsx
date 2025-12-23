@@ -3,9 +3,9 @@ import type { userprofileInitialState } from "../types/userType";
 import { getAllUsers } from "../actions/userAction";
 
 const initialState: userprofileInitialState = {
-  userProfileIsloading: false,
-  userProfileData: null,
-  userProfileIserror: false,
+  userDataIsloading: false,
+  userData: null,
+  userDataIserror: false,
 };
 
 const userSlice = createSlice({
@@ -14,15 +14,15 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getAllUsers.pending, (state, action) => {
-      state.userProfileIsloading = true;
+      state.userDataIsloading = true;
     });
     builder.addCase(getAllUsers.fulfilled, (state, action) => {
-      state.userProfileIsloading = false;
-      state.userProfileData = action.payload;
+      state.userDataIsloading = false;
+      state.userData = action.payload;
     });
     builder.addCase(getAllUsers.rejected, (state, action) => {
-      state.userProfileIsloading = false;
-      state.userProfileIserror = true;
+      state.userDataIsloading = false;
+      state.userDataIserror = true;
     });
   },
 });

@@ -1,7 +1,7 @@
 import "../CSS/Explore.css";
 import Card from "../Components/Card";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAllUsers } from "../redux/actions/userAction";
 import AllSwipe from "../Images/AllSwipe.png";
@@ -9,8 +9,9 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const Explore = () => {
-  const AllUsers =
-    useAppSelector((store) => store.user.userProfileData?.data) || [];
+  const [AllUsers, setAllUsers] = useState([]);
+  const getallUsers =
+    useAppSelector((store) => store.user.userData?.data) || [];
   console.log("AllUsers", AllUsers);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -18,15 +19,25 @@ const Explore = () => {
     dispatch(getAllUsers());
   }, []);
 
+  useEffect(() => {
+    setAllUsers(getallUsers);
+  }, [getallUsers]);
+
   const handleRefresh = () => {
     dispatch(getAllUsers());
+  };
+
+  const filterUserData = (id: string) => {
+    console.log("filterUserData", id);
   };
 
   return (
     <div className="ExploreContainer">
       {AllUsers.length !== 0 ? (
         AllUsers.map((val: any) => {
-          return <Card key={val._id} val={val} />;
+          return (
+            <Card key={val._id} val={val} filterUserData={filterUserData} />
+          );
         })
       ) : (
         <div className="flex justify-center items-center flex-col">
