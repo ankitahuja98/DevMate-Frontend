@@ -19,8 +19,7 @@ interface ChatMessage {
 const Chat = () => {
   const [selectedMatch, setSelectedMatch] = useState<userData | null>(null);
 
-  const matches =
-    useAppSelector((store) => store.user.userProfileData?.data) || [];
+  const matches = useAppSelector((store) => store.user.userData?.data) || [];
 
   const chats: ChatMessage[] = [
     {

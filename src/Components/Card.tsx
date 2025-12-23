@@ -7,7 +7,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import { Chip } from "@mui/material";
 import type { AppDispatch } from "../redux/store/store";
 import { useDispatch } from "react-redux";
-import { sendConnection } from "../redux/actions/connectionAction";
+import { sendConnectionReq } from "../redux/actions/connectionAction";
 import { toast } from "react-toastify";
 
 const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
@@ -36,20 +36,20 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
   const handleDragEnd = () => {
     if (x.get() > 50) {
       console.log("swipe right");
-      dispatch(sendConnection({ status: "interested", toUserId: `${_id}` }))
+      dispatch(sendConnectionReq({ status: "interested", toUserId: `${_id}` }))
         .unwrap()
         .then(() => {
           filterUserData(_id);
-          toast.success(`Gotcha! you send a like to ${name}`);
+          toast.success(`You liked ${name}`);
         })
         .catch((err) => console.log(err));
     } else if (x.get() < -50) {
       console.log("swipe left");
-      dispatch(sendConnection({ status: "ignored", toUserId: `${_id}` }))
+      dispatch(sendConnectionReq({ status: "ignored", toUserId: `${_id}` }))
         .unwrap()
         .then(() => {
           filterUserData(_id);
-          toast.warning(`Oops! you ignored the ${name}`);
+          toast.warning(`You passed ${name}`);
         })
         .catch((err) => console.log(err));
     } else {

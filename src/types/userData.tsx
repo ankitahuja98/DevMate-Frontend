@@ -14,6 +14,7 @@ interface SocialLinks {
 }
 
 export interface userData {
+  _id: string;
   name: string;
   age: number | null;
   profilePhoto: string;

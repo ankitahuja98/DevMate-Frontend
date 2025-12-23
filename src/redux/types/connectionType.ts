@@ -1,4 +1,5 @@
-export interface sendConnectionData {
+export interface ConnectionReqData {
   status: string;
-  toUserId: string;
+  toUserId?: string;
+  requestId?: string;
 }
