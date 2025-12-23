@@ -5,9 +5,13 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import LanguageIcon from "@mui/icons-material/Language";
 import { Chip } from "@mui/material";
+import type { AppDispatch } from "../redux/store/store";
+import { useDispatch } from "react-redux";
+import { sendConnection } from "../redux/actions/connectionAction";
 
 const Card = ({ val }: { val: any }) => {
   const {
+    _id,
     name,
     age,
     bio,
@@ -23,6 +27,7 @@ const Card = ({ val }: { val: any }) => {
     availability,
     projects,
   } = val;
+  const dispatch = useDispatch<AppDispatch>();
   const x = useMotionValue(0);
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
   const rotate = useTransform(x, [-150, 150], [-18, 18]);
@@ -30,8 +35,10 @@ const Card = ({ val }: { val: any }) => {
   const handleDragEnd = () => {
     if (x.get() > 50) {
       console.log("swipe right");
+      dispatch(sendConnection({ status: "interested", toUserId: `${_id}` }));
     } else if (x.get() < -50) {
       console.log("swipe left");
+      dispatch(sendConnection({ status: "ignored", toUserId: `${_id}` }));
     } else {
       console.log("back to center");
     }
