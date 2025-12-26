@@ -123,10 +123,10 @@ const EditProfile = () => {
       dispatch(editprofile(updatedUserData))
         .unwrap()
         .then((res) => {
-          toast.success(res.message);
           dispatch(fetchUserProfile()); // refresh the profile data
           handleClose();
           dispatch(setEditProfileDialogOpen(false));
+          toast.success(res?.message);
         })
         .catch((err) => toast.error(err.message));
 

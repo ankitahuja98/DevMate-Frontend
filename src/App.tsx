@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import LoginSignup from "./Layout/Login";
 import ProtectedRoutes from "./Layout/Auth/ProtectedRoutes";
-import MainLayout from "./Layout/MainLayout/index";
 import Explore from "./Pages/Explore";
 import LikedYou from "./Pages/LikedYou";
 import Chat from "./Pages/Chat";
@@ -10,6 +9,7 @@ import Discover from "./Pages/Discover";
 import Settings from "./Pages/Settings";
 import Profile from "./Pages/Profile";
 import { ToastContainer } from "react-toastify";
+import ResponsiveLayout from "./Layout/ResponsiveLayout/ResponsiveLayout";
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
-          <Route element={<MainLayout />}>
+          <Route element={<ResponsiveLayout />}>
             <Route index element={<Explore />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/likedyou" element={<LikedYou />} />
