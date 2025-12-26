@@ -74,7 +74,7 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
         src={profilePhoto}
         alt="user photo"
         draggable="false"
-        className="w-full h-[550px] object-cover"
+        className="cardProfilePic"
         style={{
           userSelect: "none",
           pointerEvents: "none",

@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector, type AppDispatch } from "../../redux/store/store";
 import { logout } from "../../redux/actions/authAction";
 import "../../CSS/Topbar.css";
+import DevMateLogoWhite from "../../Images/devmateLogo-white.png";
 
 const useStyle = {
   barStyle: {
@@ -33,7 +34,7 @@ const useStyle = {
     color: "white",
   },
   logoStyle: {
-    height: "55px",
+    height: "40px",
     margin: "2px 2px 2px 25px",
   },
 };
@@ -93,7 +94,7 @@ const TopBar = ({
   return (
     <div style={useStyle.barStyle}>
       <div>
-        {/* <img src={TopBarLogo} alt="Logo" style={useStyle.logoStyle} /> */}
+        <img src={DevMateLogoWhite} alt="DevMate" style={useStyle.logoStyle} />
       </div>
       <div className="text-white w-full">
         <div className="p-3 float-right flex items-center">

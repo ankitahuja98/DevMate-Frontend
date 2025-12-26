@@ -1,17 +1,23 @@
 .MobileTopbarContainer {
-  height: 6%;
+  height: 45px;
   border: 1px solid rgb(190, 154, 160);
   padding: 5px 20px;
   font-size: 20px;
   font-weight: 600;
   display: flex;
-  /* justify-content: center; */
   align-items: center;
-  /* box-shadow: 0px 1px 8px rgba(199, 199, 199, 0.472); */
 }
 
 .BottomBarContainer {
-  height: 6%;
-  padding: 5px 20px;
-  border: 1px solid rgb(90, 90, 255);
+  height: 60px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  z-index: 50;
+}
+.AppLogo {
+  width: 30%;
+  height: auto;
 }

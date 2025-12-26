@@ -2,7 +2,7 @@ import { useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import "./Login.css";
-import AppLogo from "../../Images/devmateLogo.png";
+import AppLogo from "../../Images/devmateLogo-white.png";
 
 const LoginSignup = () => {
   const [isSignIn, setIsSignIn] = useState<boolean>(true);

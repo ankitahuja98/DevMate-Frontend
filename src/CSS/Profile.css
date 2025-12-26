@@ -257,6 +257,7 @@
 @media (max-width: 768px) {
   .profileContainer {
     grid-template-columns: 1fr;
+    margin-bottom: 70px;
     height: auto; /* Remove fixed height */
     min-height: auto; /* Allow natural height */
     overflow-y: auto; /* Scroll the entire container */

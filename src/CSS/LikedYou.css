@@ -1,5 +1,5 @@
 .LikedyouContainer {
-  height: 84vh;
+  height: 84vh; /* BottomBar height */
   /* border: 2px solid black; */
   margin: 15px;
   display: grid;
@@ -7,6 +7,7 @@
   gap: 30px;
   justify-content: center;
   cursor: grab;
+  padding-bottom: 15px;
 }
 
 .LikedyouContainer.MultiReq {
@@ -41,8 +42,58 @@
 
 /* Tablet and smaller */
 @media (max-width: 768px) {
+  .LikedyouContainer {
+    height: calc(100svh - 60px);
+  }
   .LikedyouContainer.MultiReq {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(1, 25rem);
     justify-content: center;
+  }
+}
+
+@media (width < 650px) {
+  .LikedyouContainer {
+    height: auto;
+    min-height: calc(100svh - 90px);
+    margin: 5px;
+    padding-bottom: 20px;
+  }
+
+  .LikedYouCard {
+    width: 23rem;
+    height: calc(100svh - 120px);
+    max-height: calc(100svh - 120px);
+    border-radius: 10px;
+  }
+
+  .LikedyouContainer.MultiReq {
+    grid-template-columns: repeat(1, 23rem);
+  }
+}
+
+@media (width < 400px) {
+  .LikedyouContainer.MultiReq {
+    grid-template-columns: repeat(1, 21rem);
+  }
+  .LikedYouCard {
+    width: 21rem;
+  }
+}
+
+@media (width < 350px) {
+  .LikedyouContainer.MultiReq {
+    grid-template-columns: repeat(1, 18rem);
+  }
+  .LikedYouCard {
+    width: 18rem;
+  }
+}
+
+@media (width < 300px) {
+  .LikedyouContainer.MultiReq {
+    grid-template-columns: repeat(1, 17rem);
+  }
+  .LikedYouCard {
+    width: 17rem;
   }
 }
