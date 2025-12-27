@@ -1,0 +1,93 @@
+.MobileloginContainer {
+  min-height: 100vh;
+  background-image: url("../../Images/LoginBackgroundMobile.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.forms-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.forms-container.active {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+/********  SIGNIN PAGE  **********/
+
+.MobileSigninPage {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  padding: 25px;
+}
+
+.MobileSignupPage {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  padding: 25px;
+}
+.MobilesigninBtn {
+  width: 100%;
+  background-color: #3c4b70;
+  color: white;
+  border-radius: 10px;
+  font-size: medium;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.MobilesigninBtn:hover {
+  background-color: #3c4b70e6;
+}
+
+.MobilegoogleBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(213, 213, 213);
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.MobilegoogleBtn:hover {
+  background-color: rgba(244, 244, 244, 0.937);
+}
+.MobileGoogleLogo {
+  height: 25px;
+  width: 50px;
+}
+
+@media (width < 460px) {
+  .MobilegoogleBtn {
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  .MobilesigninBtn {
+    font-size: small;
+    padding: 5px;
+  }
+  .MobileGoogleLogo {
+    height: 20px;
+    width: 40px;
+  }
+}
+
+@media (width < 400px) {
+  .MobileSigninPage {
+    padding: 20px;
+  }
+  .MobileSignupPage {
+    padding: 20px;
+  }
+}

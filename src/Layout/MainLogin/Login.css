@@ -1,13 +1,25 @@
+.loginContainer {
+  min-height: 100vh;
+  background-image: url("../../Images/LoginBackgroundDesktop.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .slider {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  background-color: #3c4b70;
-  backdrop-filter: blur(4px);
   width: 50%;
+
+  background: linear-gradient(135deg, #2b2d6e 0%, #4b3f92 40%, #6b5bbd 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
   transition: transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
   z-index: 2;
+
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -11,7 +11,7 @@ const index = () => {
   return (
     <div className="flex h-screen w-screen overflow-hidden">
       {/* Right Section (Topbar + Page Content) */}
-      <div className="flex flex-col flex-1 overflow-hidden bg-white">
+      <div className=" flex flex-col flex-1 overflow-hidden bg-white">
         {/* Mobile Top bar */}
         <MobileTopbar />
         {/* Page content */}

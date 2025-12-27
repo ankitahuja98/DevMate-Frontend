@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
-import LoginSignup from "./Layout/Login";
 import ProtectedRoutes from "./Layout/Auth/ProtectedRoutes";
 import Explore from "./Pages/Explore";
 import LikedYou from "./Pages/LikedYou";
@@ -10,13 +9,14 @@ import Settings from "./Pages/Settings";
 import Profile from "./Pages/Profile";
 import { ToastContainer } from "react-toastify";
 import ResponsiveLayout from "./Layout/ResponsiveLayout/ResponsiveLayout";
+import ResponsiveLogin from "./Layout/ResponsiveLogin/ResponsiveLogin";
 
 function App() {
   return (
     <>
       <Routes>
         {/* public routes */}
-        <Route path="/login" element={<LoginSignup />} />
+        <Route path="/login" element={<ResponsiveLogin />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>

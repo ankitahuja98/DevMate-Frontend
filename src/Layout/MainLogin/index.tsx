@@ -11,7 +11,7 @@ const LoginSignup = () => {
     setIsSignIn(!isSignIn);
   };
   return (
-    <div className="bg-gray-200 h-screen flex justify-center items-center">
+    <div className="loginContainer h-screen flex justify-center items-center">
       <div className="relative h-8/12 w-7/12 rounded-2xl overflow-hidden shadow-xl bg-white">
         {/* Sliding Panel Start*/}
         <div className={`slider ${isSignIn ? "SignUp" : "SignIn"} `}>
