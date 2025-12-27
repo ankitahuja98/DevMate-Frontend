@@ -44,6 +44,8 @@
 @media (max-width: 768px) {
   .LikedyouContainer {
     height: calc(100svh - 60px);
+    margin-top: 0px;
+    padding-top: 0px;
   }
   .LikedyouContainer.MultiReq {
     grid-template-columns: repeat(1, 25rem);
@@ -56,7 +58,7 @@
     height: auto;
     min-height: calc(100svh - 90px);
     margin: 5px;
-    padding-bottom: 20px;
+    padding-bottom: 60px;
   }
 
   .LikedYouCard {

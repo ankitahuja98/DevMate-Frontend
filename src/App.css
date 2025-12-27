@@ -21,3 +21,14 @@ body,
     ),
     linear-gradient(to bottom, #f7f8fc, #ffffff);
 }
+
+@media (width<650px) {
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: rgb(245, 245, 245);
+  }
+}

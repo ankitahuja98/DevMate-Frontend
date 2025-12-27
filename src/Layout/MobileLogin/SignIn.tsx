@@ -77,7 +77,7 @@ const SignIn = ({
       <div className="mb-6">
         <span className="text-xl font-bold">Welcome Back</span>
       </div>
-      <form className="flex flex-col gap-5">
+      <form className="flex flex-col gap-4">
         <Box>
           <TextField
             required

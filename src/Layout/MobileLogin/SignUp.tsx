@@ -62,10 +62,10 @@ const SignUp = ({
 
   return (
     <div className="MobileSignupPage flex flex-col justify-center">
-      <div className="mb-2">
+      <div className="mb-5">
         <span className="text-xl font-bold">Create an Account</span>
       </div>
-      <form className="flex flex-col gap-5">
+      <form className="flex flex-col gap-4">
         <Box>
           <TextField
             required
