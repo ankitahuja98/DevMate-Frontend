@@ -2,6 +2,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import MobileTopbar from "./MobileTopbar";
 import "./MobileLayout.css";
 import BottomBar from "./BottomBar";
+import EditProfile from "../../Components/EditProfile";
 
 const index = () => {
   const location = useLocation();
@@ -21,6 +22,7 @@ const index = () => {
           }`}
         >
           <Outlet />
+          <EditProfile />
           <BottomBar />
         </div>
       </div>

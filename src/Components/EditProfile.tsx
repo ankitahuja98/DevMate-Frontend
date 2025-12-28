@@ -167,27 +167,34 @@ const EditProfile = () => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              // alignItems: "center",
               background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
               padding: "8px 16px",
             }}
           >
             <div>
-              <p className="font-bold">🚀 Complete Your DevMate Profile</p>
-              <p className="text-sm italic">
+              <p className="EditProfileDialogTitlte">
+                Complete Your DevMate Profile
+              </p>
+              <p className="EditProfileDialogTitlteDesc">
                 Let's set up your profile to help you find the perfect dev
                 partner
               </p>
             </div>
-            {!userData.isNewUser && (
-              <IconButton sx={{ color: "#000" }} onClick={handleClose}>
-                <CloseIcon />
-              </IconButton>
-            )}
+            <div>
+              {!userData.isNewUser && (
+                <IconButton
+                  sx={{ color: "#000", padding: "0px" }}
+                  onClick={handleClose}
+                >
+                  <CloseIcon />
+                </IconButton>
+              )}
+            </div>
           </DialogTitle>
 
           {/* Content */}
-          <DialogContent dividers>
+          <DialogContent dividers className="editProfileContent">
             {/* STEPPER - FIXED VERSION */}
             <div className="stepper">
               {Tabs.map((tab, index) => {
@@ -211,7 +218,7 @@ const EditProfile = () => {
             </div>
 
             {/* Form Content */}
-            <div style={{ padding: "30px" }}>
+            <div className="ActiveComponent">
               <ActiveComponent
                 userData={userData}
                 setUserData={setUserData}
@@ -263,7 +270,7 @@ const EditProfile = () => {
                     },
                   }}
                 >
-                  Complete Profile ✓
+                  Submit ✓
                 </Button>
               )}
             </div>

@@ -2,7 +2,8 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import LanguageIcon from "@mui/icons-material/Language";
+import WorkIcon from "@mui/icons-material/Work";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import type { AppDispatch } from "../redux/store/store";
 import { useDispatch } from "react-redux";
 import { sendConnectionReq } from "../redux/actions/connectionAction";
@@ -206,7 +207,7 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
                             rel="noopener noreferrer"
                             className="w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all"
                           >
-                            <LanguageIcon sx={{ fontSize: 16 }} />
+                            <OpenInNewIcon sx={{ fontSize: 16 }} />
                           </a>
                         )}
                       </div>
@@ -272,7 +273,7 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
                   rel="noopener noreferrer"
                   className="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
                 >
-                  <LanguageIcon sx={{ fontSize: 22 }} />
+                  <WorkIcon sx={{ fontSize: 22 }} />
                 </a>
               )}
             </div>

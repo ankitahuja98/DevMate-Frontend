@@ -93,6 +93,15 @@
   color: #10b981;
 }
 
+.EditProfileDialogTitlte {
+  font-weight: 700;
+  font-size: 20px;
+}
+.EditProfileDialogTitlteDesc {
+  font-size: 14px;
+  font-style: italic;
+}
+
 /* RESPONSIVE - MOBILE */
 @media (max-width: 768px) {
   .stepper {
@@ -113,6 +122,35 @@
 
   .step:not(:last-child)::before {
     top: 14px;
+  }
+}
+.ActiveComponent {
+  padding: 30px;
+}
+
+.editProfileContent {
+  overflow-y: auto; /* keep scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge */
+}
+
+/* Chrome / Safari */
+.editProfileContent::-webkit-scrollbar {
+  display: none;
+}
+
+@media (width < 650px) {
+  .EditProfileDialogTitlte {
+    font-size: 16px;
+  }
+  .EditProfileDialogTitlteDesc {
+    font-size: 12px;
+  }
+  .editProfileContent {
+    padding: 0px !important;
+  }
+  .ActiveComponent {
+    padding: 20px;
   }
 }
 
@@ -215,7 +253,3 @@ textarea.form-input {
 }
 
 /* ----------- Skills End ------------ */
-
-/* ----------- Goals Start ------------ */
-
-/* ----------- Goals End ------------ */
