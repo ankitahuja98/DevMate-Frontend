@@ -77,26 +77,25 @@ const Profile = () => {
           </div>
         </div>
         <p className="text-md font-semibold mt-5">{tagline}</p>
-        {/* TechStack  */}
-        <div className="mt-5 w-full overflow-hidden">
-          <h3 className="font-semibold text-md mb-2 flex items-center gap-2">
-            <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
-            Tech Stack
-          </h3>
-          <div className="flex gap-3 flex-wrap mt-2">
-            {techStack.length !== 0 &&
-              techStack.map((val: string) => {
-                return <div className="techstackItem">{val}</div>;
-              })}
+        {/* BIO */}
+        {bio && (
+          <div className="mt-3 ">
+            <h3 className="font-semibold text-sm mb-2 flex items-center gap-2">
+              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              My Bio
+            </h3>
+            <div className="card-box">
+              <p className="text-sm text-gray-700 leading-relaxed">{bio}</p>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Social Links  */}
-        <div className="mt-5 w-full overflow-hidden">
-          <h3 className="font-semibold text-md mb-2 flex items-center gap-2">
+        <div className="mt-3 w-full overflow-hidden">
+          {/* <h3 className="font-semibold text-md mb-2 flex items-center gap-2">
             <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
             Social Links
-          </h3>
+          </h3> */}
           <div className="flex gap-3 flex-wrap mt-3 justify-center">
             {socialLinks.github && (
               <a
@@ -131,20 +130,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <div className="RightSection space-y-5">
-        {/* BIO */}
-        {bio && (
-          <div>
-            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
-              My Bio
-            </h3>
-            <div className="card-box">
-              <p className="text-sm text-gray-700 leading-relaxed">{bio}</p>
-            </div>
-          </div>
-        )}
-
+      <div className="RightSection space-y-7">
         {/* ABOUT */}
         <div>
           <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">

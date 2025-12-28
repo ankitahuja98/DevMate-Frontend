@@ -29,7 +29,7 @@ const MobileTopbar = () => {
         <p className="text-3xl font-bold">Liked You</p>
       )}
 
-      {location.pathname === "/chats" && (
+      {location.pathname === "/matches" && (
         <div className="w-full flex items-center justify-between">
           <p className="text-3xl font-bold">Chats</p>
           <SearchIcon style={{ fontSize: "30px" }} />

@@ -3,10 +3,11 @@ import "./App.css";
 import ProtectedRoutes from "./Layout/Auth/ProtectedRoutes";
 import Explore from "./Pages/Explore";
 import LikedYou from "./Pages/LikedYou";
-import Chat from "./Pages/Chat";
 import Discover from "./Pages/Discover";
 import Settings from "./Pages/Settings";
 import Profile from "./Pages/Profile";
+import Matches from "./Pages/Matches";
+import Chat from "./Pages/Chat";
 import { ToastContainer } from "react-toastify";
 import ResponsiveLayout from "./Layout/ResponsiveLayout/ResponsiveLayout";
 import ResponsiveLogin from "./Layout/ResponsiveLogin/ResponsiveLogin";
@@ -24,7 +25,8 @@ function App() {
             <Route index element={<Explore />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/likedyou" element={<LikedYou />} />
-            <Route path="/chats" element={<Chat />} />
+            <Route path="/matches" element={<Matches />} />
+            <Route path="/chat" element={<Chat />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/setting" element={<Settings />} />
             <Route path="*" element={<Navigate to="/" replace />} />

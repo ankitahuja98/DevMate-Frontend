@@ -4,20 +4,24 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import WorkIcon from "@mui/icons-material/Work";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import MessageIcon from "@mui/icons-material/Message";
 import { useState } from "react";
 import { reviewConnectionReq } from "../redux/actions/connectionAction";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../redux/store/store";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const LikedYouUserCard = ({
   val,
   filterRequestData,
   requestId,
+  isMatched,
 }: {
   val: any;
   filterRequestData?: any;
   requestId?: string;
+  isMatched?: boolean;
 }) => {
   const {
     _id,
@@ -38,6 +42,7 @@ const LikedYouUserCard = ({
 
   const [activeCard, setActiveCard] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const x = useMotionValue(0);
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
@@ -65,6 +70,10 @@ const LikedYouUserCard = ({
     }
   };
 
+  const handleOpenChat = () => {
+    navigate("/chat");
+  };
+
   return (
     <motion.div
       className={`LikedYouCard ${
@@ -88,20 +97,33 @@ const LikedYouUserCard = ({
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
 
         <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3">
-          <div className="backdrop-blur-md bg-white/10 border border-white/10 rounded-lg p-2">
-            <div className="flex items-baseline gap-2">
-              <h2 className="text-lg sm:text-2xl font-bold text-white truncate">
-                {name}
-              </h2>
-              {age && (
-                <span className="text-sm sm:text-xl text-white/90">{age}</span>
+          <div className="flex justify-between backdrop-blur-md bg-white/10 border border-white/10 rounded-lg p-2">
+            <div>
+              <div className="flex items-baseline gap-2">
+                <h2 className="text-lg sm:text-2xl font-bold text-white truncate">
+                  {name}
+                </h2>
+                {age && (
+                  <span className="text-sm sm:text-xl text-white/90">
+                    {age}
+                  </span>
+                )}
+              </div>
+
+              {location && (
+                <div className="flex items-center gap-1 text-white/80">
+                  <LocationOnOutlinedIcon sx={{ fontSize: 14 }} />
+                  <span className="text-xs sm:text-sm truncate">
+                    {location}
+                  </span>
+                </div>
               )}
             </div>
-
-            {location && (
-              <div className="flex items-center gap-1 text-white/80">
-                <LocationOnOutlinedIcon sx={{ fontSize: 14 }} />
-                <span className="text-xs sm:text-sm truncate">{location}</span>
+            {isMatched && (
+              <div className="flex items-center justify-center">
+                <div className="chatIcon" onClick={handleOpenChat}>
+                  <MessageIcon sx={{ fontSize: "20px" }} />
+                </div>
               </div>
             )}
           </div>

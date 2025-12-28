@@ -14,7 +14,7 @@ const BottomBar = () => {
     { id: 1, name: "Discover", path: "/discover", icon: InterestsOutlinedIcon },
     { id: 2, name: "Explore", path: "/", icon: Diversity2Icon },
     { id: 3, name: "Liked You", path: "/likedyou", icon: FavoriteIcon },
-    { id: 4, name: "Chats", path: "/chats", icon: ChatIcon },
+    { id: 4, name: "Chats", path: "/matches", icon: ChatIcon },
   ];
   return (
     <div className="BottomBarContainer fixed bottom-0 left-0 right-0 bg-white flex items-center justify-between z-50">

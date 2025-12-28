@@ -21,7 +21,7 @@
 }
 
 .leftSection {
-  padding: clamp(20px, 4vw, 40px);
+  padding: clamp(20px, 4vw, 30px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,7 +76,7 @@
 }
 
 .RightSection {
-  padding: clamp(20px, 4vw, 40px);
+  padding: clamp(20px, 4vw, 30px);
   grid-column: span 1;
   overflow-y: auto;
 }
