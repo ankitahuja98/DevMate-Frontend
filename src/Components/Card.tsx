@@ -94,7 +94,10 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
         {/* BIO */}
         {bio && (
           <div>
-            <h3 className="section-title">My Bio</h3>
+            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              My Bio
+            </h3>
             <div className="card-box">
               <p className="text-sm text-gray-700 leading-relaxed">{bio}</p>
             </div>
@@ -103,7 +106,10 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
 
         {/* ABOUT */}
         <div>
-          <h3 className="section-title">About Me</h3>
+          <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+            <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+            About Me
+          </h3>
           <div className="flex flex-wrap gap-2">
             <span className="CardTag CardTag1">
               ⚡ Available {availability}
@@ -118,7 +124,7 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
 
           {lookingForDesc && (
             <div className="card-highlight mt-3">
-              <p className="text-xs text-gray-700">{lookingForDesc}</p>
+              <p className="text-sm text-gray-700">{lookingForDesc}</p>
             </div>
           )}
         </div>
@@ -126,7 +132,10 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
         {/* TECH STACK */}
         {techStack?.length > 0 && (
           <div>
-            <h3 className="section-title">Tech Stack</h3>
+            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              Tech Stack
+            </h3>
             <div className="flex flex-wrap gap-2">
               {techStack.map((tech: string, i: number) => (
                 <span key={i} className="tech-pill">
@@ -140,7 +149,10 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
         {/* INTERESTS */}
         {interests?.length > 0 && (
           <div>
-            <h3 className="section-title">Interests</h3>
+            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              Interests
+            </h3>
             <div className="flex flex-wrap gap-2">
               {interests.map((item: string, i: number) => (
                 <span key={i} className="interest-pill">
@@ -151,10 +163,87 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
           </div>
         )}
 
+        {/* Projects - Premium Cards */}
+        {projects && projects.length > 0 && (
+          <div>
+            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              Featured Projects
+            </h3>
+            <div className="space-y-3">
+              {projects.map((project: any, index: number) => (
+                <div
+                  key={project._id || index}
+                  className="bg-white rounded-xl p-4 border-2 border-gray-200 shadow-sm hover:border-purple-400 hover:shadow-md transition-all"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex-1">
+                      <h4 className="font-bold text-sm text-gray-900 mb-1">
+                        {project.title || project.name}
+                      </h4>
+                      {project.role && (
+                        <p className="text-xs text-gray-600 italic mb-2">
+                          {project.role}
+                        </p>
+                      )}
+                    </div>
+                    {(project.githubUrl || project.liveUrl) && (
+                      <div className="flex gap-2 ml-2">
+                        {project.githubUrl && (
+                          <a
+                            href={project.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all"
+                          >
+                            <GitHubIcon sx={{ fontSize: 16 }} />
+                          </a>
+                        )}
+                        {project.liveUrl && (
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all"
+                          >
+                            <LanguageIcon sx={{ fontSize: 16 }} />
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  {project.description && (
+                    <p className="text-xs text-gray-600 mb-2 leading-relaxed">
+                      {project.description}
+                    </p>
+                  )}
+                  {project.techUsed && project.techUsed.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.techUsed.map(
+                        (tech: string, techIndex: number) => (
+                          <span
+                            key={techIndex}
+                            className="text-xs bg-indigo-50 text-indigo-700 px-2 py-1 rounded-md border border-indigo-100 font-medium"
+                          >
+                            {tech}
+                          </span>
+                        )
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* SOCIAL */}
         {socialLinks && (
-          <div className="pt-4 border-t">
-            <h3 className="section-title">Connect</h3>
+          <div>
+            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              Social Links
+            </h3>
             <div className="flex justify-center gap-4">
               {socialLinks.github && (
                 <a

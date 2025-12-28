@@ -26,7 +26,7 @@ const Chat = () => {
 
   useEffect(() => {
     dispatch(getAllMatches());
-  });
+  }, []);
 
   const handleMatchClick = (match: userData) => {
     setSelectedMatch(match);

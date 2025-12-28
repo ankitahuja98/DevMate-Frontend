@@ -25,7 +25,6 @@ const LikedYouUserCard = ({
     bio,
     profilePhoto,
     location,
-    currentRole,
     experience,
     socialLinks,
     techStack,
@@ -35,8 +34,8 @@ const LikedYouUserCard = ({
     availability,
     projects,
   } = val;
-  console.log("requestId", requestId);
-  const [activeCard, setActiveCard] = useState(null);
+
+  const [activeCard, setActiveCard] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
   const x = useMotionValue(0);
@@ -45,27 +44,23 @@ const LikedYouUserCard = ({
 
   const handleDragEnd = () => {
     if (x.get() > 50) {
-      console.log("swipe right");
       dispatch(
         reviewConnectionReq({ status: "accepted", requestId: `${requestId}` })
       )
         .unwrap()
         .then(() => {
-          filterRequestData(requestId);
-          toast.success(`You liked ${name}`);
-        })
-        .catch((err) => console.log(err));
+          filterRequestData?.(requestId);
+          toast.success(`You accepted ${name}`);
+        });
     } else if (x.get() < -50) {
-      console.log("swipe left");
       dispatch(
         reviewConnectionReq({ status: "rejected", requestId: `${requestId}` })
       )
         .unwrap()
         .then(() => {
-          filterRequestData(requestId);
-          toast.warning(`You passed ${name}`);
-        })
-        .catch((err) => console.log(err));
+          filterRequestData?.(requestId);
+          toast.warning(`You rejected ${name}`);
+        });
     }
   };
 
@@ -77,96 +72,90 @@ const LikedYouUserCard = ({
       onClick={() => setActiveCard(activeCard === _id ? null : _id)}
       drag="x"
       onDragEnd={handleDragEnd}
-      style={{
-        x,
-        opacity,
-        rotate,
-      }}
-      dragConstraints={{
-        left: 0,
-        right: 0,
-      }}
+      style={{ x, opacity, rotate }}
+      dragConstraints={{ left: 0, right: 0 }}
     >
-      <img
-        src={profilePhoto}
-        alt="user photo"
-        draggable="false"
-        className="w-full h-[550px] object-cover"
-        style={{
-          userSelect: "none",
-          pointerEvents: "none",
-        }}
-      />
+      {/* ================= IMAGE SECTION ================= */}
+      <div className="LikedCardImageWrapper">
+        <img
+          src={profilePhoto}
+          alt={name}
+          draggable={false}
+          className="cardProfilePic"
+        />
 
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
-      <div className="absolute bottom-0 left-0 right-0 p-0">
-        <div className="backdrop-blur-md bg-white/10 p-2 border border-white/10">
-          <div className="flex items-baseline gap-2 mb-1">
-            <h2 className="text-2xl font-bold text-white">{name}</h2>
-            {age && (
-              <span className="text-xl font-medium text-white/90">{age}</span>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
+
+        <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3">
+          <div className="backdrop-blur-md bg-white/10 border border-white/10 rounded-lg p-2">
+            <div className="flex items-baseline gap-2">
+              <h2 className="text-lg sm:text-2xl font-bold text-white truncate">
+                {name}
+              </h2>
+              {age && (
+                <span className="text-sm sm:text-xl text-white/90">{age}</span>
+              )}
+            </div>
+
+            {location && (
+              <div className="flex items-center gap-1 text-white/80">
+                <LocationOnOutlinedIcon sx={{ fontSize: 14 }} />
+                <span className="text-xs sm:text-sm truncate">{location}</span>
+              </div>
             )}
           </div>
-          {location && (
-            <div className="flex items-center gap-1 text-white/80">
-              <LocationOnOutlinedIcon sx={{ fontSize: 16 }} />
-              <span className="text-sm">{location}</span>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Details Section */}
-      <div className="bg-gradient-to-br from-purple-50 to-indigo-50 px-5 py-6 space-y-5">
-        <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-          <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
-          My Bio
-        </h3>
-        {/* Bio */}
+      {/* ================= DETAILS ================= */}
+      <div className="bg-gradient-to-br from-purple-50 to-indigo-50 px-4 py-5 space-y-5">
+        {/* BIO */}
         {bio && (
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 border border-purple-100 shadow-sm">
-            <p className="text-sm text-gray-700 leading-relaxed">{bio}</p>
+          <div>
+            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              My Bio
+            </h3>
+            <div className="card-box">
+              <p className="text-sm text-gray-700 leading-relaxed">{bio}</p>
+            </div>
           </div>
         )}
 
-        <h3 className="font-bold text-gray-900 text-sm mb-2 flex  gap-2">
-          <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
-          About Me
-        </h3>
-        <div className="flex gap-2 flex-col">
-          <div className="flex gap-2 flex-wrap">
-            <div className="CardTag CardTag1">⚡ Available {availability}</div>
-            <div className="CardTag CardTag2">
+        {/* ABOUT */}
+        <div>
+          <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+            <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+            About Me
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <span className="CardTag CardTag1">
+              ⚡ Available {availability}
+            </span>
+            <span className="CardTag CardTag3">
+              ⭐ {experience} yrs experience
+            </span>
+            <span className="CardTag CardTag2">
               🤝 Looking for {lookingForTitle}
-            </div>
-            <div className="CardTag CardTag3">
-              ⭐ {experience} Years Experience
-            </div>
+            </span>
           </div>
-
-          {/* Looking For Description */}
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-l-4 border-amber-400 rounded-xl p-4 shadow-sm">
-            {lookingForDesc && (
-              <p className="text-xs text-gray-700 leading-relaxed">
-                {lookingForDesc}
-              </p>
-            )}
-          </div>
+          {lookingForDesc && (
+            <div className="card-highlight mt-3">
+              <p className="text-sm text-gray-700">{lookingForDesc}</p>
+            </div>
+          )}
         </div>
 
-        {/* Tech Stack - Glassmorphism Pills */}
-        {techStack && techStack.length > 0 && (
+        {/* TECH STACK */}
+        {techStack?.length > 0 && (
           <div>
             <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
               <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
               Tech Stack
             </h3>
             <div className="flex flex-wrap gap-2">
-              {techStack.map((tech: string, index: number) => (
-                <span
-                  key={index}
-                  className="px-3 py-2 bg-white/60 backdrop-blur-sm text-purple-700 text-xs font-semibold rounded-lg border border-purple-200 shadow-sm"
-                >
+              {techStack.map((tech: string, i: number) => (
+                <span key={i} className="tech-pill">
                   {tech}
                 </span>
               ))}
@@ -174,27 +163,24 @@ const LikedYouUserCard = ({
           </div>
         )}
 
-        {/* Interests - Gradient Cards */}
-        {interests && interests.length > 0 && (
+        {/* INTERESTS */}
+        {interests?.length > 0 && (
           <div>
             <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
               <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
               Interests
             </h3>
             <div className="flex flex-wrap gap-2">
-              {interests.map((interest: string, index: number) => (
-                <span
-                  key={index}
-                  className="px-3 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-semibold rounded-lg shadow-md"
-                >
-                  {interest}
+              {interests.map((item: string, i: number) => (
+                <span key={i} className="interest-pill">
+                  {item}
                 </span>
               ))}
             </div>
           </div>
         )}
 
-        {/* Projects - Premium Cards */}
+        {/* PROJECTS */}
         {projects && projects.length > 0 && (
           <div>
             <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
@@ -268,50 +254,47 @@ const LikedYouUserCard = ({
           </div>
         )}
 
-        {/* Social Links - Premium Buttons */}
-        {socialLinks &&
-          (socialLinks.github ||
-            socialLinks.linkedin ||
-            socialLinks.portfolio) && (
-            <div className="pt-4 border-t border-purple-200">
-              <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-                <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
-                CONNECT
-              </h3>
-              <div className="flex gap-3 justify-center">
-                {socialLinks.github && (
-                  <a
-                    href={socialLinks.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-9 h-9 flex items-center justify-center bg-gray-900 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
-                  >
-                    <GitHubIcon sx={{ fontSize: 22 }} />
-                  </a>
-                )}
-                {socialLinks.linkedin && (
-                  <a
-                    href={socialLinks.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-9 h-9 flex items-center justify-center bg-blue-600 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
-                  >
-                    <LinkedInIcon sx={{ fontSize: 22 }} />
-                  </a>
-                )}
-                {socialLinks.portfolio && (
-                  <a
-                    href={socialLinks.portfolio}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
-                  >
-                    <LanguageIcon sx={{ fontSize: 22 }} />
-                  </a>
-                )}
-              </div>
+        {/* SOCIAL */}
+        {socialLinks && (
+          <div>
+            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              Social Links
+            </h3>
+            <div className="flex justify-center gap-4">
+              {socialLinks.github && (
+                <a
+                  href={socialLinks.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 flex items-center justify-center bg-gray-900 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
+                >
+                  <GitHubIcon sx={{ fontSize: 22 }} />
+                </a>
+              )}
+              {socialLinks.linkedin && (
+                <a
+                  href={socialLinks.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 flex items-center justify-center bg-blue-600 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
+                >
+                  <LinkedInIcon sx={{ fontSize: 22 }} />
+                </a>
+              )}
+              {socialLinks.portfolio && (
+                <a
+                  href={socialLinks.portfolio}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
+                >
+                  <LanguageIcon sx={{ fontSize: 22 }} />
+                </a>
+              )}
             </div>
-          )}
+          </div>
+        )}
       </div>
     </motion.div>
   );
