@@ -109,10 +109,9 @@ const Chat = ({ isInsideMatchcomp }: { isInsideMatchcomp: boolean }) => {
 
   return (
     <div
-      className={`flex flex-col overflow-hidden ${
-        isInsideMatchcomp ? "h-[86vh]" : "h-[89vh]"
+      className={`chatContainer ${
+        isInsideMatchcomp ? "isInsideMatchcomp" : ""
       }`}
-      style={{ maxWidth: 900 }}
     >
       <header className="UserchatHeader">
         <div className="flex items-center gap-3">
@@ -126,7 +125,12 @@ const Chat = ({ isInsideMatchcomp }: { isInsideMatchcomp: boolean }) => {
         </div>
       </header>
 
-      <main ref={scrollRef} className=" UserChatContent">
+      <main
+        ref={scrollRef}
+        className={`UserChatContent ${
+          isInsideMatchcomp ? "isInsideMatchcomp" : ""
+        }`}
+      >
         {messages.length === 0 ? (
           <div className="text-center text-slate-500">
             No messages yet — start the conversation
@@ -136,7 +140,10 @@ const Chat = ({ isInsideMatchcomp }: { isInsideMatchcomp: boolean }) => {
         )}
       </main>
 
-      <form onSubmit={handleSubmit} className="Chatform">
+      <form
+        onSubmit={handleSubmit}
+        className={`Chatform ${isInsideMatchcomp ? "isInsideMatchcomp" : ""}`}
+      >
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
