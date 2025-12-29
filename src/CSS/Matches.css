@@ -1,17 +1,16 @@
 .chatPageContainer {
   height: calc(100vh - 80px);
   display: flex;
-  flex-direction: column;
   overflow: hidden;
+  margin: 10px;
+  border-radius: 10px;
 }
 
 /* ==================== MATCHES SECTION ==================== */
 .matchesSection {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 10px;
-  margin: 10px;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 7px 5px 3px 5px;
+  border: 1px solid #e5e7eb;
 }
 
 .matchesSectionHeader {
@@ -32,7 +31,6 @@
   display: flex;
   gap: 15px;
   overflow-x: auto;
-  padding: 15px 5px 0px 5px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -57,13 +55,13 @@
 
 .matchAvatarWrapper {
   position: relative;
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
 }
 
 .matchAvatar {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   border: 3px solid white;
   object-fit: cover;
@@ -89,18 +87,32 @@
   flex-direction: column;
   background: white;
   overflow: hidden;
+  border: 1px solid #e5e7eb;
 }
 
 .chatsSectionHeader {
-  padding: 05px 20px 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 05px;
   border-bottom: 1px solid #e5e7eb;
 }
-
+.searchConvo {
+  border: 1px solid #e1e0e0;
+  border-radius: 10px;
+  padding: 1px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.searchConvoInput {
+  outline: none;
+}
 .chatsTitle {
   font-size: 17px;
   font-weight: 700;
   color: #1f2937;
-  margin: 0;
+  margin: 0px 5px;
 }
 
 .chatsList {
@@ -232,13 +244,13 @@
   }
 
   .matchAvatar {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
   }
 
   .matchAvatarWrapper {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
   }
 
   .chatItem {
