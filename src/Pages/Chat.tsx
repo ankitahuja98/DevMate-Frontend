@@ -68,7 +68,7 @@ const Bubble: React.FC<{ message: Message }> = ({ message }) => {
   );
 };
 
-const Chat: React.FC = () => {
+const Chat = ({ isInsideMatchcomp }: { isInsideMatchcomp: boolean }) => {
   const [messages, setMessages] = useState<Message[]>(() => {
     try {
       const raw = localStorage.getItem("chat_messages_v1");
@@ -109,7 +109,9 @@ const Chat: React.FC = () => {
 
   return (
     <div
-      className="flex flex-col h-[86vh] overflow-hidden"
+      className={`flex flex-col overflow-hidden ${
+        isInsideMatchcomp ? "h-[86vh]" : "h-[89vh]"
+      }`}
       style={{ maxWidth: 900 }}
     >
       <header className="UserchatHeader">
@@ -121,9 +123,6 @@ const Chat: React.FC = () => {
             <h2 className="text-lg font-semibold">Sarah Mitchell</h2>
             <div className="text-sm text-slate-500">Online</div>
           </div>
-        </div>
-        <div className="text-sm text-slate-500">
-          Last seen: {formatTime(messages[messages.length - 1]?.timestamp)}
         </div>
       </header>
 
@@ -137,18 +136,14 @@ const Chat: React.FC = () => {
         )}
       </main>
 
-      <form
-        onSubmit={handleSubmit}
-        className="px-4 py-3 bg-white flex items-center gap-3"
-        style={{}}
-      >
+      <form onSubmit={handleSubmit} className="Chatform">
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
           type="text"
           aria-label="Type your message"
           placeholder="Type your message"
-          className="flex-1 rounded-full border-1 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-300"
+          className="chatInput"
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();

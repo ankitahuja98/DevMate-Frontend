@@ -1,5 +1,5 @@
 .chatPageContainer {
-  height: calc(100vh - 80px);
+  height: calc(100vh - 90px);
   display: flex;
   overflow: hidden;
   margin: 10px;
@@ -17,7 +17,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
+  padding: 10px;
 }
 
 .matchesTitle {
@@ -94,7 +94,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 05px;
+  padding: 8px;
   border-bottom: 1px solid #e5e7eb;
 }
 .searchConvo {
@@ -118,27 +118,18 @@
 .chatsList {
   flex: 1;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f5f9;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .chatsList::-webkit-scrollbar {
-  width: 6px;
-}
-
-.chatsList::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
-.chatsList::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
+  display: none;
 }
 
 .chatItem {
   display: flex;
   gap: 15px;
-  padding: 15px 20px;
+  padding: 7px;
   border-bottom: 1px solid #f3f4f6;
   cursor: pointer;
   transition: background 0.2s;

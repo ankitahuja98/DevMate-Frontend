@@ -125,7 +125,7 @@ const Matches = () => {
 
   return (
     <div className="chatPageContainer">
-      <div className="w-4/12">
+      <div className="w-4/12 h-full flex flex-col">
         {/* Matches Section */}
         <div className="matchesSection">
           {/* <div className="matchesSectionHeader">
@@ -187,7 +187,6 @@ const Matches = () => {
                   <div className="chatContent">
                     <div className="chatHeader">
                       <h3 className="chatUserName">{chat.user.name}</h3>
-                      <span className="chatTimestamp">{chat.timestamp}</span>
                     </div>
                     <p
                       className={`chatLastMessage ${
@@ -203,7 +202,7 @@ const Matches = () => {
         </div>
       </div>
       <div className="w-8/12">
-        <Chat />
+        <Chat isInsideMatchcomp={true} />
       </div>
 
       {/* User Card Overlay using your existing LikedYouUserCard component */}
