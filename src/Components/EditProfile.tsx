@@ -150,7 +150,7 @@ const EditProfile = () => {
         <Dialog
           open={isEditProfileDialogOpen}
           disableEscapeKeyDown
-          onClose={(event, reason) => {
+          onClose={(_, reason) => {
             if (reason !== "backdropClick") {
               handleClose();
             }

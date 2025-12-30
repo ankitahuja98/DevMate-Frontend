@@ -30,23 +30,16 @@ const initialMessages: Message[] = [
   },
 ];
 
-const formatTime = (iso?: string) => {
-  if (!iso) return "";
-  const d = new Date(iso);
-  return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
-};
+// const formatTime = (iso?: string) => {
+//   if (!iso) return "";
+//   const d = new Date(iso);
+//   return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+// };
 
 const generateId = () => `m-${Math.random().toString(36).slice(2, 9)}`;
 
 const Bubble: React.FC<{ message: Message }> = ({ message }) => {
   const isMe = message.sender === "__Myself";
-  const initials = isMe
-    ? "Me"
-    : message.sender
-        .split(" ")
-        .map((s) => s[0])
-        .slice(0, 2)
-        .join("");
 
   return (
     <div className={`flex ${isMe ? "justify-end" : "justify-start"} mb-3`}>
@@ -68,7 +61,7 @@ const Bubble: React.FC<{ message: Message }> = ({ message }) => {
   );
 };
 
-const Chat = ({ isInsideMatchcomp }: { isInsideMatchcomp: boolean }) => {
+const Chat = ({ isInsideMatchcomp }: { isInsideMatchcomp?: boolean }) => {
   const [messages, setMessages] = useState<Message[]>(() => {
     try {
       const raw = localStorage.getItem("chat_messages_v1");

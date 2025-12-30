@@ -21,27 +21,27 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     // for signup
-    builder.addCase(signup.pending, (state, action) => {
+    builder.addCase(signup.pending, (state) => {
       state.signup.signupIsLoading = true;
     });
     builder.addCase(signup.fulfilled, (state, action) => {
       state.signup.signupIsLoading = false;
       state.signup.signupData = action.payload;
     });
-    builder.addCase(signup.rejected, (state, action) => {
+    builder.addCase(signup.rejected, (state) => {
       state.signup.signupIsLoading = false;
       state.signup.signupIsError = true;
     });
 
     // for login
-    builder.addCase(login.pending, (state, action) => {
+    builder.addCase(login.pending, (state) => {
       state.login.loginIsLoading = true;
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.login.loginIsLoading = false;
       state.login.loginData = action.payload;
     });
-    builder.addCase(login.rejected, (state, action) => {
+    builder.addCase(login.rejected, (state) => {
       state.login.loginIsLoading = false;
       state.login.loginIsError = true;
     });

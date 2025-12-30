@@ -9,15 +9,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch } from "react-redux";
 import { setEditProfileDialogOpen } from "../redux/slices/profileSlice";
 
-interface Projects {
-  title: string;
-  description: string;
-  techUsed: string[];
-  role: string;
-  githubUrl: string;
-  liveUrl: string;
-}
-
 const Profile = () => {
   const userprofile = useAppSelector(
     (store) => store.profile.userProfile.userProfileData

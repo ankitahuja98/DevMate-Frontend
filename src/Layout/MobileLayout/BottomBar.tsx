@@ -1,4 +1,3 @@
-import React from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatIcon from "@mui/icons-material/Chat";
 import Diversity2Icon from "@mui/icons-material/Diversity2";

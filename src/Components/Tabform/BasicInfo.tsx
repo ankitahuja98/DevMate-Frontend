@@ -1,4 +1,3 @@
-import React from "react";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import type { userDataProps } from "../../types/userData";
 import { Avatar, IconButton } from "@mui/material";

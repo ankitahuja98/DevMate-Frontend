@@ -52,7 +52,6 @@ const SignIn = () => {
 
   const navigate = useNavigate();
 
-  const data = useAppSelector((store) => store.auth.login.loginData);
   const isUser = useAppSelector(
     (store) => store.profile.userProfile.userProfileData
   );

@@ -102,7 +102,7 @@ const dummyChats = [
 
 const Matches = () => {
   const [selectedMatch, setSelectedMatch] = useState<userData | null>(null);
-  const [chats, setChats] = useState<ChatMessage[]>(dummyChats);
+  const [chats, _] = useState<ChatMessage[]>(dummyChats);
   const dispatch = useDispatch<AppDispatch>();
   const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
 

@@ -1,4 +1,3 @@
-import React from "react";
 // import DevMateLogo from "../../Images/devmateLogo.png";
 import { useLocation } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";

@@ -21,7 +21,7 @@ const profileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchUserProfile.pending, (state, action) => {
+    builder.addCase(fetchUserProfile.pending, (state) => {
       state.userProfile.userProfileIsloading = true;
       state.userProfile.userProfileIserror = false;
     });
@@ -34,13 +34,13 @@ const profileSlice = createSlice({
         state.isEditProfileDialogOpen = true;
       }
     });
-    builder.addCase(fetchUserProfile.rejected, (state, action) => {
+    builder.addCase(fetchUserProfile.rejected, (state) => {
       state.userProfile.userProfileIserror = true;
       state.userProfile.userProfileIsloading = false;
     });
 
     // for logout
-    builder.addCase(logout.fulfilled, (state, action) => {
+    builder.addCase(logout.fulfilled, (state) => {
       state.userProfile.userProfileData = null;
     });
   },
