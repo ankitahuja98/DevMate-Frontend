@@ -1,10 +1,11 @@
 // import DevMateLogo from "../../Images/devmateLogo.png";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 const MobileTopbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <div className="MobileTopbarContainer">
@@ -12,7 +13,10 @@ const MobileTopbar = () => {
       {location.pathname === "/profile" && (
         <div className="w-full flex items-center justify-between">
           <p className="text-3xl font-bold">Profile</p>
-          <SettingsIcon />
+          <SettingsIcon
+            sx={{ fontSize: "25px", margin: "0px 7px", cursor: "pointer" }}
+            onClick={() => navigate("/setting")}
+          />
         </div>
       )}
 
@@ -26,6 +30,10 @@ const MobileTopbar = () => {
 
       {location.pathname === "/likedyou" && (
         <p className="text-3xl font-bold">Liked You</p>
+      )}
+
+      {location.pathname === "/setting" && (
+        <p className="text-3xl font-bold">Settings</p>
       )}
 
       {location.pathname === "/matches" && (
