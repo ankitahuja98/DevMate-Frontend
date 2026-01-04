@@ -3,10 +3,11 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import "./Login.css";
 import AppLogo from "../../Images/devmateLogo-white.png";
+import { useNavigate } from "react-router-dom";
 
 const LoginSignup = () => {
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
-
+  const navigate = useNavigate();
   const handleTypeChange = () => {
     setIsSignIn(!isSignIn);
   };
@@ -15,8 +16,13 @@ const LoginSignup = () => {
       <div className="relative h-8/12 w-7/12 rounded-2xl overflow-hidden shadow-xl bg-white">
         {/* Sliding Panel Start*/}
         <div className={`slider ${isSignIn ? "SignUp" : "SignIn"} `}>
-          <div className="px-5">
-            <img src={AppLogo} alt="DevMate" />
+          <div className="px-5 ">
+            <img
+              src={AppLogo}
+              alt="DevMate"
+              className="cursor-pointer"
+              onClick={() => navigate("/")}
+            />
           </div>
           {isSignIn ? (
             <div className="text-center p-7 ">

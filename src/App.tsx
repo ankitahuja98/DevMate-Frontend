@@ -12,6 +12,14 @@ import { ToastContainer } from "react-toastify";
 import ResponsiveLayout from "./Layout/ResponsiveLayout/ResponsiveLayout";
 import ResponsiveLogin from "./Layout/ResponsiveLogin/ResponsiveLogin";
 import Home from "./Pages/Home";
+import About from "./Pages/info/About";
+import Contact from "./Pages/info/Contact";
+import PrivacyPolicy from "./Pages/info/PrivacyPolicy";
+import Terms from "./Pages/info/Terms";
+import RefundPolicy from "./Pages/info/RefundPolicy";
+import Pricing from "./Pages/info/Pricing";
+import Features from "./Pages/info/Features";
+import PublicRoutesLayout from "./Layout/PublicRoutesLayout/PublicRoutesLayout";
 
 function App() {
   return (
@@ -19,7 +27,18 @@ function App() {
       <Routes>
         {/* public routes */}
         <Route path="/login" element={<ResponsiveLogin />} />
-        <Route index element={<Home />} />
+
+        <Route element={<PublicRoutesLayout />}>
+          <Route index element={<Home />} />
+          {/* Public informational pages */}
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
+        </Route>
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
