@@ -19,7 +19,7 @@ const ProtectedRoutes = () => {
 
   if (userProfileIsloading) return <div>Checking authentication...</div>;
 
-  if (!userProfileData) return <Navigate to="/login" replace />;
+  if (!userProfileData) return <Navigate to="/" replace />;
 
   return <Outlet />;
 };

@@ -54,7 +54,7 @@ export default function SideBar({
 }
 
 const menuItems = [
-  { id: 0, name: "Explore", path: "/", icon: Diversity2Icon },
+  { id: 0, name: "Explore", path: "/explore", icon: Diversity2Icon },
   { id: 1, name: "Liked You", path: "/likedyou", icon: FavoriteIcon },
   { id: 2, name: "Chats", path: "/matches", icon: ChatIcon },
   { id: 3, name: "Discover", path: "/discover", icon: InterestsOutlinedIcon },
