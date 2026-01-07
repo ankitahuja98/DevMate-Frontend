@@ -26,11 +26,24 @@ function App() {
   return (
     <>
       <Routes>
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoutes />}>
+          <Route element={<ResponsiveLayout />}>
+            <Route index path="/explore" element={<Explore />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/likedyou" element={<LikedYou />} />
+            <Route path="/matches" element={<Matches />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/setting" element={<Settings />} />
+            <Route path="*" element={<Navigate to="/explore" replace />} />
+          </Route>
+        </Route>
+
         {/* public routes */}
         <Route path="/login" element={<ResponsiveLogin />} />
 
         <Route element={<PublicRoutesLayout />}>
-          <Route index element={<Home />} />
+          <Route index path="/" element={<Home />} />
           {/* Public informational pages */}
           <Route path="/about" element={<About />} />
           <Route path="/founder" element={<Founder />} />
@@ -40,20 +53,6 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
-          <Route path="/setting" element={<Settings />} />
-        </Route>
-
-        {/* Protected Routes */}
-        <Route element={<ProtectedRoutes />}>
-          <Route element={<ResponsiveLayout />}>
-            <Route path="/explore" element={<Explore />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/likedyou" element={<LikedYou />} />
-            <Route path="/matches" element={<Matches />} />
-            <Route path="/chat" element={<Chat />} />
-
-            <Route path="*" element={<Navigate to="/explore" replace />} />
-          </Route>
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

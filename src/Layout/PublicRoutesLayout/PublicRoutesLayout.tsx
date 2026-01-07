@@ -1,16 +1,27 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import DevMateLogo from "../../Images/devmateLogo.png";
-import { useAppSelector } from "../../redux/store/store";
+import { useAppSelector, type AppDispatch } from "../../redux/store/store";
 import ResponsiveLayout from "../ResponsiveLayout/ResponsiveLayout";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { fetchUserProfile } from "../../redux/actions/profileAction";
 
 const PublicRoutesLayout = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const { userProfileData } = useAppSelector(
+  const { userProfileData, userProfileIsloading } = useAppSelector(
     (store) => store.profile.userProfile
   );
+  useEffect(() => {
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
 
-  // If logged in → show Sidebar + Topbar
+  if (userProfileIsloading) {
+    return <div>Loading...</div>;
+  }
+
+  // If logged in → show authenticated layout
   if (userProfileData) {
     return (
       <ResponsiveLayout>
