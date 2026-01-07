@@ -40,6 +40,7 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/setting" element={<Settings />} />
         </Route>
 
         {/* Protected Routes */}
@@ -50,8 +51,7 @@ function App() {
             <Route path="/likedyou" element={<LikedYou />} />
             <Route path="/matches" element={<Matches />} />
             <Route path="/chat" element={<Chat />} />
-            <Route path="/discover" element={<Discover />} />
-            <Route path="/setting" element={<Settings />} />
+
             <Route path="*" element={<Navigate to="/explore" replace />} />
           </Route>
         </Route>

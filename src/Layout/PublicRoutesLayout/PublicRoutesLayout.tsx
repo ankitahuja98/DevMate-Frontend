@@ -57,7 +57,7 @@ const PublicRoutesLayout = () => {
           </div>
         </div>
       </nav>
-      <div className="pt-25">
+      <div className="pt-15">
         <Outlet />
       </div>
     </div>

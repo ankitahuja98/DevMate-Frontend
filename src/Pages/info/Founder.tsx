@@ -4,45 +4,39 @@ import Footer from "../Footer";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LanguageIcon from "@mui/icons-material/Language";
-import CodeIcon from "@mui/icons-material/Code";
+import founderImage from "../../Images/AnkitProfilePic.webp";
 
 const Founder: React.FC = () => {
   const navigate = useNavigate();
 
-  // Replace with your actual image path
-  const founderImage = "/path-to-your-image.jpg"; // Update this with your actual image path
-
+  // Tech stack list (now used as simple text labels)
   const techStack = [
     "ReactJS",
-    "NextJS",
-    "Redux",
+    "Next.js",
     "TypeScript",
     "JavaScript",
-    "Java",
-    "SpringBoot",
-    "PostgreSQL",
     "MongoDB",
-    "TailwindCSS",
-    "Bootstrap",
-    "Jest",
-    "Git",
+    "Express.js",
+    "Node.js",
+    "Redux",
+    "Tailwind CSS",
+    "Webpack",
+    "AWS",
   ];
 
   const socialLinks = {
-    linkedin: "https://linkedin.com/in/your-profile", // Update with your LinkedIn URL
-    github: "https://github.com/your-username", // Update with your GitHub URL
-    portfolio: "https://your-portfolio.com", // Update with your portfolio URL
-    codeforces: "https://codeforces.com/profile/your-username", // Optional: Update with your Codeforces profile
+    linkedin: "https://www.linkedin.com/in/ankitahuja98/",
+    github: "https://github.com/ankitahuja98",
+    portfolio: "https://ankitahujaportfolio.netlify.app/",
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50">
-      {/* Content */}
-      <div className="pt-7 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-6">
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+      <div className="pt-12 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          {/* HEADER SECTION */}
+          <div className="text-center mb-5">
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-2">
               Meet the{" "}
               <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 Founder
@@ -53,154 +47,133 @@ const Founder: React.FC = () => {
             </p>
           </div>
 
-          {/* Main Content Card */}
-          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-            <div className="grid md:grid-cols-5 gap-8 p-8 md:p-12">
-              {/* Profile Image Column */}
-              <div className="md:col-span-2 flex flex-col items-center space-y-6">
-                <div className="relative">
-                  <div className="w-64 h-64 rounded-2xl overflow-hidden shadow-xl ring-4 ring-purple-100">
-                    <img
-                      src={founderImage}
-                      alt="Founder"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        // Fallback to a gradient if image fails to load
-                        e.currentTarget.style.display = "none";
-                        e.currentTarget.parentElement!.style.background =
-                          "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
-                      }}
-                    />
-                  </div>
-                  <div className="absolute -bottom-4 -right-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-xl shadow-lg">
-                    <CodeIcon sx={{ fontSize: 20 }} />
+          {/* MAIN CARD */}
+          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-white mb-6">
+            <div className="grid md:grid-cols-12 gap-0">
+              {/* LEFT COLUMN */}
+              <div className="md:col-span-4 bg-slate-50/50 p-8 flex flex-col items-center border-r border-slate-100">
+                {/* Profile Image */}
+                <div className="relative mb-6">
+                  <div className="w-44 h-44 rounded-full p-1 bg-gradient-to-tr from-purple-600 to-blue-500 shadow-lg">
+                    <div className="bg-white rounded-full p-1 h-full w-full overflow-hidden">
+                      <img
+                        src={founderImage}
+                        alt="Founder"
+                        className="w-full h-full object-cover rounded-full"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                          e.currentTarget.parentElement!.style.background =
+                            "linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)";
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* Social Links */}
-                <div className="flex flex-col space-y-3 w-full">
+                {/* Social Icons */}
+                <div className="flex items-center gap-3 mb-8">
                   <a
                     href={socialLinks.linkedin}
                     target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center space-x-3 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors cursor-pointer shadow-lg hover:shadow-xl"
+                    rel="noreferrer"
+                    className="p-2.5 bg-white text-[#0a66c2] rounded-full shadow-sm border border-slate-200 hover:bg-blue-50 transition-colors cursor-pointer"
                   >
-                    <LinkedInIcon />
-                    <span className="font-medium">LinkedIn Profile</span>
+                    <LinkedInIcon fontSize="small" />
                   </a>
-
                   <a
                     href={socialLinks.github}
                     target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center space-x-3 px-6 py-3 bg-slate-800 text-white rounded-xl hover:bg-slate-900 transition-colors cursor-pointer shadow-lg hover:shadow-xl"
+                    rel="noreferrer"
+                    className="p-2.5 bg-white text-slate-900 rounded-full shadow-sm border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer"
                   >
-                    <GitHubIcon />
-                    <span className="font-medium">GitHub Profile</span>
+                    <GitHubIcon fontSize="small" />
                   </a>
-
                   <a
                     href={socialLinks.portfolio}
                     target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center space-x-3 px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl hover:shadow-xl transition-all cursor-pointer shadow-lg"
+                    rel="noreferrer"
+                    className="p-2.5 bg-white text-purple-600 rounded-full shadow-sm border border-slate-200 hover:bg-purple-50 transition-colors cursor-pointer"
                   >
-                    <LanguageIcon />
-                    <span className="font-medium">Portfolio Website</span>
+                    <LanguageIcon fontSize="small" />
                   </a>
                 </div>
-              </div>
 
-              {/* About Content Column */}
-              <div className="md:col-span-3 space-y-8">
-                <div>
-                  <h2 className="text-3xl font-bold text-slate-900 mb-2">
-                    Ankit Ahuja
-                  </h2>
-                  <p className="text-xl text-purple-600 font-semibold mb-6">
-                    Founder & Full-Stack Architect
-                  </p>
-
-                  <div className="prose prose-lg max-w-none text-slate-600 leading-relaxed space-y-4">
-                    <p className="text-lg leading-relaxed text-gray-700">
-                      I founded <strong>Devmate</strong> to solve the isolation
-                      often felt in solo development. With over{" "}
-                      <strong>5 years of experience</strong> as a Full-Stack
-                      Developer, I built this platform from the first line of
-                      code to final deployment. As a{" "}
-                      <strong>Frontend Specialist</strong>
-                      and <strong>MERN Stack expert</strong>, I’ve ensured that
-                      every feature—from the complex matching algorithms to
-                      real-time communication—is crafted with
-                      <strong> high performance</strong> and{" "}
-                      <strong>intuitive design</strong> in mind. My goal is to
-                      bridge the gap between heavy engineering and seamless user
-                      experiences to help developers find their perfect project
-                      partners.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Tech Stack Section */}
-                <div className="pt-6 border-t border-slate-200">
-                  <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center space-x-2">
-                    <CodeIcon className="text-purple-600" />
-                    <span>Tech Stack & Expertise</span>
+                {/* UPDATED TECH STACK */}
+                <div className="w-full pt-6 border-t border-slate-200">
+                  <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+                    <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+                    Tech Expertise
                   </h3>
+
                   <div className="flex flex-wrap gap-2">
                     {techStack.map((tech, index) => (
-                      <span
-                        key={index}
-                        className="px-4 py-2 bg-gradient-to-r from-purple-50 to-indigo-50 text-purple-700 rounded-lg text-sm font-medium border border-purple-200 hover:border-purple-400 transition-colors"
-                      >
+                      <span key={index} className="interest-pill">
                         {tech}
                       </span>
                     ))}
                   </div>
                 </div>
               </div>
+
+              {/* RIGHT COLUMN */}
+              <div className="md:col-span-8 p-10 md:p-14 flex flex-col justify-center">
+                <h2 className="text-4xl font-bold text-slate-900 mb-2">
+                  Ankit Ahuja
+                </h2>
+                <p className="text-2xl font-semibold text-purple-600 mb-8">
+                  Founder & Full-Stack Architect
+                </p>
+
+                <div className="prose prose-lg max-w-none text-slate-600 leading-relaxed space-y-4">
+                  <p>
+                    I founded <strong>Devmate</strong> to solve the isolation
+                    many developers face when working alone. With over
+                    <strong> 5 years of experience</strong> building full-stack
+                    applications, I built this platform to connect developers
+                    meaningfully.
+                  </p>
+
+                  <p>
+                    As a <strong>Frontend Specialist</strong> and{" "}
+                    <strong>MERN Stack developer</strong>, I focus on creating
+                    high-performance, intuitive digital experiences. From
+                    real-time communication to intelligent matching — everything
+                    is engineered to feel seamless.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Vision Section */}
-          <div className="mt-12 bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 rounded-2xl shadow-2xl p-8 md:p-12 text-white">
-            <h2 className="text-3xl font-bold mb-4 text-center">
+          <div className="bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 rounded-2xl shadow-2xl p-6 md:p-8 text-white">
+            <h2 className="text-3xl font-bold text-center">
               The Vision Behind Devmate
             </h2>
             <p className="text-lg text-purple-100 leading-relaxed text-center max-w-3xl mx-auto">
-              Devmate was born from my own experience of struggling to find the
-              right coding partners for projects. I envisioned a platform where
-              developers could connect based on skills, interests, and
-              compatibility—not just through cold LinkedIn messages or forum
-              posts. By combining modern swipe-based matching with professional
-              networking, Devmate makes finding your ideal dev partner as
-              intuitive as it should be.
+              Devmate was created to help developers connect based on skills,
+              interests, and compatibility — making it easier than ever to find
+              the right partners for collaboration.
             </p>
-            <div className="mt-8 text-center">
-              <button
-                onClick={() => navigate("/about")}
-                className="px-8 py-4 bg-white text-purple-600 font-semibold rounded-xl hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-              >
-                Learn More About Devmate
-              </button>
-            </div>
-          </div>
 
-          {/* CTA Section */}
-          <div className="mt-12 text-center">
-            <h3 className="text-2xl font-bold text-slate-900 mb-4">
-              Let's Connect!
-            </h3>
-            <p className="text-lg text-slate-600 mb-6">
-              Interested in collaborating or want to discuss technology? Reach
-              out to me through any of the platforms above.
-            </p>
-            <button
-              onClick={() => navigate("/contact")}
-              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-            >
-              Get in Touch
-            </button>
+            <div className=" flex justify-center items-center gap-5">
+              <div className="mt-5">
+                <button
+                  onClick={() => navigate("/contact")}
+                  className="px-8 py-4 bg-white text-purple-600 font-semibold rounded-xl hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                >
+                  Get in Touch
+                </button>
+              </div>
+              {/* Learn more button remains */}
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => navigate("/about")}
+                  className="px-8 py-4 bg-white/20 backdrop-blur text-white border border-white/30 font-semibold rounded-xl hover:bg-white/30 transition-all duration-300 cursor-pointer"
+                >
+                  Learn More About Devmate
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
