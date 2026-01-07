@@ -13,6 +13,7 @@ const accountSettings: SettingItem[] = [
 
 const legalSettings: SettingItem[] = [
   { label: "About Devmate", path: "/about" },
+  { label: "Founder", path: "/founder" },
   { label: "Contact Us", path: "/contact" },
   { label: "Privacy Policy", path: "/privacy-policy" },
   { label: "Terms & Conditions", path: "/terms" },

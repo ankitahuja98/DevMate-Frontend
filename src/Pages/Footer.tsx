@@ -130,6 +130,14 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <button
+                  onClick={() => navigate("/founder")}
+                  className="hover:text-purple-400 transition-colors text-left cursor-pointer"
+                >
+                  Founder
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => navigate("/contact")}
                   className="hover:text-purple-400 transition-colors text-left cursor-pointer"
                 >

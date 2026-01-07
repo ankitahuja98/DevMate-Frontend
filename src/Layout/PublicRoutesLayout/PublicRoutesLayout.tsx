@@ -1,8 +1,23 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import DevMateLogo from "../../Images/devmateLogo.png";
+import { useAppSelector } from "../../redux/store/store";
+import ResponsiveLayout from "../ResponsiveLayout/ResponsiveLayout";
 
 const PublicRoutesLayout = () => {
   const navigate = useNavigate();
+
+  const { userProfileData } = useAppSelector(
+    (store) => store.profile.userProfile
+  );
+
+  // If logged in → show Sidebar + Topbar
+  if (userProfileData) {
+    return (
+      <ResponsiveLayout>
+        <Outlet />
+      </ResponsiveLayout>
+    );
+  }
 
   const useStyle = {
     logoStyle: {
@@ -42,8 +57,9 @@ const PublicRoutesLayout = () => {
           </div>
         </div>
       </nav>
-
-      <Outlet />
+      <div className="pt-25">
+        <Outlet />
+      </div>
     </div>
   );
 };

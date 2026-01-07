@@ -20,6 +20,7 @@ import RefundPolicy from "./Pages/info/RefundPolicy";
 import Pricing from "./Pages/info/Pricing";
 import Features from "./Pages/info/Features";
 import PublicRoutesLayout from "./Layout/PublicRoutesLayout/PublicRoutesLayout";
+import Founder from "./Pages/info/Founder";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route index element={<Home />} />
           {/* Public informational pages */}
           <Route path="/about" element={<About />} />
+          <Route path="/founder" element={<Founder />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/features" element={<Features />} />

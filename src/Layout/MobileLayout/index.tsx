@@ -4,7 +4,7 @@ import "./MobileLayout.css";
 import BottomBar from "./BottomBar";
 import EditProfile from "../../Components/EditProfile";
 
-const index = () => {
+const index = ({ children }: { children: any }) => {
   const location = useLocation();
 
   const needsBottomPadding = location.pathname === "/likedyou";
@@ -21,7 +21,7 @@ const index = () => {
             needsBottomPadding ? "pb-[60px]" : ""
           }`}
         >
-          <Outlet />
+          {children || <Outlet />}
           <EditProfile />
           <BottomBar />
         </div>

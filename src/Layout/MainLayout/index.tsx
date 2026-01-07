@@ -4,7 +4,7 @@ import Topbar from "../Topbar/index";
 import { Outlet } from "react-router-dom";
 import EditProfile from "../../Components/EditProfile";
 
-const index = () => {
+const index = ({ children }: { children: any }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [NotificationIsOpen, setNotificationIsOpen] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
@@ -25,7 +25,7 @@ const index = () => {
 
         {/* Page content */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden">
-          <Outlet />
+          {children || <Outlet />}
           <EditProfile />
         </div>
       </div>
