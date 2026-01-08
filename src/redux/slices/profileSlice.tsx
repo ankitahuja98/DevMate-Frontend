@@ -7,7 +7,7 @@ const initialState: ProfileInitialState = {
   userProfile: {
     userProfileIsloading: false,
     userProfileData: null,
-    userProfileIserror: false,
+    userProfileIserror: null,
   },
   isEditProfileDialogOpen: false,
 };

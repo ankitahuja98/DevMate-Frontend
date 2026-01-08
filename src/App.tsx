@@ -21,24 +21,23 @@ import Pricing from "./Pages/info/Pricing";
 import Features from "./Pages/info/Features";
 import PublicRoutesLayout from "./Layout/PublicRoutesLayout/PublicRoutesLayout";
 import Founder from "./Pages/info/Founder";
+import useAuth from "./Layout/Auth/useAuth";
+import LoadingThreeDotsPulse from "./Components/Loader";
 
 function App() {
+  const { isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <LoadingThreeDotsPulse />
+      </div>
+    );
+  }
+
   return (
     <>
       <Routes>
-        {/* Protected Routes */}
-        <Route element={<ProtectedRoutes />}>
-          <Route element={<ResponsiveLayout />}>
-            <Route index path="/explore" element={<Explore />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/likedyou" element={<LikedYou />} />
-            <Route path="/matches" element={<Matches />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/setting" element={<Settings />} />
-            <Route path="*" element={<Navigate to="/explore" replace />} />
-          </Route>
-        </Route>
-
         {/* public routes */}
         <Route path="/login" element={<ResponsiveLogin />} />
 
@@ -53,6 +52,19 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />
+        </Route>
+
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoutes />}>
+          <Route element={<ResponsiveLayout />}>
+            <Route index path="/explore" element={<Explore />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/likedyou" element={<LikedYou />} />
+            <Route path="/matches" element={<Matches />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/setting" element={<Settings />} />
+            <Route path="*" element={<Navigate to="/explore" replace />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

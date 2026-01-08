@@ -1,7 +1,7 @@
 interface userprofileInitialState {
   userProfileIsloading: boolean;
   userProfileData: any | null;
-  userProfileIserror: boolean;
+  userProfileIserror: boolean | null;
 }
 
 export interface ProfileInitialState {

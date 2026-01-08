@@ -1,21 +1,14 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import DevMateLogo from "../../Images/devmateLogo.png";
-import { useAppSelector, type AppDispatch } from "../../redux/store/store";
+import { useAppSelector } from "../../redux/store/store";
 import ResponsiveLayout from "../ResponsiveLayout/ResponsiveLayout";
-import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import { fetchUserProfile } from "../../redux/actions/profileAction";
 
 const PublicRoutesLayout = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
 
   const { userProfileData, userProfileIsloading } = useAppSelector(
     (store) => store.profile.userProfile
   );
-  useEffect(() => {
-    dispatch(fetchUserProfile());
-  }, [dispatch]);
 
   if (userProfileIsloading) {
     return <div>Loading...</div>;
