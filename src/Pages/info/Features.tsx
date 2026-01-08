@@ -45,24 +45,14 @@ const Features = () => {
       title: "Connection Requests",
       description:
         "Send connection requests to developers you're interested in collaborating with. Accept or decline incoming requests with a simple tap.",
-      details: [
-        "Send unlimited requests (Premium)",
-        "Manage pending requests",
-        "Auto-accept from favorites",
-        "Request expiry notifications",
-      ],
+      details: ["Send requests", "Manage pending requests"],
     },
     {
       icon: <ChatIcon sx={{ fontSize: 48 }} />,
       title: "Real-Time Messaging",
       description:
         "Once connected, chat directly with other developers. Discuss project ideas, share code snippets, or plan your next collaboration.",
-      details: [
-        "Instant messaging",
-        "Code snippet sharing",
-        "File attachments support",
-        "Message notifications",
-      ],
+      details: ["Instant messaging", "Code snippet sharing"],
     },
   ];
 
@@ -110,30 +100,14 @@ const Features = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50">
-      {/* Hero Section */}
-      <div className="pt-7 pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6">
-            Everything You Need to{" "}
-            <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-              Connect & Collaborate
-            </span>
-          </h1>
-          <p className="text-xl text-slate-600 leading-relaxed">
-            Devmate brings developers together with powerful features designed
-            for seamless networking and meaningful collaborations
-          </p>
-        </div>
-      </div>
-
       {/* Core Features */}
-      <div className="py-12 px-4 sm:px-6 lg:px-8">
+      <div className="py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+          <div className="text-center mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
               Core Features
             </h2>
-            <p className="text-lg text-slate-600">
+            <p className="text-lg text-slate-600 ">
               Essential tools to find and connect with your ideal development
               partner
             </p>

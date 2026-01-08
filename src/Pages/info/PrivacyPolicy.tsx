@@ -16,202 +16,139 @@ const PrivacyPolicy = () => {
                 Policy
               </span>
             </h1>
-            <p className="text-slate-600 mb-8">Last updated: January 5, 2026</p>
+            <p className="text-slate-600 mb-8">
+              Last updated: December 24, 2025
+            </p>
 
             <div className="prose prose-lg max-w-none text-slate-600 space-y-6">
               <p className="leading-relaxed">
-                At Devmate, we take your privacy seriously. This Privacy Policy
-                explains how we collect, use, disclose, and safeguard your
-                information when you use our platform.
+                At Devmate, your privacy is extremely important to us. This
+                Privacy Policy outlines how your information is collected, used,
+                protected, and managed when you use our platform. By accessing
+                or using Devmate, you agree to the practices described in this
+                policy.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 1. Information We Collect
               </h2>
-
-              <h3 className="text-xl font-semibold text-slate-900 mt-6 mb-3">
-                Personal Information
-              </h3>
               <p className="leading-relaxed">
-                We collect information that you provide directly to us,
-                including:
+                We collect personal information that you voluntarily provide
+                when creating an account or using the platform, such as your
+                name, email address, phone number, bio, skills, work experience,
+                projects, and profile image. We also collect your login
+                credentials and any communication exchanged through our
+                messaging system. Additionally, certain information is collected
+                automatically when you access Devmate, including your IP
+                address, browser type, operating system, pages you visit, time
+                spent on the platform, approximate location derived from your IP
+                address, and data gathered through cookies or similar
+                technologies used for analytics and functionality enhancement.
               </p>
-              <ul className="space-y-2 list-disc list-inside leading-relaxed ml-4">
-                <li>
-                  Name and contact information (email address, phone number)
-                </li>
-                <li>
-                  Profile information (bio, skills, experience, profile picture)
-                </li>
-                <li>Account credentials (username, password)</li>
-                <li>
-                  Professional information (work history, projects, tech stack)
-                </li>
-                <li>Communication data (messages sent through our platform)</li>
-              </ul>
-
-              <h3 className="text-xl font-semibold text-slate-900 mt-6 mb-3">
-                Automatically Collected Information
-              </h3>
-              <p className="leading-relaxed">
-                When you access our platform, we automatically collect certain
-                information, including:
-              </p>
-              <ul className="space-y-2 list-disc list-inside leading-relaxed ml-4">
-                <li>
-                  Device information (IP address, browser type, operating
-                  system)
-                </li>
-                <li>Usage data (pages visited, features used, time spent)</li>
-                <li>
-                  Location data (approximate location based on IP address)
-                </li>
-                <li>Cookies and similar tracking technologies</li>
-              </ul>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 2. How We Use Your Information
               </h2>
               <p className="leading-relaxed">
-                We use the information we collect to:
+                Your information is used to operate and improve the platform,
+                enable intelligent matching, personalize your experience, and
+                facilitate interaction between users. We use it to process
+                transactions, send service-related updates, respond to support
+                inquiries, and ensure the security and integrity of the
+                platform. Usage data helps us analyze performance trends,
+                improve features, and optimize user experience. When applicable,
+                and only with your consent, we may also send promotional or
+                marketing communications.
               </p>
-              <ul className="space-y-2 list-disc list-inside leading-relaxed ml-4">
-                <li>Provide, maintain, and improve our services</li>
-                <li>Match you with compatible developers</li>
-                <li>Process your transactions and send related information</li>
-                <li>
-                  Send you technical notices, updates, and support messages
-                </li>
-                <li>Respond to your comments and questions</li>
-                <li>
-                  Detect, prevent, and address technical issues and fraudulent
-                  activity
-                </li>
-                <li>Analyze usage patterns and improve user experience</li>
-                <li>Send you marketing communications (with your consent)</li>
-              </ul>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 3. Information Sharing and Disclosure
               </h2>
               <p className="leading-relaxed">
-                We may share your information in the following situations:
+                Certain profile details you choose to provide may be visible to
+                other Devmate users to enable professional networking and
+                collaboration. We may share your information with trusted
+                service providers who assist in operating the platform,
+                conducting analytics, or delivering technical support.
+                Information may also be disclosed when required by law, in
+                connection with protecting our rights, or during business
+                transitions such as mergers or acquisitions. Information is only
+                shared with your explicit consent when the situation requires
+                it.
               </p>
-              <ul className="space-y-2 list-disc list-inside leading-relaxed ml-4">
-                <li>
-                  <strong>With Other Users:</strong> Your profile information is
-                  visible to other users to facilitate connections
-                </li>
-                <li>
-                  <strong>With Service Providers:</strong> We share information
-                  with third-party vendors who perform services on our behalf
-                </li>
-                <li>
-                  <strong>For Legal Purposes:</strong> When required by law or
-                  to protect our rights
-                </li>
-                <li>
-                  <strong>Business Transfers:</strong> In connection with a
-                  merger, acquisition, or sale of assets
-                </li>
-                <li>
-                  <strong>With Your Consent:</strong> When you explicitly agree
-                  to share information
-                </li>
-              </ul>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 4. Data Security
               </h2>
               <p className="leading-relaxed">
-                We implement appropriate technical and organizational measures
-                to protect your personal information. However, no method of
-                transmission over the Internet or electronic storage is 100%
-                secure, and we cannot guarantee absolute security.
+                We employ reasonable technical and organizational measures to
+                safeguard your personal information from unauthorized access,
+                alteration, disclosure, or destruction. Despite these efforts,
+                no method of data transmission or storage is completely secure,
+                and we cannot guarantee absolute protection against potential
+                risks.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 5. Your Rights and Choices
               </h2>
               <p className="leading-relaxed">
-                You have the following rights regarding your personal
-                information:
+                You have the right to access, update, or correct the personal
+                information associated with your account. You may request
+                deletion of your data, withdraw consent for certain uses.
               </p>
-              <ul className="space-y-2 list-disc list-inside leading-relaxed ml-4">
-                <li>
-                  <strong>Access:</strong> Request access to your personal
-                  information
-                </li>
-                <li>
-                  <strong>Correction:</strong> Request correction of inaccurate
-                  information
-                </li>
-                <li>
-                  <strong>Deletion:</strong> Request deletion of your personal
-                  information
-                </li>
-                <li>
-                  <strong>Data Portability:</strong> Request a copy of your data
-                  in a portable format
-                </li>
-                <li>
-                  <strong>Opt-Out:</strong> Opt out of marketing communications
-                </li>
-                <li>
-                  <strong>Cookie Management:</strong> Control cookies through
-                  your browser settings
-                </li>
-              </ul>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 6. Data Retention
               </h2>
               <p className="leading-relaxed">
-                We retain your personal information for as long as necessary to
-                provide our services and fulfill the purposes outlined in this
-                Privacy Policy, unless a longer retention period is required by
-                law.
+                We retain your personal information only for as long as
+                necessary to deliver our services and fulfill the purposes
+                outlined in this Privacy Policy. Retention periods may be
+                extended when required by law or necessary to resolve disputes
+                or enforce agreements.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 7. Children's Privacy
               </h2>
               <p className="leading-relaxed">
-                Our services are not intended for individuals under the age of
-                18. We do not knowingly collect personal information from
-                children under 18. If you become aware that a child has provided
-                us with personal information, please contact us.
+                Devmate is intended for users aged 18 and above. We do not
+                knowingly collect personal information from individuals under
+                this age. If you believe a minor has provided us with personal
+                information, please contact us immediately so we can take
+                appropriate action.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 8. International Data Transfers
               </h2>
               <p className="leading-relaxed">
-                Your information may be transferred to and processed in
-                countries other than your country of residence. We ensure
-                appropriate safeguards are in place for such transfers.
+                Your information may be processed and stored in countries other
+                than your own, where data protection laws may differ. Regardless
+                of location, we take measures to ensure your information remains
+                protected and handled in accordance with this Privacy Policy.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 9. Changes to This Privacy Policy
               </h2>
               <p className="leading-relaxed">
-                We may update this Privacy Policy from time to time. We will
-                notify you of any changes by posting the new Privacy Policy on
-                this page and updating the "Last updated" date.
+                We may update this Privacy Policy periodically to reflect
+                changes in our practices or legal obligations. Any updates will
+                be posted on this page along with a revised "Last Updated" date.
+                Continued use of Devmate after changes are posted signifies your
+                acceptance of the updated policy.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 10. Contact Us
               </h2>
               <p className="leading-relaxed">
-                If you have any questions about this Privacy Policy, please
-                contact us at:
+                If you have questions, concerns, or requests regarding this
+                Privacy Policy or your personal information, please contact us
+                at: Ankitahuja80@gmail.com.
               </p>
-              <ul className="space-y-2 list-none leading-relaxed ml-4">
-                <li>Email: privacy@devmate.com</li>
-                <li>Address: 123 Tech Street, San Francisco, CA 94105</li>
-              </ul>
 
               <div className="mt-10 pt-8 border-t border-slate-200">
                 <button

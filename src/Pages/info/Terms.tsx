@@ -16,207 +16,179 @@ const Terms = () => {
                 Conditions
               </span>
             </h1>
-            <p className="text-slate-600 mb-8">Last updated: January 5, 2026</p>
+            <p className="text-slate-600 mb-8">
+              Last updated: December 24, 2025
+            </p>
 
             <div className="prose prose-lg max-w-none text-slate-600 space-y-6">
               <p className="leading-relaxed">
-                Welcome to Devmate. By accessing or using our platform, you
-                agree to be bound by these Terms and Conditions. Please read
-                them carefully.
+                Welcome to Devmate. By accessing or using the Devmate platform,
+                you acknowledge that you have read, understood, and agree to be
+                bound by these Terms and Conditions as well as our Privacy
+                Policy. If you do not agree with any part of these terms, you
+                must discontinue use of the platform immediately.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 1. Acceptance of Terms
               </h2>
               <p className="leading-relaxed">
-                By creating an account, accessing, or using Devmate, you agree
-                to these Terms and Conditions and our Privacy Policy. If you do
-                not agree, please do not use our services.
+                By creating an account or continuing to use Devmate, you confirm
+                your acceptance of these Terms and Conditions. These terms apply
+                to all users, including visitors, registered members, and
+                individuals accessing the platform on behalf of an organization.
+                If you do not agree to the Terms, you are not permitted to
+                access or use the platform.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 2. User Accounts
               </h2>
-              <h3 className="text-xl font-semibold text-slate-900 mt-6 mb-3">
-                Account Creation
-              </h3>
-              <ul className="space-y-2 list-disc list-inside leading-relaxed ml-4">
-                <li>You must be at least 18 years old to create an account</li>
-                <li>You must provide accurate and complete information</li>
-                <li>
-                  You are responsible for maintaining the security of your
-                  account
-                </li>
-                <li>
-                  You must notify us immediately of any unauthorized access
-                </li>
-                <li>
-                  One person or legal entity may maintain only one account
-                </li>
-              </ul>
-
-              <h3 className="text-xl font-semibold text-slate-900 mt-6 mb-3">
-                Account Responsibilities
-              </h3>
               <p className="leading-relaxed">
-                You are responsible for all activities that occur under your
-                account. You agree to:
+                To access certain features of Devmate, you must create an
+                account and provide accurate, complete, and current information.
+                You must be at least 18 years of age to register. You are solely
+                responsible for maintaining the confidentiality of your login
+                credentials and any actions that occur under your account. You
+                agree to notify us immediately of any suspected unauthorized
+                access or security breach. Each individual or entity is
+                permitted to maintain one account, and account sharing is
+                strictly prohibited.
               </p>
-              <ul className="space-y-2 list-disc list-inside leading-relaxed ml-4">
-                <li>Keep your password confidential</li>
-                <li>Not share your account with others</li>
-                <li>Notify us of any security breaches</li>
-                <li>
-                  Ensure your profile information is accurate and up-to-date
-                </li>
-              </ul>
+
+              <p className="leading-relaxed">
+                As a user, you are responsible for ensuring the accuracy of your
+                profile information and updating it as necessary. You must not
+                share your password with others, allow third parties to access
+                your account, or engage in any activity that compromises the
+                security or integrity of the platform.
+              </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 3. User Conduct
               </h2>
-              <p className="leading-relaxed">You agree not to:</p>
-              <ul className="space-y-2 list-disc list-inside leading-relaxed ml-4">
-                <li>Violate any laws or regulations</li>
-                <li>Infringe on the rights of others</li>
-                <li>Post false, misleading, or fraudulent content</li>
-                <li>Harass, abuse, or harm other users</li>
-                <li>Spam or send unsolicited messages</li>
-                <li>Attempt to gain unauthorized access to our systems</li>
-                <li>Use automated tools to access our services</li>
-                <li>Impersonate another person or entity</li>
-                <li>Post malicious code or viruses</li>
-                <li>Collect user information without consent</li>
-              </ul>
+              <p className="leading-relaxed">
+                By using Devmate, you agree to behave responsibly and comply
+                with all applicable laws and regulations. You must not engage in
+                conduct that infringes on the rights of others, including the
+                posting of misleading, fraudulent, harmful, or defamatory
+                content. You must refrain from harassment, abuse, impersonation,
+                or the distribution of unsolicited messages. You are prohibited
+                from attempting to gain unauthorized access to the platform,
+                deploying automated tools, distributing malicious code, or
+                collecting information from other users without explicit
+                consent.
+              </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 4. Content
               </h2>
-              <h3 className="text-xl font-semibold text-slate-900 mt-6 mb-3">
-                User Content
-              </h3>
               <p className="leading-relaxed">
-                You retain ownership of content you post on Devmate. By posting
-                content, you grant us a worldwide, non-exclusive, royalty-free
-                license to use, display, and distribute your content on our
-                platform.
+                You retain ownership of the content you publish on Devmate,
+                including your profile details, projects, and communication.
+                However, by posting content on the platform, you grant Devmate a
+                worldwide, non-exclusive, royalty-free license to use, display,
+                and distribute your content as necessary to operate the service.
+                All content you submit must be truthful, lawful, and free of
+                material that infringes on the rights of others or violates any
+                intellectual property, privacy, or security laws.
               </p>
-
-              <h3 className="text-xl font-semibold text-slate-900 mt-6 mb-3">
-                Content Standards
-              </h3>
-              <p className="leading-relaxed">All content must:</p>
-              <ul className="space-y-2 list-disc list-inside leading-relaxed ml-4">
-                <li>Be accurate and not misleading</li>
-                <li>Not violate any third-party rights</li>
-                <li>
-                  Not contain illegal, offensive, or inappropriate material
-                </li>
-                <li>Comply with all applicable laws</li>
-              </ul>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 5. Intellectual Property
               </h2>
               <p className="leading-relaxed">
-                The Devmate platform, including its design, features, and
-                content (excluding user content), is owned by Devmate and
-                protected by intellectual property laws. You may not copy,
-                modify, or distribute our content without permission.
+                All intellectual property related to Devmate, including its
+                design, interface, features, branding, and underlying
+                technology, is owned by Devmate and protected by applicable
+                copyright and trademark laws. You may not copy, reuse, modify,
+                or distribute any part of the platform without explicit written
+                permission. This excludes content you personally upload, which
+                remains your property.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 6. Subscriptions and Payments
               </h2>
               <p className="leading-relaxed">
-                Some features require a paid subscription. By subscribing, you
-                agree to:
+                Certain features of Devmate may require a paid subscription. By
+                subscribing, you agree to provide accurate billing information
+                and authorize recurring payments when required. It is your
+                responsibility to review and understand our refund and
+                cancellation policies. Devmate reserves the right to modify
+                subscription fees or introduce new pricing at any time, with or
+                without reasonable notice provided to users.
               </p>
-              <ul className="space-y-2 list-disc list-inside leading-relaxed ml-4">
-                <li>Pay all fees associated with your subscription</li>
-                <li>Provide accurate payment information</li>
-                <li>Authorize automatic recurring charges (if applicable)</li>
-                <li>Review our Refund and Cancellation Policy</li>
-              </ul>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 7. Termination
               </h2>
               <p className="leading-relaxed">
-                We may suspend or terminate your account if you violate these
-                Terms or engage in fraudulent activity. You may also terminate
-                your account at any time through your account settings.
+                We reserve the right to suspend or terminate your account at our
+                discretion if you violate these Terms, engage in fraudulent or
+                harmful behavior, or misuse the platform in any way. You may
+                terminate your account at any time through your account
+                settings. Upon termination, your access to the platform will
+                cease, but certain obligations, such as confidentiality and
+                intellectual property restrictions, may continue to apply.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 8. Disclaimers
               </h2>
               <p className="leading-relaxed">
-                Devmate is provided "as is" without warranties of any kind. We
-                do not guarantee that:
+                Devmate is provided “as is” and “as available,” without
+                warranties of any kind. We do not guarantee that the platform
+                will operate without interruptions, errors, or security
+                vulnerabilities. We do not warrant that the results obtained
+                from using the service will be accurate or reliable. While we
+                strive to maintain a safe and functional environment, we cannot
+                guarantee that the platform will be free from viruses or harmful
+                components.
               </p>
-              <ul className="space-y-2 list-disc list-inside leading-relaxed ml-4">
-                <li>The service will be uninterrupted or error-free</li>
-                <li>Results obtained from the service will be accurate</li>
-                <li>All errors will be corrected</li>
-                <li>The service is free from viruses or harmful components</li>
-              </ul>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 9. Limitation of Liability
               </h2>
               <p className="leading-relaxed">
-                To the maximum extent permitted by law, Devmate shall not be
+                To the fullest extent permitted by law, Devmate shall not be
                 liable for any indirect, incidental, special, consequential, or
-                punitive damages arising from your use of the service.
+                punitive damages arising from your use of the platform,
+                inability to access the service, loss of data, or interactions
+                with other users. Your sole remedy for dissatisfaction with the
+                service is to discontinue use of the platform.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 10. Indemnification
               </h2>
               <p className="leading-relaxed">
-                You agree to indemnify and hold harmless Devmate from any
-                claims, damages, or expenses arising from your use of the
-                service or violation of these Terms.
+                You agree to indemnify, defend, and hold Devmate harmless from
+                any claims, damages, liabilities, legal fees, or expenses
+                arising from your use of the platform, violation of these Terms,
+                or infringement of any rights of another party. This obligation
+                continues even after account termination.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
-                11. Governing Law
+                11. Changes to Terms
               </h2>
               <p className="leading-relaxed">
-                These Terms shall be governed by and construed in accordance
-                with the laws of the State of California, United States, without
-                regard to conflict of law provisions.
+                We may update or modify these Terms at any time to reflect
+                changes in our services, legal requirements, or business
+                operations. Any significant changes will be communicated via
+                email or platform notifications. Continued use of Devmate after
+                updates constitutes acceptance of the revised Terms.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
-                12. Changes to Terms
+                12. Contact Information
               </h2>
               <p className="leading-relaxed">
-                We reserve the right to modify these Terms at any time. We will
-                notify you of material changes via email or through the
-                platform. Your continued use of the service after changes
-                constitutes acceptance of the new Terms.
+                If you have questions or concerns about these Terms and
+                Conditions, please contact us at Ankitahuja80@gmail.com we aim
+                to respond promptly and address your inquiries professionally.
               </p>
-
-              <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
-                13. Contact Information
-              </h2>
-              <p className="leading-relaxed">
-                For questions about these Terms, please contact us at:
-              </p>
-              <ul className="space-y-2 list-none leading-relaxed ml-4">
-                <li>Email: legal@devmate.com</li>
-                <li>Address: 123 Tech Street, San Francisco, CA 94105</li>
-              </ul>
-
-              <div className="mt-10 pt-8 border-t border-slate-200">
-                <button
-                  onClick={() => navigate("/contact")}
-                  className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-                >
-                  Contact Us
-                </button>
-              </div>
             </div>
           </div>
         </div>

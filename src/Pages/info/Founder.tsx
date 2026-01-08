@@ -140,6 +140,17 @@ const Founder: React.FC = () => {
                     real-time communication to intelligent matching — everything
                     is engineered to feel seamless.
                   </p>
+                  <p>
+                    Beyond building the platform, I am committed to fostering a
+                    community where developers can grow together.{" "}
+                    <strong>Devmate</strong> is not just a tool, but a space for
+                    collaboration, learning, and shared innovation — empowering
+                    developers to turn their ideas into impactful real-world
+                    projects. I envision a world where developers can easily
+                    find the right partners, break through creative barriers,
+                    and build confidently. Together, we can shape a future where
+                    collaboration fuels every great idea.
+                  </p>
                 </div>
               </div>
             </div>

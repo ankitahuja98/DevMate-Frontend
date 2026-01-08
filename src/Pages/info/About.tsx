@@ -18,32 +18,37 @@ const About = () => {
             </h1>
 
             <div className="prose prose-lg max-w-none text-slate-600 space-y-6">
-              <p className="text-xl leading-relaxed">
-                Devmate is a platform designed to connect developers, foster
-                collaboration, and create opportunities for building amazing
-                projects together.
+              <p className=" leading-relaxed">
+                Devmate is a platform built to connect developers, inspire
+                collaboration, and create meaningful opportunities to build
+                amazing projects together. Whether you're looking for a
+                teammate, a learning partner, or someone who shares your passion
+                for coding, Devmate helps bridge that gap.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 Our Mission
               </h2>
               <p className="leading-relaxed">
-                We believe that great software is built by great teams. Our
-                mission is to help developers find their perfect coding
-                partners, whether you're looking for a co-founder for your
-                startup, a collaborator for an open-source project, or simply
-                someone to learn and grow with.
+                I believe that great software is created through collaboration.
+                Devmate exists to help developers find the right people to work
+                with — whether it’s a startup co-founder, an open-source
+                contributor, or a coding partner to grow together. The mission
+                is simple: remove isolation and enable developers to build
+                confidently alongside others.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
                 What We Do
               </h2>
               <p className="leading-relaxed">
-                Devmate provides a unique platform where developers can showcase
-                their skills, discover like-minded professionals, and connect
-                based on shared interests, tech stacks, and project goals. Our
-                intelligent matching system helps you find developers who
-                complement your skills and share your vision.
+                Devmate provides a space for developers to showcase their
+                skills, connect with like-minded individuals, and form
+                meaningful partnerships. By highlighting tech stacks, interests,
+                and project goals, the platform makes it easier to discover
+                people who truly complement your strengths. Intelligent matching
+                features help streamline this process, ensuring connections that
+                actually matter.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
@@ -51,43 +56,45 @@ const About = () => {
               </h2>
               <ul className="space-y-3 list-disc list-inside leading-relaxed">
                 <li>
-                  <strong>Smart Matching:</strong> Find developers based on
-                  skills, interests, and project compatibility
+                  <strong>Smart Matching:</strong> Discover collaborators based
+                  on skills, goals, and compatibility
                 </li>
                 <li>
                   <strong>Professional Profiles:</strong> Showcase your
-                  expertise, projects, and tech stack
+                  experience, projects, and tech stack
                 </li>
                 <li>
-                  <strong>Real-Time Communication:</strong> Built-in messaging
-                  to discuss ideas and coordinate
+                  <strong>Real-Time Messaging:</strong> Communicate instantly to
+                  share ideas and plan projects
                 </li>
                 <li>
-                  <strong>Community Driven:</strong> Join a growing community of
-                  passionate developers
+                  <strong>Community Focused:</strong> Join a growing network of
+                  passionate developers worldwide
                 </li>
               </ul>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
-                Our Story
+                My Story
               </h2>
               <p className="leading-relaxed">
-                Devmate was founded by developers who experienced firsthand the
-                challenges of finding the right collaborators for projects. We
-                understand the importance of not just technical skills, but also
-                compatible working styles, shared goals, and good communication.
-                That's why we built Devmate—to make connecting with your ideal
-                dev partner as easy as possible.
+                Devmate was built entirely by me — from design and architecture
+                to development and deployment. As a developer, I personally
+                experienced the challenge of working alone and struggling to
+                find the right collaborators. I wanted to create a platform that
+                makes connection simple, meaningful, and accessible for all
+                developers, regardless of experience level.
               </p>
 
               <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">
-                Join Our Community
+                A Solo-Built Platform
               </h2>
               <p className="leading-relaxed">
-                Whether you're a seasoned professional or just starting your
-                development journey, Devmate welcomes you. Connect with
-                thousands of developers, share your passion for coding, and
-                build something amazing together.
+                Every feature in Devmate is crafted with care: intelligent
+                matching, user profiles, real-time chat, and the overall user
+                experience. My goal has always been to create a seamless and
+                intuitive environment that empowers developers to collaborate
+                and bring ideas to life. Devmate represents both my passion and
+                commitment to the developer community.
               </p>
 
               <div className="mt-10 pt-8 border-t border-slate-200">
