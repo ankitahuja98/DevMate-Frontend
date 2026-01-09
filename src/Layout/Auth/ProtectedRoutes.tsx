@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAppSelector, type AppDispatch } from "../../redux/store/store";
+import { useAppSelector } from "../../redux/store/store";
 
 const ProtectedRoutes = () => {
   const { userProfileData, userProfileIsloading } = useAppSelector(

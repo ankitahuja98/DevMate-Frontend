@@ -3,7 +3,6 @@ import "./App.css";
 import ProtectedRoutes from "./Layout/Auth/ProtectedRoutes";
 import Explore from "./Pages/Explore";
 import LikedYou from "./Pages/LikedYou";
-import Discover from "./Pages/Discover";
 import Settings from "./Pages/Settings";
 import Profile from "./Pages/Profile";
 import Matches from "./Pages/Matches";

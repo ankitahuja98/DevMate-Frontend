@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import GroupsIcon from "@mui/icons-material/Groups";
 import CodeIcon from "@mui/icons-material/Code";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import ForumIcon from "@mui/icons-material/Forum";
-import DevMateLogo from "../Images/devmateLogo.png";
 import StarIcon from "@mui/icons-material/Star";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-const HomePage: React.FC = () => {
+
+const HomePage = () => {
   const navigate = useNavigate();
 
   type MockProfile = {
@@ -90,13 +89,6 @@ const HomePage: React.FC = () => {
         "Seamless communication with built-in messaging. Discuss ideas and coordinate instantly.",
     },
   ];
-
-  const useStyle = {
-    logoStyle: {
-      height: "45px",
-      margin: "2px 2px 2px 25px",
-    },
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50">
