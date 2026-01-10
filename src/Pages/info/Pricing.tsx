@@ -3,9 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../Footer";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import StarIcon from "@mui/icons-material/Star";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../redux/store/store";
+import { createOrder } from "../../redux/actions/paymentAction";
 
 const Pricing = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
     "monthly"
   );
@@ -57,6 +61,43 @@ const Pricing = () => {
       savingsYearly: "16% off",
     },
   ];
+
+  const handleSubscribe = async () => {
+    const orderDetails = await dispatch(createOrder()).unwrap();
+
+    // open razorpay dailogbox
+    const { amount, currency, notes, orderId } = orderDetails;
+
+    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID;
+
+    const options = {
+      key: keyId,
+      amount,
+      currency,
+      name: "Devmate",
+      description: "Connect with Develoeprs",
+      order_id: orderId,
+      prefill: {
+        name: notes.name,
+      },
+      method: {
+        upi: true,
+        card: true,
+        wallet: true,
+        netbanking: true,
+      },
+      upi: {
+        flow: "collect",
+      },
+      image: "https://razorpay.com/favicon.png",
+      theme: {
+        color: "#003F88",
+      },
+    };
+
+    const rzp = new (window as any).Razorpay(options);
+    rzp.open();
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50">
@@ -148,7 +189,7 @@ const Pricing = () => {
                 </div>
 
                 <button
-                  // onClick={() => navigate("/login")}
+                  onClick={handleSubscribe}
                   className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 cursor-pointer mb-6 ${
                     plan.highlighted
                       ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-xl transform hover:-translate-y-1"

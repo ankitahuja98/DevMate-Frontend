@@ -5,7 +5,7 @@ export const getAllUsers = createAsyncThunk<any>(
   "getAllUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await callApi("/feed");
+      const response = await callApi.get("/feed");
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data || "Get users failed");
