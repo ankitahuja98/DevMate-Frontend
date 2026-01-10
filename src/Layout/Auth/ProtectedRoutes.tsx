@@ -13,7 +13,7 @@ const ProtectedRoutes = () => {
 
   // If backend says no user → redirect
   if (!userProfileData) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   // Auth OK

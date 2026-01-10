@@ -148,7 +148,7 @@ const Pricing = () => {
                 </div>
 
                 <button
-                  onClick={() => navigate("/login")}
+                  // onClick={() => navigate("/login")}
                   className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 cursor-pointer mb-6 ${
                     plan.highlighted
                       ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-xl transform hover:-translate-y-1"
