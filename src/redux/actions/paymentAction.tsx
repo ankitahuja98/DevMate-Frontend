@@ -3,7 +3,7 @@ import callApi from "../../api/axiosInstance";
 
 export const createOrder = createAsyncThunk<any>(
   "createOrder",
-  async (payload, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await callApi.post("payment/create");
       return response.data;
