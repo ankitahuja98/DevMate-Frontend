@@ -86,13 +86,6 @@ const Pricing = () => {
         wallet: true,
         netbanking: true,
       },
-      upi: {
-        flow: "collect",
-      },
-      image: "https://razorpay.com/favicon.png",
-      theme: {
-        color: "#003F88",
-      },
     };
 
     const rzp = new (window as any).Razorpay(options);
