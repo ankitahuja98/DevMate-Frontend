@@ -30,7 +30,7 @@ const profileSlice = createSlice({
       state.userProfile.userProfileIsloading = false;
       state.userProfile.userProfileIserror = false;
 
-      if (action.payload.isNewUser) {
+      if (action.payload?.isNewUser) {
         state.isEditProfileDialogOpen = true;
       }
     });
