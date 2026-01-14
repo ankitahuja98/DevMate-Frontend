@@ -1,15 +1,10 @@
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-// import LightModeIcon from "@mui/icons-material/LightMode";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import LogoutIcon from "@mui/icons-material/Logout";
-import SettingsIcon from "@mui/icons-material/Settings";
 import { useEffect, useState, type RefObject } from "react";
-// import TopBarLogo from "../images/TopBarLogo.png";
 import TooltipWrapper from "../../utils/TooltipWrapper";
-// import { useTheme } from "../Context/ThemeContext";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -128,35 +123,7 @@ const TopBar = ({
               )}
             </Button>
           </TooltipWrapper>
-          <TooltipWrapper
-            title="Dark Mode"
-            arrow
-            PopperProps={{
-              container: editorRef.current,
-            }}
-          >
-            {/* <Button onClick={toggleTheme}>
-              {theme === "light" ? (
-                <DarkModeIcon style={useStyle.iconStyle} />
-              ) : (
-                <LightModeIcon style={useStyle.iconStyle} />
-              )}
-            </Button> */}
-            <Button>
-              <DarkModeIcon style={useStyle.iconStyle} />
-            </Button>
-          </TooltipWrapper>
-          <TooltipWrapper
-            title="Settings"
-            arrow
-            PopperProps={{
-              container: editorRef.current,
-            }}
-          >
-            <Button>
-              <SettingsIcon style={useStyle.iconStyle} />
-            </Button>
-          </TooltipWrapper>
+
           <TooltipWrapper
             title="Logout"
             arrow

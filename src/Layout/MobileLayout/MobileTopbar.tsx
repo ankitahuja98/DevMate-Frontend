@@ -1,11 +1,30 @@
-// import DevMateLogo from "../../Images/devmateLogo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import SettingsIcon from "@mui/icons-material/Settings";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import { Button } from "@mui/material";
 
-const MobileTopbar = () => {
+const useStyle = {
+  iconStyle: {
+    cursor: "pointer",
+    fontSize: "25px",
+    color: "black",
+  },
+};
+const MobileTopbar = ({
+  NotificationIsOpen,
+  setNotificationIsOpen,
+}: {
+  NotificationIsOpen: boolean;
+  setNotificationIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const handleNotification = () => {
+    setNotificationIsOpen((prev) => !prev);
+  };
 
   return (
     <div className="MobileTopbarContainer">
@@ -13,10 +32,18 @@ const MobileTopbar = () => {
       {location.pathname === "/profile" && (
         <div className="w-full flex items-center justify-between">
           <p className="text-3xl font-bold">Profile</p>
-          <SettingsIcon
-            sx={{ fontSize: "25px", margin: "0px 7px", cursor: "pointer" }}
-            onClick={() => navigate("/setting")}
-          />
+          <div>
+            <Button onClick={() => navigate("/setting")}>
+              <SettingsIcon style={useStyle.iconStyle} />
+            </Button>
+            <Button onClick={handleNotification}>
+              {!NotificationIsOpen ? (
+                <NotificationsIcon style={useStyle.iconStyle} />
+              ) : (
+                <NotificationsActiveIcon style={useStyle.iconStyle} />
+              )}
+            </Button>
+          </div>
         </div>
       )}
 
