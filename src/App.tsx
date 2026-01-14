@@ -16,7 +16,7 @@ import Contact from "./Pages/info/Contact";
 import PrivacyPolicy from "./Pages/info/PrivacyPolicy";
 import Terms from "./Pages/info/Terms";
 import RefundPolicy from "./Pages/info/RefundPolicy";
-import Pricing from "./Pages/info/Pricing";
+import Premium from "./Pages/info/Premium";
 import Features from "./Pages/info/Features";
 import PublicRoutesLayout from "./Layout/PublicRoutesLayout/PublicRoutesLayout";
 import Founder from "./Pages/info/Founder";
@@ -41,12 +41,12 @@ function App() {
         <Route path="/login" element={<ResponsiveLogin />} />
 
         <Route element={<PublicRoutesLayout />}>
-          <Route index path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
           {/* Public informational pages */}
           <Route path="/about" element={<About />} />
           <Route path="/founder" element={<Founder />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/premium" element={<Premium />} />
           <Route path="/features" element={<Features />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
@@ -56,17 +56,17 @@ function App() {
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
           <Route element={<ResponsiveLayout />}>
-            <Route index path="/explore" element={<Explore />} />
+            <Route path="/explore" element={<Explore />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/likedyou" element={<LikedYou />} />
             <Route path="/matches" element={<Matches />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/setting" element={<Settings />} />
-            <Route path="*" element={<Navigate to="/explore" replace />} />
           </Route>
         </Route>
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/explore" replace />} />
       </Routes>
 
       <ToastContainer

@@ -223,7 +223,7 @@ const Features = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <button
-                onClick={() => navigate("/pricing")}
+                onClick={() => navigate("/premium")}
                 className="px-8 py-4 bg-white text-purple-600 font-semibold rounded-xl hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
               >
                 View Pricing

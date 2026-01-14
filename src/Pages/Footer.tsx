@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="https://github.com"
+                href="https://github.com/ankitahuja98"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-purple-600 transition-colors cursor-pointer"
@@ -43,7 +43,7 @@ const Footer: React.FC = () => {
               </a>
 
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/ankitahuja98/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-purple-600 transition-colors cursor-pointer"
@@ -68,10 +68,10 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <button
-                  onClick={() => navigate("/pricing")}
+                  onClick={() => navigate("/premium")}
                   className="hover:text-purple-400 transition-colors text-left cursor-pointer"
                 >
-                  Pricing
+                  Go Premium
                 </button>
               </li>
               <li>
@@ -103,14 +103,6 @@ const Footer: React.FC = () => {
                   className="hover:text-purple-400 transition-colors text-left cursor-pointer"
                 >
                   Matches
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigate("/pricing")}
-                  className="hover:text-purple-400 transition-colors text-left cursor-pointer"
-                >
-                  Subscription
                 </button>
               </li>
             </ul>

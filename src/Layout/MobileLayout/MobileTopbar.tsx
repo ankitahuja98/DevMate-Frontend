@@ -20,8 +20,8 @@ const MobileTopbar = () => {
         </div>
       )}
 
-      {location.pathname === "/discover" && (
-        <p className="text-3xl font-bold">Discover</p>
+      {location.pathname === "/premium" && (
+        <p className="text-3xl font-bold">Go Premium</p>
       )}
 
       {location.pathname === "/explore" && (

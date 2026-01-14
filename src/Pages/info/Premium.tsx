@@ -1,23 +1,23 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Footer from "../Footer";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import StarIcon from "@mui/icons-material/Star";
 import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../redux/store/store";
+import { useAppSelector, type AppDispatch } from "../../redux/store/store";
 import { createOrder } from "../../redux/actions/paymentAction";
 
-const Pricing = () => {
+const Premium = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
-    "monthly"
-  );
 
+  const isPremium = useAppSelector(
+    (store) => store.profile.userProfile.userProfileData.isPremium
+  );
   const plans = [
     {
       name: "Free",
-      price: { monthly: 0, yearly: 0 },
+      price: 0,
       description: "Perfect for getting started and exploring the platform",
       features: [
         "Browse unlimited developer profiles",
@@ -25,71 +25,71 @@ const Pricing = () => {
         "Send connection requests",
         "Accept or ignore requests",
         "Basic profile creation",
-        "Showcase 2 projects",
         "List your tech stack",
-        "Community access",
       ],
-      limitations: [
-        "Cannot see who liked you",
-        "Limited to 20 swipes per day",
-        "Basic profile visibility",
-      ],
-      buttonText: "Get Started Free",
-      highlighted: false,
+      limitations: ["Cannot see who liked you", "Basic profile visibility"],
+      buttonText: "Start Exploring",
+      isRazorpayRequired: false,
+      highlighted: isPremium ? false : true,
     },
     {
       name: "Premium",
-      price: { monthly: 299, yearly: 2999 },
+      price: 9,
       description: "Unlock all features and maximize your connections",
       features: [
         "Everything in Free, plus:",
         "✨ See who liked you",
         "Unlimited swipes per day",
         "Priority profile visibility",
-        "Showcase unlimited projects",
         "Advanced matching algorithm",
         "Profile badges & verification",
         "Direct messaging without match",
-        "Access to premium events",
-        "Analytics dashboard",
-        "Profile customization options",
         "Early access to new features",
       ],
       limitations: [],
-      buttonText: "Upgrade to Premium",
-      highlighted: true,
-      savingsYearly: "16% off",
+      buttonText: isPremium ? " Start Exploring" : "Upgrade to Premium",
+      isRazorpayRequired: isPremium ? false : true,
+      highlighted: isPremium ? true : false,
+      savingsYearly: "8% off",
     },
   ];
 
-  const handleSubscribe = async () => {
-    const orderDetails = await dispatch(createOrder()).unwrap();
+  const handleSubscribe = async (isRazorpayRequired: boolean) => {
+    if (!isRazorpayRequired) {
+      navigate("/explore");
+      return;
+    }
 
-    // open razorpay dailogbox
-    const { amount, currency, notes, orderId } = orderDetails;
+    if (isRazorpayRequired) {
+      const orderDetails = await dispatch(createOrder()).unwrap();
 
-    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID;
+      // open razorpay dailogbox
+      const { amount, currency, notes, orderId } = orderDetails;
 
-    const options = {
-      key: keyId,
-      amount,
-      currency,
-      name: "Devmate",
-      description: "Connect with Develoeprs",
-      order_id: orderId,
-      prefill: {
-        name: notes.name,
-      },
-      method: {
-        upi: true,
-        card: true,
-        wallet: true,
-        netbanking: true,
-      },
-    };
+      const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
-    const rzp = new (window as any).Razorpay(options);
-    rzp.open();
+      const options = {
+        key: keyId,
+        amount,
+        currency,
+        name: "Devmate",
+        description: "Connect with Develoeprs",
+        order_id: orderId,
+        prefill: {
+          name: notes.name,
+        },
+        method: {
+          upi: true,
+          card: true,
+          wallet: true,
+          netbanking: true,
+        },
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+      return;
+    }
   };
 
   return (
@@ -109,33 +109,6 @@ const Pricing = () => {
               Start for free and upgrade when you're ready to unlock the full
               power of Devmate
             </p>
-
-            {/* Billing Toggle */}
-            <div className="inline-flex items-center bg-white rounded-full p-1 shadow-lg">
-              <button
-                onClick={() => setBillingCycle("monthly")}
-                className={`px-6 py-2 rounded-full font-medium transition-all duration-300 cursor-pointer ${
-                  billingCycle === "monthly"
-                    ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                Monthly
-              </button>
-              <button
-                onClick={() => setBillingCycle("yearly")}
-                className={`px-6 py-2 rounded-full font-medium transition-all duration-300 cursor-pointer relative ${
-                  billingCycle === "yearly"
-                    ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                Yearly
-                <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full">
-                  Save 16%
-                </span>
-              </button>
-            </div>
           </div>
 
           {/* Pricing Cards */}
@@ -151,10 +124,11 @@ const Pricing = () => {
               >
                 {plan.highlighted && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-full text-sm font-semibold flex items-center space-x-1">
-                      <StarIcon sx={{ fontSize: 16 }} />
-                      <span>Most Popular</span>
-                    </div>
+                    {isPremium && (
+                      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-2 rounded-full text-sm font-semibold flex items-center space-x-1">
+                        <StarIcon sx={{ fontSize: 16 }} />
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -163,31 +137,24 @@ const Pricing = () => {
                     {plan.name}
                   </h3>
                   <p className="text-slate-600 mb-4">{plan.description}</p>
-                  <div className="flex items-baseline justify-center">
-                    <span className="text-5xl font-bold text-slate-900">
-                      ₹{plan.price[billingCycle]}
-                    </span>
-                    {plan.price[billingCycle] > 0 && (
-                      <span className="text-slate-600 ml-2">
-                        /{billingCycle === "monthly" ? "month" : "year"}
+
+                  {plan.name !== "Free" && (
+                    <div className="flex items-baseline justify-center">
+                      <span className="text-5xl font-bold text-slate-900">
+                        ₹{plan.price}
                       </span>
-                    )}
-                  </div>
-                  {billingCycle === "yearly" && plan.price.yearly > 0 && (
-                    <p className="text-sm text-green-600 mt-2">
-                      Save ₹{plan.price.monthly * 12 - plan.price.yearly} per
-                      year!
-                    </p>
+                      {plan.price > 0 && (
+                        <span className="text-slate-600 ml-2">
+                          <span className="line-through">99</span> / month
+                        </span>
+                      )}
+                    </div>
                   )}
                 </div>
 
                 <button
-                  onClick={handleSubscribe}
-                  className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 cursor-pointer mb-6 ${
-                    plan.highlighted
-                      ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-xl transform hover:-translate-y-1"
-                      : "bg-slate-100 text-slate-900 hover:bg-slate-200"
-                  }`}
+                  onClick={() => handleSubscribe(plan.isRazorpayRequired)}
+                  className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 cursor-pointer mb-6 ${"bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-xl transform hover:-translate-y-1"}`}
                 >
                   {plan.buttonText}
                 </button>
@@ -273,16 +240,10 @@ const Pricing = () => {
                   Can I cancel my subscription?
                 </h3>
                 <p className="text-slate-600">
-                  Yes, you can cancel your Premium subscription at any time from
-                  your account settings. Your premium access will continue until
-                  the end of your current billing period. See our{" "}
-                  <button
-                    onClick={() => navigate("/refund-policy")}
-                    className="text-purple-600 hover:underline cursor-pointer"
-                  >
-                    Refund Policy
-                  </button>{" "}
-                  for more details.
+                  Our Premium plan is a monthly one-time payment. You only pay
+                  for the current month. If you choose not to pay next month,
+                  your premium access will simply end automatically—no
+                  cancellation steps needed.
                 </p>
               </div>
 
@@ -292,9 +253,9 @@ const Pricing = () => {
                 </h3>
                 <p className="text-slate-600">
                   If you downgrade, you'll lose access to premium features like
-                  seeing who liked you, unlimited swipes, and advanced matching.
-                  Your profile and connections will remain, but premium benefits
-                  will no longer be available.
+                  seeing who liked you and advanced matching. Your profile and
+                  connections will remain, but premium benefits will no longer
+                  be available.
                 </p>
               </div>
 
@@ -335,4 +296,4 @@ const Pricing = () => {
   );
 };
 
-export default Pricing;
+export default Premium;

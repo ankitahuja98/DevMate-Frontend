@@ -11,13 +11,11 @@ const ProtectedRoutes = () => {
     return <div>Checking authentication...</div>;
   }
 
-  // If backend says no user → redirect
-  if (!userProfileData) {
-    return <Navigate to="/" replace />;
+  if (userProfileData) {
+    return <Outlet />; // user is authenticated
   }
 
-  // Auth OK
-  return <Outlet />;
+  return <Navigate to="/" replace />; // not logged in → go to home
 };
 
 export default ProtectedRoutes;

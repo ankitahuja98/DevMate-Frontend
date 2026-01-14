@@ -8,7 +8,7 @@ import MessageIcon from "@mui/icons-material/Message";
 import { useState } from "react";
 import { reviewConnectionReq } from "../redux/actions/connectionAction";
 import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../redux/store/store";
+import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -48,6 +48,10 @@ const LikedYouUserCard = ({
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
   const rotate = useTransform(x, [-150, 150], [-18, 18]);
 
+  const isPremium = useAppSelector(
+    (store) => store.profile.userProfile.userProfileData.isPremium
+  );
+
   const handleDragEnd = () => {
     if (x.get() > 50) {
       dispatch(
@@ -78,9 +82,9 @@ const LikedYouUserCard = ({
     <motion.div
       className={`LikedYouCard ${
         activeCard === _id ? "active border-2 border-gray-400" : ""
-      }`}
+      } ${isPremium && "isPremium"}`}
       onClick={() => setActiveCard(activeCard === _id ? null : _id)}
-      drag="x"
+      drag={isPremium ? "x" : false}
       onDragEnd={handleDragEnd}
       style={{ x, opacity, rotate }}
       dragConstraints={{ left: 0, right: 0 }}

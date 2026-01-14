@@ -11,9 +11,11 @@ const useAuth = () => {
   useEffect(() => {
     dispatch(fetchUserProfile());
   }, [dispatch]);
+
   return {
-    isAuthenticated: !!userProfileData,
+    isAuthenticated: Boolean(userProfileData),
     isLoading: userProfileIsloading,
+    hasLoaded: !userProfileIsloading,
     user: userProfileData,
     error: userProfileIserror,
   };

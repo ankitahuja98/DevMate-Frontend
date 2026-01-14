@@ -10,7 +10,12 @@ const BottomBar = () => {
 
   const menuItems = [
     { id: 0, name: "Profile", path: "/profile", icon: PersonIcon },
-    { id: 1, name: "Discover", path: "/discover", icon: InterestsOutlinedIcon },
+    {
+      id: 1,
+      name: "Go Premium",
+      path: "/premium",
+      icon: InterestsOutlinedIcon,
+    },
     { id: 2, name: "Explore", path: "/explore", icon: Diversity2Icon },
     { id: 3, name: "Liked You", path: "/likedyou", icon: FavoriteIcon },
     { id: 4, name: "Chats", path: "/matches", icon: ChatIcon },

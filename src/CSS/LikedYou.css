@@ -28,6 +28,11 @@
   -ms-overflow-style: none;
 
   box-shadow: 0px 0px 10px rgba(174, 174, 174, 0.785);
+  filter: blur(30px);
+}
+
+.LikedYouCard.isPremium {
+  filter: blur(0px);
 }
 
 /* When active (clicked) */

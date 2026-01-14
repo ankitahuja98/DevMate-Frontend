@@ -22,7 +22,7 @@ type SettingItem = {
 const accountSettings: SettingItem[] = [
   { label: "Profile", path: "/profile" },
   { label: "Notifications", path: "/settings/notifications" },
-  { label: "Subscription", path: "/settings/subscription" },
+  { label: "Subscription", path: "/premium" },
 ];
 
 const legalSettings: SettingItem[] = [
