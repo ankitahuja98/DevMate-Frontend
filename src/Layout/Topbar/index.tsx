@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector, type AppDispatch } from "../../redux/store/store";
 import { logout } from "../../redux/actions/authAction";
 import "../../CSS/Topbar.css";
-import DevMateLogoWhite from "../../Images/devmateLogo-white.png";
+import DevMateLogoWhite from "../../Images/devmateLogo-white.avif";
 import { useFullscreen } from "../../context/FullscreenContext";
 
 const useStyle = {

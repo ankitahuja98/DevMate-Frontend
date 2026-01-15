@@ -3,7 +3,7 @@ import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import WorkIcon from "@mui/icons-material/Work";
-import Dummyuser from "../Images/Dummyuser.png";
+import Dummyuser from "../Images/Dummyuser.avif";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch } from "react-redux";

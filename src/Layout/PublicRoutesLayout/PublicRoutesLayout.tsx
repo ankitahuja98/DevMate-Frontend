@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import DevMateLogo from "../../Images/devmateLogo.png";
+import DevMateLogo from "../../Images/devmateLogo.avif";
 import { useAppSelector } from "../../redux/store/store";
 import ResponsiveLayout from "../ResponsiveLayout/ResponsiveLayout";
 

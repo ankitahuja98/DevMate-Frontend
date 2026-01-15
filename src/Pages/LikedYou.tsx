@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { getAllRequests } from "../redux/actions/userAction";
 import LoadingThreeDotsPulse from "../Components/Loader";
 import { Button } from "@mui/material";
-import AllReqSwipe from "../Images/AllReqSwipe.png";
+import AllReqSwipe from "../Images/AllReqSwipe.avif";
 
 interface Request {
   _id: string;

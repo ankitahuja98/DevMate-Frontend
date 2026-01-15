@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import DevMateLogoWhite from "../Images/devmateLogo-white.png";
+import DevMateLogoWhite from "../Images/devmateLogo-white.avif";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 

@@ -4,7 +4,7 @@ import Footer from "../Footer";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LanguageIcon from "@mui/icons-material/Language";
-import founderImage from "../../Images/AnkitProfilePic.webp";
+import founderImage from "../../Images/AnkitProfilePic.avif";
 
 const Founder: React.FC = () => {
   const navigate = useNavigate();

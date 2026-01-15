@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
-import googleLogo from "../../Images/googleLogo.png";
+import googleLogo from "../../Images/googleLogo.avif";
 import { useDispatch } from "react-redux";
 import { useAppSelector, type AppDispatch } from "../../redux/store/store";
 import { login } from "../../redux/actions/authAction";

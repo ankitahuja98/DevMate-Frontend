@@ -2,7 +2,7 @@ import { useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import "./Login.css";
-import AppLogo from "../../Images/devmateLogo-white.png";
+import AppLogo from "../../Images/devmateLogo-white.avif";
 import { useNavigate } from "react-router-dom";
 
 const LoginSignup = () => {

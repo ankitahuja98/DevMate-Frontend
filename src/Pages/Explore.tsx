@@ -4,7 +4,7 @@ import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAllUsers } from "../redux/actions/userAction";
-import AllSwipe from "../Images/AllSwipe.png";
+import AllSwipe from "../Images/AllSwipe.avif";
 import { Button } from "@mui/material";
 import type { userData } from "../types/userData";
 import LoadingThreeDotsPulse from "../Components/Loader";

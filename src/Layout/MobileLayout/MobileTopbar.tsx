@@ -4,7 +4,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { Button } from "@mui/material";
-import DevMateLogo from "../../Images/devmateLogo.png";
+import DevMateLogo from "../../Images/devmateLogo.avif";
 
 const useStyle = {
   iconStyle: {
