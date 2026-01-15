@@ -1,13 +1,16 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
+import { useState } from "react";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import WorkIcon from "@mui/icons-material/Work";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import type { AppDispatch } from "../redux/store/store";
+import CloseIcon from "@mui/icons-material/Close";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ChatIcon from "@mui/icons-material/Chat";
+import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useDispatch } from "react-redux";
 import { sendConnectionReq } from "../redux/actions/connectionAction";
-import { toast } from "react-toastify";
 
 const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
   const {
@@ -28,6 +31,12 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
   } = val;
 
   const dispatch = useDispatch<AppDispatch>();
+  const [showLikeAnimation, setShowLikeAnimation] = useState(false);
+  const [showDislikeAnimation, setShowDislikeAnimation] = useState(false);
+
+  const isPremium = useAppSelector(
+    (store) => store.profile.userProfile.userProfileData?.isPremium ?? false
+  );
 
   const x = useMotionValue(0);
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
@@ -35,30 +44,117 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
 
   const handleDragEnd = () => {
     if (x.get() > 50) {
+      setShowLikeAnimation(true);
       dispatch(sendConnectionReq({ status: "interested", toUserId: _id }))
         .unwrap()
         .then(() => {
-          filterUserData(_id);
-          toast.success(`You liked ${name}`);
+          setTimeout(() => {
+            filterUserData(_id);
+          }, 500);
         });
     } else if (x.get() < -50) {
+      setShowDislikeAnimation(true);
       dispatch(sendConnectionReq({ status: "ignored", toUserId: _id }))
         .unwrap()
         .then(() => {
-          filterUserData(_id);
-          toast.warning(`You passed ${name}`);
+          setTimeout(() => {
+            filterUserData(_id);
+          }, 500);
         });
     }
   };
 
+  const handleLike = () => {
+    setShowLikeAnimation(true);
+    dispatch(sendConnectionReq({ status: "interested", toUserId: _id }))
+      .unwrap()
+      .then(() => {
+        setTimeout(() => {
+          filterUserData(_id);
+        }, 500);
+      });
+  };
+
+  const handleDislike = () => {
+    setShowDislikeAnimation(true);
+    dispatch(sendConnectionReq({ status: "ignored", toUserId: _id }))
+      .unwrap()
+      .then(() => {
+        setTimeout(() => {
+          filterUserData(_id);
+        }, 500);
+      });
+  };
+
   return (
     <motion.div
-      className="ExploreCard"
+      className="ExploreCard relative"
       drag="x"
       onDragEnd={handleDragEnd}
       style={{ x, opacity, rotate }}
       dragConstraints={{ left: 0, right: 0 }}
     >
+      {/* ================= FLOATING ACTION BUTTONS ================= */}
+      {/* Dislike Button - Left Side */}
+      <motion.button
+        onClick={handleDislike}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-r-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
+        initial={{ x: -40 }}
+        whileHover={{ x: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      >
+        <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-r from-red-500 to-pink-500">
+          <CloseIcon sx={{ fontSize: 28, color: "white" }} />
+        </div>
+      </motion.button>
+
+      {/* Like Button - Right Side */}
+      <motion.button
+        onClick={handleLike}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-l-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
+        initial={{ x: 40 }}
+        whileHover={{ x: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      >
+        <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-l from-green-500 to-emerald-500">
+          <FavoriteIcon sx={{ fontSize: 28, color: "white" }} />
+        </div>
+      </motion.button>
+
+      {/* ================= LIKE ANIMATION OVERLAY ================= */}
+      {showLikeAnimation && (
+        <motion.div
+          className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: [0, 1, 1, 0], scale: [0, 1.2, 1, 1.3] }}
+          transition={{ duration: 0.8 }}
+          onAnimationComplete={() => setShowLikeAnimation(false)}
+        >
+          <div className="bg-green-500 rounded-full p-8 shadow-2xl">
+            <FavoriteIcon sx={{ fontSize: 80, color: "white" }} />
+          </div>
+        </motion.div>
+      )}
+
+      {/* ================= DISLIKE ANIMATION OVERLAY ================= */}
+      {showDislikeAnimation && (
+        <motion.div
+          className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
+          initial={{ opacity: 0, scale: 0, rotate: 0 }}
+          animate={{
+            opacity: [0, 1, 1, 0],
+            scale: [0, 1.2, 1, 1.3],
+            rotate: [0, -10, 10, 0],
+          }}
+          transition={{ duration: 0.8 }}
+          onAnimationComplete={() => setShowDislikeAnimation(false)}
+        >
+          <div className="bg-red-500 rounded-full p-8 shadow-2xl">
+            <CloseIcon sx={{ fontSize: 80, color: "white" }} />
+          </div>
+        </motion.div>
+      )}
+
       <div className="CardImageWrapper">
         <img
           src={profilePhoto}
@@ -70,21 +166,35 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
 
         <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3">
-          <div className="backdrop-blur-md bg-white/10 border border-white/10 rounded-lg p-2">
-            <div className="flex items-baseline gap-2">
-              <h2 className="text-lg sm:text-2xl font-bold text-white truncate">
-                {name}
-              </h2>
-              {age && (
-                <span className="text-sm sm:text-xl text-white/90">{age}</span>
+          <div className="backdrop-blur-md bg-white/10 border border-white/10 rounded-lg p-2 flex items-center gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-baseline gap-2">
+                <h2 className="text-lg sm:text-2xl font-bold text-white truncate">
+                  {name}
+                </h2>
+                {age && (
+                  <span className="text-sm sm:text-xl text-white/90">
+                    {age}
+                  </span>
+                )}
+              </div>
+
+              {location && (
+                <div className="flex items-center gap-1 text-white/80">
+                  <LocationOnOutlinedIcon sx={{ fontSize: 14 }} />
+                  <span className="text-xs sm:text-sm truncate">
+                    {location}
+                  </span>
+                </div>
               )}
             </div>
-
-            {location && (
-              <div className="flex items-center gap-1 text-white/80">
-                <LocationOnOutlinedIcon sx={{ fontSize: 14 }} />
-                <span className="text-xs sm:text-sm truncate">{location}</span>
-              </div>
+            {isPremium && (
+              <button
+                className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer"
+                aria-label="Chat"
+              >
+                <ChatIcon sx={{ fontSize: "25px", color: "white" }} />
+              </button>
             )}
           </div>
         </div>
@@ -239,7 +349,9 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
         )}
 
         {/* SOCIAL */}
-        {socialLinks && (
+        {(socialLinks.github ||
+          socialLinks.linkedin ||
+          socialLinks.portfolio) && (
           <div>
             <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
               <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>

@@ -17,7 +17,6 @@ const Explore = () => {
   const getallUsersisLoading = useAppSelector(
     (store) => store.user.userDataIsloading
   );
-  console.log("AllUsers", AllUsers);
 
   const dispatch = useDispatch<AppDispatch>();
 

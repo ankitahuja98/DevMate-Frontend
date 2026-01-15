@@ -4,17 +4,15 @@
   margin: 15px;
   display: grid;
   justify-content: center;
-  isolation: isolate;
 }
-
-.ExploreCard {
+₹ .ExploreCard {
   height: 100%;
   /* border: 2px solid pink; */
   width: 25rem;
   border-radius: 10px 10px 0px 0px;
   /* overflow: hidden; */
   touch-action: pan-y;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   overflow-y: auto;
   scrollbar-width: none;
   scrollbar-width: none; /* Firefox */
@@ -25,7 +23,6 @@
   scroll-behavior: smooth;
   position: relative;
   box-shadow: 0px 0px 10px rgba(219, 219, 219, 0.255);
-  isolation: isolate;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -83,7 +80,6 @@
   width: 100%;
   aspect-ratio: 16 / 22;
   overflow: hidden;
-  isolation: isolate;
 }
 
 .cardProfilePic {

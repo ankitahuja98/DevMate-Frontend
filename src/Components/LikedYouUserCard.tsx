@@ -4,12 +4,13 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import WorkIcon from "@mui/icons-material/Work";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import MessageIcon from "@mui/icons-material/Message";
+import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { reviewConnectionReq } from "../redux/actions/connectionAction";
 import { useDispatch } from "react-redux";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
-import { toast } from "react-toastify";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ChatIcon from "@mui/icons-material/Chat";
 import { useNavigate } from "react-router-dom";
 
 const LikedYouUserCard = ({
@@ -41,6 +42,8 @@ const LikedYouUserCard = ({
   } = val;
 
   const [activeCard, setActiveCard] = useState<string | null>(null);
+  const [showLikeAnimation, setShowLikeAnimation] = useState(false);
+  const [showDislikeAnimation, setShowDislikeAnimation] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
@@ -59,8 +62,9 @@ const LikedYouUserCard = ({
       )
         .unwrap()
         .then(() => {
-          filterRequestData?.(requestId);
-          toast.success(`You accepted ${name}`);
+          setTimeout(() => {
+            filterRequestData?.(requestId);
+          }, 500);
         });
     } else if (x.get() < -50) {
       dispatch(
@@ -68,10 +72,37 @@ const LikedYouUserCard = ({
       )
         .unwrap()
         .then(() => {
-          filterRequestData?.(requestId);
-          toast.warning(`You rejected ${name}`);
+          setTimeout(() => {
+            filterRequestData?.(requestId);
+          }, 500);
         });
     }
+  };
+
+  const handleLike = () => {
+    setShowLikeAnimation(true);
+    dispatch(
+      reviewConnectionReq({ status: "accepted", requestId: `${requestId}` })
+    )
+      .unwrap()
+      .then(() => {
+        setTimeout(() => {
+          filterRequestData?.(requestId);
+        }, 500);
+      });
+  };
+
+  const handleDislike = () => {
+    setShowDislikeAnimation(true);
+    dispatch(
+      reviewConnectionReq({ status: "rejected", requestId: `${requestId}` })
+    )
+      .unwrap()
+      .then(() => {
+        setTimeout(() => {
+          filterRequestData?.(requestId);
+        }, 500);
+      });
   };
 
   const handleOpenChat = () => {
@@ -89,6 +120,67 @@ const LikedYouUserCard = ({
       style={{ x, opacity, rotate }}
       dragConstraints={{ left: 0, right: 0 }}
     >
+      {/* ================= FLOATING ACTION BUTTONS ================= */}
+      {/* Dislike Button - Left Side */}
+      <motion.button
+        onClick={handleDislike}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-r-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
+        initial={{ x: -40 }}
+        whileHover={{ x: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      >
+        <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-r from-red-500 to-pink-500">
+          <CloseIcon sx={{ fontSize: 28, color: "white" }} />
+        </div>
+      </motion.button>
+
+      {/* Like Button - Right Side */}
+      <motion.button
+        onClick={handleLike}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-l-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
+        initial={{ x: 40 }}
+        whileHover={{ x: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      >
+        <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-l from-green-500 to-emerald-500">
+          <FavoriteIcon sx={{ fontSize: 28, color: "white" }} />
+        </div>
+      </motion.button>
+
+      {/* ================= LIKE ANIMATION OVERLAY ================= */}
+      {showLikeAnimation && (
+        <motion.div
+          className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: [0, 1, 1, 0], scale: [0, 1.2, 1, 1.3] }}
+          transition={{ duration: 0.8 }}
+          onAnimationComplete={() => setShowLikeAnimation(false)}
+        >
+          <div className="bg-green-500 rounded-full p-8 shadow-2xl">
+            <FavoriteIcon sx={{ fontSize: 80, color: "white" }} />
+          </div>
+        </motion.div>
+      )}
+
+      {/* ================= DISLIKE ANIMATION OVERLAY ================= */}
+      {showDislikeAnimation && (
+        <motion.div
+          className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
+          initial={{ opacity: 0, scale: 0, rotate: 0 }}
+          animate={{
+            opacity: [0, 1, 1, 0],
+            scale: [0, 1.2, 1, 1.3],
+            rotate: [0, -10, 10, 0],
+          }}
+          transition={{ duration: 0.8 }}
+          onAnimationComplete={() => setShowDislikeAnimation(false)}
+        >
+          <div className="bg-red-500 rounded-full p-8 shadow-2xl">
+            <CloseIcon sx={{ fontSize: 80, color: "white" }} />
+          </div>
+        </motion.div>
+      )}
+
       {/* ================= IMAGE SECTION ================= */}
       <div className="LikedCardImageWrapper">
         <img
@@ -102,7 +194,7 @@ const LikedYouUserCard = ({
 
         <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3">
           <div className="flex justify-between backdrop-blur-md bg-white/10 border border-white/10 rounded-lg p-2">
-            <div>
+            <div className="flex-1 min-w-0">
               <div className="flex items-baseline gap-2">
                 <h2 className="text-lg sm:text-2xl font-bold text-white truncate">
                   {name}
@@ -123,12 +215,14 @@ const LikedYouUserCard = ({
                 </div>
               )}
             </div>
-            {isMatched && (
-              <div className="flex items-center justify-center">
-                <div className="chatIcon" onClick={handleOpenChat}>
-                  <MessageIcon sx={{ fontSize: "20px" }} />
-                </div>
-              </div>
+
+            {(isPremium || isMatched) && (
+              <button
+                className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer"
+                aria-label="Chat"
+              >
+                <ChatIcon sx={{ fontSize: "25px", color: "white" }} />
+              </button>
             )}
           </div>
         </div>
