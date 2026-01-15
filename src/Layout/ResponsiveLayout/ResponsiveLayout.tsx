@@ -1,10 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import MobileLayout from "../MobileLayout/index";
 import MainLayout from "../MainLayout/index";
 import { Outlet } from "react-router-dom";
 import { useFullscreen } from "../../context/FullscreenContext";
 
-const ResponsiveLayout = () => {
+interface ResponsiveLayoutProps {
+  children?: ReactNode;
+}
+
+const ResponsiveLayout = ({ children }: ResponsiveLayoutProps) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 650);
   const editorRef = useRef<HTMLDivElement>(null);
   const { setEditorRef } = useFullscreen();
@@ -24,15 +28,13 @@ const ResponsiveLayout = () => {
   if (isMobile) {
     return (
       <MobileLayout editorRef={editorRef}>
-        <Outlet />
+        {children || <Outlet />}
       </MobileLayout>
     );
   }
 
   return (
-    <MainLayout editorRef={editorRef}>
-      <Outlet />
-    </MainLayout>
+    <MainLayout editorRef={editorRef}>{children || <Outlet />}</MainLayout>
   );
 };
 

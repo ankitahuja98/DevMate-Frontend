@@ -4,6 +4,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { Button } from "@mui/material";
+import DevMateLogo from "../../Images/devmateLogo.png";
 
 const useStyle = {
   iconStyle: {
@@ -25,6 +26,18 @@ const MobileTopbar = ({
   const handleNotification = () => {
     setNotificationIsOpen((prev) => !prev);
   };
+  let publicRoutes = [
+    "/about",
+    "/founder",
+    "/contact",
+    "/pricing",
+    "/features",
+    "/privacy-policy",
+    "/terms",
+    "/refund-policy",
+  ];
+
+  let ispublicRoutes = publicRoutes.includes(location.pathname);
 
   return (
     <div className="MobileTopbarContainer">
@@ -47,10 +60,6 @@ const MobileTopbar = ({
         </div>
       )}
 
-      {location.pathname === "/premium" && (
-        <p className="text-3xl font-bold">Go Premium</p>
-      )}
-
       {location.pathname === "/explore" && (
         <p className="text-3xl font-bold">Devmate</p>
       )}
@@ -68,6 +77,19 @@ const MobileTopbar = ({
           <p className="text-3xl font-bold">Chats</p>
           <SearchIcon style={{ fontSize: "30px" }} />
         </div>
+      )}
+
+      {location.pathname === "/premium" && (
+        <p className="text-3xl font-bold">Go Premium</p>
+      )}
+
+      {/* Public routes */}
+      {ispublicRoutes && (
+        <img
+          className="ml-0 md:ml-5 h-10 md:h-12"
+          src={DevMateLogo}
+          alt="DevMate"
+        />
       )}
     </div>
   );
