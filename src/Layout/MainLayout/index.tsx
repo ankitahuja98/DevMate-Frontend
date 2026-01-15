@@ -1,16 +1,21 @@
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../Sidebar/index";
 import Topbar from "../Topbar/index";
 import { Outlet } from "react-router-dom";
 import EditProfile from "../../Components/EditProfile";
 
-const index = ({ children }: { children: any }) => {
+const index = ({
+  children,
+  editorRef,
+}: {
+  children: any;
+  editorRef: React.RefObject<HTMLDivElement | null>;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [NotificationIsOpen, setNotificationIsOpen] = useState(false);
-  const editorRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden">
+    <div ref={editorRef} className="flex h-screen w-screen overflow-hidden">
       {/* Left Sidebar */}
       <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} editorRef={editorRef} />
 

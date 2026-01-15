@@ -22,6 +22,7 @@ import PublicRoutesLayout from "./Layout/PublicRoutesLayout/PublicRoutesLayout";
 import Founder from "./Pages/info/Founder";
 import useAuth from "./Layout/Auth/useAuth";
 import LoadingThreeDotsPulse from "./Components/Loader";
+import { FullscreenProvider } from "./context/FullscreenContext";
 
 function App() {
   const { isLoading } = useAuth();
@@ -35,7 +36,7 @@ function App() {
   }
 
   return (
-    <>
+    <FullscreenProvider>
       <Routes>
         {/* public routes */}
         <Route path="/login" element={<ResponsiveLogin />} />
@@ -46,7 +47,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/founder" element={<Founder />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/premium" element={<Premium />} />
+          <Route path="/pricing" element={<Premium />} />
           <Route path="/features" element={<Features />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
@@ -62,6 +63,7 @@ function App() {
             <Route path="/matches" element={<Matches />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/setting" element={<Settings />} />
+            <Route path="/premium" element={<Premium />} />
           </Route>
         </Route>
 
@@ -78,7 +80,7 @@ function App() {
         pauseOnHover
         draggable
       />
-    </>
+    </FullscreenProvider>
   );
 }
 

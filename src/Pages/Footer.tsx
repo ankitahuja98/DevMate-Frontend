@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <button
-                  onClick={() => navigate("/premium")}
+                  onClick={() => navigate("/pricing")}
                   className="hover:text-purple-400 transition-colors text-left cursor-pointer"
                 >
                   Go Premium

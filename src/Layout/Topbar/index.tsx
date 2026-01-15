@@ -12,6 +12,7 @@ import { useAppSelector, type AppDispatch } from "../../redux/store/store";
 import { logout } from "../../redux/actions/authAction";
 import "../../CSS/Topbar.css";
 import DevMateLogoWhite from "../../Images/devmateLogo-white.png";
+import { useFullscreen } from "../../context/FullscreenContext";
 
 const useStyle = {
   barStyle: {
@@ -40,43 +41,22 @@ const TopBar = ({
   editorRef,
 }: {
   NotificationIsOpen: boolean;
-  editorRef: RefObject<HTMLDivElement | null>;
+  editorRef?: RefObject<HTMLDivElement | null>;
   setNotificationIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const { isFullscreen, toggleFullscreen } = useFullscreen();
 
   //   const { theme, toggleTheme } = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const toggleFullscreen = () => {
-    if (!isFullscreen) {
-      if (editorRef.current?.requestFullscreen) {
-        editorRef.current.requestFullscreen();
-      }
-    } else {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      }
-    }
-  };
+  console.log("Topbar editorRef:", editorRef);
+  console.log("Topbar editorRef.current:", editorRef?.current);
 
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
   };
-
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
-    };
-  }, []);
 
   const handleNotification = () => {
     setNotificationIsOpen((prev) => !prev);
@@ -97,7 +77,7 @@ const TopBar = ({
             title="Notification"
             arrow
             PopperProps={{
-              container: editorRef.current,
+              container: editorRef?.current || undefined,
             }}
           >
             <Button onClick={handleNotification}>
@@ -112,7 +92,7 @@ const TopBar = ({
             title={isFullscreen ? "Exit Full screen" : "Full screen"}
             arrow
             PopperProps={{
-              container: editorRef.current,
+              container: editorRef?.current || undefined,
             }}
           >
             <Button type="button" onClick={toggleFullscreen}>
@@ -128,7 +108,7 @@ const TopBar = ({
             title="Logout"
             arrow
             PopperProps={{
-              container: editorRef.current,
+              container: editorRef?.current || undefined,
             }}
           >
             <Button onClick={handleLogout}>

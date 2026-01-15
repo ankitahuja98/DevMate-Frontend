@@ -11,7 +11,7 @@ const Premium = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const isPremium = useAppSelector(
-    (store) => store.profile.userProfile.userProfileData.isPremium
+    (store) => store.profile.userProfile.userProfileData?.isPremium ?? false
   );
   const plans = [
     {

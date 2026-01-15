@@ -18,14 +18,14 @@ export default function SideBar({
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  editorRef: RefObject<HTMLDivElement | null>;
+  editorRef?: RefObject<HTMLDivElement | null>;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { height } = useDimensions(containerRef);
   const location = useLocation();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col" style={{ backgroundColor: "#00296b" }}>
       <motion.nav
         ref={containerRef}
         initial={false}
@@ -68,7 +68,7 @@ const Navigation = ({
 }: {
   isOpen: boolean;
   currentPath: string;
-  editorRef: RefObject<HTMLDivElement | null>;
+  editorRef?: RefObject<HTMLDivElement | null>;
 }) => (
   <ul style={list}>
     {menuItems.map((item) => (
@@ -86,7 +86,6 @@ const Navigation = ({
 );
 
 const MenuItem = ({
-  key,
   name,
   path,
   icon: Icon,
@@ -94,13 +93,12 @@ const MenuItem = ({
   currentPath,
   editorRef,
 }: {
-  key: number;
   name: string;
   path: string;
   icon: React.ElementType;
   isOpen: boolean;
   currentPath: string;
-  editorRef: RefObject<HTMLDivElement | null>;
+  editorRef?: RefObject<HTMLDivElement | null>;
 }) => {
   const listItem: React.CSSProperties = {
     display: "flex",
@@ -112,13 +110,13 @@ const MenuItem = ({
     width: "100%",
   };
   return (
-    <Link key={key} to={path} className="p-2 rounded flex align-middle">
+    <Link to={path} className="p-2 rounded flex align-middle">
       <li style={listItem} className={`p-1 rounded-lg`}>
         <TooltipWrapper
           title={name}
           arrow
           PopperProps={{
-            container: editorRef.current,
+            container: editorRef?.current || undefined,
           }}
         >
           <Icon style={iconPlaceholder} />
@@ -192,7 +190,6 @@ const nav: React.CSSProperties = {
   position: "relative",
   display: "flex",
   flexDirection: "column",
-  backgroundColor: "#00296b",
   color: "white",
   boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
   overflow: "hidden",

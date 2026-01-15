@@ -5,13 +5,19 @@ import BottomBar from "./BottomBar";
 import EditProfile from "../../Components/EditProfile";
 import { useState } from "react";
 
-const index = ({ children }: { children: any }) => {
+const index = ({
+  children,
+  editorRef,
+}: {
+  children: any;
+  editorRef: React.RefObject<HTMLDivElement | null>;
+}) => {
   const [NotificationIsOpen, setNotificationIsOpen] = useState(false);
   const location = useLocation();
 
   const needsBottomPadding = location.pathname === "/likedyou";
   return (
-    <div className="flex h-screen w-screen overflow-hidden">
+    <div ref={editorRef} className="flex h-screen w-screen overflow-hidden">
       {/* Right Section (Topbar + Page Content) */}
       <div className=" flex flex-col flex-1 overflow-hidden bg-white">
         {/* Mobile Top bar */}

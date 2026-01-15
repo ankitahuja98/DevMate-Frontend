@@ -12,6 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
+import { useFullscreen } from "../context/FullscreenContext";
 
 type SettingItem = {
   label: string;
@@ -35,12 +36,33 @@ const legalSettings: SettingItem[] = [
 ];
 
 const accountActions: SettingItem[] = [
+  { label: "Full Screen", path: "", type: "fullScreen" },
   { label: "Logout", path: "", type: "logout" },
   { label: "Delete Account", path: "", type: "deleteAccount" },
 ];
 
+const ToggleSwitch = ({
+  isOn,
+  onToggle,
+}: {
+  isOn: boolean;
+  onToggle: () => void;
+}) => (
+  <label className="relative inline-flex items-center cursor-pointer">
+    <input
+      type="checkbox"
+      checked={isOn}
+      onChange={onToggle}
+      className="sr-only peer"
+    />
+    <div className="w-11 h-6 bg-gray-400 rounded-full peer peer-checked:bg-blue-600 transition"></div>
+    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-5"></div>
+  </label>
+);
+
 const Settings = () => {
   const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
+  const { isFullscreen, toggleFullscreen } = useFullscreen();
 
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -85,6 +107,8 @@ const Settings = () => {
                 ? handleLogout()
                 : item.type === "deleteAccount"
                 ? handleDeleteAccount()
+                : item.type === "fullScreen"
+                ? toggleFullscreen()
                 : navigate(item.path)
             }
             className={`w-full flex items-center justify-between px-6 py-4 text-left
@@ -99,8 +123,11 @@ const Settings = () => {
             >
               {item.label}
             </span>
-
-            <span className="text-gray-400 text-xl leading-none">›</span>
+            {item.label === "Full Screen" ? (
+              <ToggleSwitch isOn={isFullscreen} onToggle={toggleFullscreen} />
+            ) : (
+              <span className="text-gray-400 text-xl leading-none">›</span>
+            )}
           </button>
         ))}
       </div>
