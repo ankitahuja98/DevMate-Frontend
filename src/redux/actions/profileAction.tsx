@@ -29,3 +29,17 @@ export const editprofile = createAsyncThunk<any, userData>(
     }
   }
 );
+
+export const deleteProfile = createAsyncThunk<any, string>(
+  "deleteProfile",
+  async (password, { rejectWithValue }) => {
+    try {
+      const response = await callApi.patch("/profile/delete", { password });
+      return response.data.message;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to update profile"
+      );
+    }
+  }
+);

@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useFullscreen } from "../context/FullscreenContext";
+import { deleteProfile } from "../redux/actions/profileAction";
+import { toast } from "react-toastify";
 
 type SettingItem = {
   label: string;
@@ -83,13 +85,21 @@ const Settings = () => {
     setisDeleteDialogOpen(false);
   };
 
-  const handleDelete = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleDelete = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const formJson = Object.fromEntries((formData as any).entries());
-    const email = formJson.email;
-    console.log(email);
-    handleClose();
+    try {
+      const formData = new FormData(event.currentTarget);
+      const formJson = Object.fromEntries(formData.entries());
+      const password = formJson.password as string;
+
+      const res = await dispatch(deleteProfile(password)).unwrap();
+
+      toast.success(res);
+      handleClose();
+      dispatch(logout());
+    } catch (error: any) {
+      toast.error(error);
+    }
   };
 
   const renderSection = (title: string, items: SettingItem[]) => (
