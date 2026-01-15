@@ -31,6 +31,7 @@ export interface userData {
   projects: Project[];
   socialLinks: SocialLinks;
   isNewUser: boolean;
+  isUserProfileCompleted: boolean | null;
 }
 
 export interface userDataProps {

@@ -21,9 +21,12 @@ import { validateStep } from "../utils/validations/profilevalidation";
 import { editprofile, fetchUserProfile } from "../redux/actions/profileAction";
 import { allowedProps } from "../utils/allowedProps";
 import { toast } from "react-toastify";
+import { logout } from "../redux/actions/authAction";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const [activetabs, setactivetabs] = useState(0);
 
@@ -52,6 +55,7 @@ const EditProfile = () => {
     availability: "", // Goals - required
     projects: [], // Projects
     isNewUser: true,
+    isUserProfileCompleted: null,
   });
   const userprofile = useAppSelector(
     (store) => store.profile.userProfile.userProfileData
@@ -144,6 +148,11 @@ const EditProfile = () => {
     }
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
   return (
     <>
       {isEditProfileDialogOpen && (
@@ -231,10 +240,26 @@ const EditProfile = () => {
           <DialogActions
             sx={{
               padding: "16px 24px",
-              // justifyContent: "space-between",
+              justifyContent: "space-between",
             }}
           >
-            <div style={{ display: "flex", gap: "12px" }}>
+            {!userprofile.isUserProfileCompleted && (
+              <div>
+                <Button
+                  onClick={handleLogout}
+                  color="inherit"
+                  variant="outlined"
+                >
+                  Skip & Logout
+                </Button>
+              </div>
+            )}
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+              }}
+            >
               {activetabs > 0 && (
                 <Button onClick={handleBack} color="inherit" variant="outlined">
                   ← Back

@@ -3,7 +3,7 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useEffect, useState, type RefObject } from "react";
+import { type RefObject } from "react";
 import TooltipWrapper from "../../utils/TooltipWrapper";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -49,9 +49,6 @@ const TopBar = ({
   //   const { theme, toggleTheme } = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-
-  console.log("Topbar editorRef:", editorRef);
-  console.log("Topbar editorRef.current:", editorRef?.current);
 
   const handleLogout = () => {
     dispatch(logout());

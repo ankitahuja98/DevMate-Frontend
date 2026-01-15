@@ -13,6 +13,11 @@ const Premium = () => {
   const isPremium = useAppSelector(
     (store) => store.profile.userProfile.userProfileData?.isPremium ?? false
   );
+
+  const { userProfileData } = useAppSelector(
+    (store) => store.profile.userProfile
+  );
+
   const plans = [
     {
       name: "Free",
@@ -56,6 +61,11 @@ const Premium = () => {
   const handleSubscribe = async (isRazorpayRequired: boolean) => {
     if (!isRazorpayRequired) {
       navigate("/explore");
+      return;
+    }
+
+    if (!userProfileData) {
+      navigate("/login");
       return;
     }
 

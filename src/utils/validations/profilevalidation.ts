@@ -11,8 +11,8 @@ export const validateBasicInfo = (userData: userData): ValidationErrors => {
     errors.name = "Name must be at least 2 characters";
   }
 
-  if (!userData.age) {
-    errors.age = "Age is required";
+  if (!userData.age || userData.age < 18) {
+    errors.age = "Age must be at least 18";
   }
 
   if (!userData.location) {
