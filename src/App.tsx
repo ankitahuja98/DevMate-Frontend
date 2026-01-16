@@ -23,9 +23,21 @@ import Founder from "./Pages/info/Founder";
 import useAuth from "./Layout/Auth/useAuth";
 import LoadingThreeDotsPulse from "./Components/Loader";
 import { FullscreenProvider } from "./context/FullscreenContext";
+import { useEffect, useState } from "react";
 
 function App() {
   const { isLoading } = useAuth();
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   if (isLoading) {
     return (
@@ -72,7 +84,7 @@ function App() {
       </Routes>
 
       <ToastContainer
-        position="bottom-right"
+        position={isMobile ? "top-center" : "bottom-right"}
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop

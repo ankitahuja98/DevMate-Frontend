@@ -118,9 +118,9 @@ const Matches = () => {
     setSelectedMatch(null);
   };
 
-  const handleChatClick = (chatId: string) => {
-    console.log("Open chat:", chatId);
-    // Navigate to individual chat or open chat window
+  const handleChatClick = (chat: ChatMessage) => {
+    console.log("Open chat:", chat);
+    // call the api with chatId and navigate to /chat if mobile view
   };
 
   return (
@@ -172,7 +172,7 @@ const Matches = () => {
                 <div
                   key={chat._id}
                   className="chatItem"
-                  onClick={() => handleChatClick(chat._id)}
+                  onClick={() => handleChatClick(chat)}
                 >
                   <div className="chatAvatarWrapper">
                     <img

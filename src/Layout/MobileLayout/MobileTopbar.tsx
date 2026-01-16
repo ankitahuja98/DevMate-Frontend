@@ -27,6 +27,7 @@ const MobileTopbar = ({
     setNotificationIsOpen((prev) => !prev);
   };
   let publicRoutes = [
+    "/",
     "/about",
     "/founder",
     "/contact",

@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatIcon from "@mui/icons-material/Chat";
-import { useNavigate } from "react-router-dom";
 
 const LikedYouUserCard = ({
   val,
@@ -45,7 +44,6 @@ const LikedYouUserCard = ({
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
   const [showDislikeAnimation, setShowDislikeAnimation] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
 
   const x = useMotionValue(0);
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
@@ -105,10 +103,6 @@ const LikedYouUserCard = ({
       });
   };
 
-  const handleOpenChat = () => {
-    navigate("/chat");
-  };
-
   return (
     <motion.div
       className={`LikedYouCard ${
@@ -121,31 +115,33 @@ const LikedYouUserCard = ({
       dragConstraints={{ left: 0, right: 0 }}
     >
       {/* ================= FLOATING ACTION BUTTONS ================= */}
-      {/* Dislike Button - Left Side */}
-      <motion.button
-        onClick={handleDislike}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-r-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
-        initial={{ x: -40 }}
-        whileHover={{ x: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      >
-        <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-r from-red-500 to-pink-500">
-          <CloseIcon sx={{ fontSize: 28, color: "white" }} />
-        </div>
-      </motion.button>
+      {!isMatched && (
+        <>
+          <motion.button
+            onClick={handleDislike}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-r-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
+            initial={{ x: -40 }}
+            whileHover={{ x: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-r from-red-500 to-pink-500">
+              <CloseIcon sx={{ fontSize: 28, color: "white" }} />
+            </div>
+          </motion.button>
 
-      {/* Like Button - Right Side */}
-      <motion.button
-        onClick={handleLike}
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-l-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
-        initial={{ x: 40 }}
-        whileHover={{ x: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      >
-        <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-l from-green-500 to-emerald-500">
-          <FavoriteIcon sx={{ fontSize: 28, color: "white" }} />
-        </div>
-      </motion.button>
+          <motion.button
+            onClick={handleLike}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-l-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
+            initial={{ x: 40 }}
+            whileHover={{ x: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-l from-green-500 to-emerald-500">
+              <FavoriteIcon sx={{ fontSize: 28, color: "white" }} />
+            </div>
+          </motion.button>
+        </>
+      )}
 
       {/* ================= LIKE ANIMATION OVERLAY ================= */}
       {showLikeAnimation && (

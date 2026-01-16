@@ -4,18 +4,19 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import StarIcon from "@mui/icons-material/Star";
 import { useDispatch } from "react-redux";
 import { useAppSelector, type AppDispatch } from "../../redux/store/store";
-import { createOrder } from "../../redux/actions/paymentAction";
+import { createOrder, verifyPayment } from "../../redux/actions/paymentAction";
+import { fetchUserProfile } from "../../redux/actions/profileAction";
+import { toast } from "react-toastify";
 
 const Premium = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const isPremium = useAppSelector(
-    (store) => store.profile.userProfile.userProfileData?.isPremium ?? false
-  );
-
   const { userProfileData } = useAppSelector(
     (store) => store.profile.userProfile
+  );
+  const isPremium = useAppSelector(
+    (store) => store.profile.userProfile.userProfileData?.isPremium ?? false
   );
 
   const plans = [
@@ -92,6 +93,23 @@ const Premium = () => {
           card: true,
           wallet: true,
           netbanking: true,
+        },
+        handler: async (response: any) => {
+          const result = await dispatch(
+            verifyPayment({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+            })
+          );
+
+          // if payment verified then refresh the user profile so make user premium.
+          if (verifyPayment.fulfilled.match(result)) {
+            toast.success(result.payload.message);
+            setTimeout(async () => {
+              await dispatch(fetchUserProfile());
+            }, 3000);
+          }
         },
       };
 
