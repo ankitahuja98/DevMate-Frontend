@@ -73,7 +73,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/likedyou" element={<LikedYou />} />
             <Route path="/matches" element={<Matches />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat/:targetUserId" element={<Chat />} />
             <Route path="/setting" element={<Settings />} />
             <Route path="/premium" element={<Premium />} />
           </Route>

@@ -9,14 +9,6 @@
   box-shadow: 0px 0px 6px rgb(199, 199, 199);
 }
 
-.chatContainer.isInsideMatchcomp {
-  height: 85.5vh;
-  padding: 0px;
-  margin: 2px 2px 2px 6px;
-  border-radius: 15px;
-  box-shadow: 0px 0px 8px rgb(211, 211, 211);
-}
-
 .UserchatHeader {
   padding: 10px;
   display: flex;
@@ -35,12 +27,6 @@
   border-top: none;
 }
 
-.UserChatContent.isInsideMatchcomp {
-  border: none;
-  border-right: 1px solid #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
-}
-
 .Chatform {
   padding: 8px;
   display: flex;
@@ -48,12 +34,6 @@
   align-items: center;
   border: 1px solid #e5e7eb;
   border-top: none;
-}
-
-.Chatform.isInsideMatchcomp {
-  border: none;
-  border-right: 1px solid #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
 }
 
 .chatInput {

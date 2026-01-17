@@ -6,105 +6,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import type { userData } from "../types/userData";
 import { getAllMatches } from "../redux/actions/userAction";
 import { useDispatch } from "react-redux";
-import Chat from "./Chat";
-
-interface ChatMessage {
-  _id: string;
-  user: {
-    _id: string;
-    name: string;
-    profilePhoto: string;
-  };
-  lastMessage: string;
-  timestamp: string;
-  unread: number;
-}
-
-const dummyChats = [
-  {
-    _id: "chat_001",
-    user: {
-      _id: "user_101",
-      name: "Sarah Mitchell",
-      profilePhoto: "https://i.pravatar.cc/150?img=1",
-    },
-    lastMessage: "Excellent! Looking forward to it 🎉",
-    timestamp: "2025-01-12T10:39:00Z",
-    unread: 0,
-  },
-  {
-    _id: "chat_002",
-    user: {
-      _id: "user_102",
-      name: "John Carter",
-      profilePhoto: "https://i.pravatar.cc/150?img=2",
-    },
-    lastMessage: "Can you review the document I sent?",
-    timestamp: "2025-01-12T09:15:00Z",
-    unread: 3,
-  },
-  {
-    _id: "chat_003",
-    user: {
-      _id: "user_103",
-      name: "Emily Watson",
-      profilePhoto: "https://i.pravatar.cc/150?img=3",
-    },
-    lastMessage: "Let’s sync up after lunch",
-    timestamp: "2025-01-11T16:48:00Z",
-    unread: 1,
-  },
-  {
-    _id: "chat_004",
-    user: {
-      _id: "user_104",
-      name: "Design Team",
-      profilePhoto: "https://i.pravatar.cc/150?img=4",
-    },
-    lastMessage: "New UI mockups are ready 🚀",
-    timestamp: "2025-01-11T14:22:00Z",
-    unread: 0,
-  },
-  {
-    _id: "chat_005",
-    user: {
-      _id: "user_105",
-      name: "Support Bot",
-      profilePhoto: "https://i.pravatar.cc/150?img=5",
-    },
-    lastMessage: "Your ticket has been resolved ✅",
-    timestamp: "2025-01-10T11:05:00Z",
-    unread: 2,
-  },
-  {
-    _id: "chat_006",
-    user: {
-      _id: "user_105",
-      name: "Support Bot",
-      profilePhoto: "https://i.pravatar.cc/150?img=5",
-    },
-    lastMessage: "Your ticket has been resolved ✅",
-    timestamp: "2025-01-10T11:05:00Z",
-    unread: 2,
-  },
-  {
-    _id: "chat_007",
-    user: {
-      _id: "user_105",
-      name: "Support Bot",
-      profilePhoto: "https://i.pravatar.cc/150?img=5",
-    },
-    lastMessage: "Your ticket has been resolved ✅",
-    timestamp: "2025-01-10T11:05:00Z",
-    unread: 2,
-  },
-];
+import { useNavigate } from "react-router-dom";
 
 const Matches = () => {
   const [selectedMatch, setSelectedMatch] = useState<userData | null>(null);
-  const [chats, _] = useState<ChatMessage[]>(dummyChats);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
+  console.log("matches", matches);
 
   useEffect(() => {
     dispatch(getAllMatches());
@@ -118,14 +27,13 @@ const Matches = () => {
     setSelectedMatch(null);
   };
 
-  const handleChatClick = (chat: ChatMessage) => {
-    console.log("Open chat:", chat);
-    // call the api with chatId and navigate to /chat if mobile view
+  const handleChatClick = (targetUserId: string) => {
+    navigate(`/chat/${targetUserId}`);
   };
 
   return (
     <div className="chatPageContainer">
-      <div className="w-4/12 h-full flex flex-col">
+      <div className="w-full h-full flex flex-col">
         {/* Matches Section */}
         <div className="matchesSection">
           {/* <div className="matchesSectionHeader">
@@ -167,42 +75,29 @@ const Matches = () => {
             </div>
           </div>
           <div className="chatsList">
-            {chats.length !== 0 &&
-              chats.map((chat) => (
+            {matches.length !== 0 &&
+              matches.map((match: any) => (
                 <div
-                  key={chat._id}
+                  key={match._id}
                   className="chatItem"
-                  onClick={() => handleChatClick(chat)}
+                  onClick={() => handleChatClick(match._id)}
                 >
                   <div className="chatAvatarWrapper">
                     <img
-                      src={chat.user.profilePhoto}
-                      alt={chat.user.name}
+                      src={match.profilePhoto}
+                      alt={match.name}
                       className="chatAvatar"
                     />
-                    {chat.unread > 0 && (
-                      <div className="chatUnreadBadge">{chat.unread}</div>
-                    )}
                   </div>
                   <div className="chatContent">
                     <div className="chatHeader">
-                      <h3 className="chatUserName">{chat.user.name}</h3>
+                      <h3 className="chatUserName">{match.name}</h3>
                     </div>
-                    <p
-                      className={`chatLastMessage ${
-                        chat.unread > 0 ? "chatUnreadText" : ""
-                      }`}
-                    >
-                      {chat.lastMessage}
-                    </p>
                   </div>
                 </div>
               ))}
           </div>
         </div>
-      </div>
-      <div className="w-8/12">
-        <Chat isInsideMatchcomp={true} />
       </div>
 
       {/* User Card Overlay using your existing LikedYouUserCard component */}
