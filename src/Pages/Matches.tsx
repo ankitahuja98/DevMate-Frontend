@@ -7,16 +7,20 @@ import type { userData } from "../types/userData";
 import { getAllMatches } from "../redux/actions/userAction";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getChatList } from "../redux/actions/chatAction";
+import LoadingThreeDotsPulse from "../Components/Loader";
 
 const Matches = () => {
   const [selectedMatch, setSelectedMatch] = useState<userData | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
-  console.log("matches", matches);
+  const { ChatList, isChatlistLoading } =
+    useAppSelector((store) => store.chat) || [];
 
   useEffect(() => {
     dispatch(getAllMatches());
+    dispatch(getChatList());
   }, []);
 
   const handleMatchClick = (match: userData) => {
@@ -74,28 +78,35 @@ const Matches = () => {
               />
             </div>
           </div>
+
           <div className="chatsList">
-            {matches.length !== 0 &&
-              matches.map((match: any) => (
+            {isChatlistLoading ? (
+              <div className="h-full flex justify-center items-center">
+                <LoadingThreeDotsPulse />
+              </div>
+            ) : (
+              ChatList?.length !== 0 &&
+              ChatList.map((user: any) => (
                 <div
-                  key={match._id}
+                  key={user._id}
                   className="chatItem"
-                  onClick={() => handleChatClick(match._id)}
+                  onClick={() => handleChatClick(user._id)}
                 >
                   <div className="chatAvatarWrapper">
                     <img
-                      src={match.profilePhoto}
-                      alt={match.name}
+                      src={user.profilePhoto}
+                      alt={user.name}
                       className="chatAvatar"
                     />
                   </div>
                   <div className="chatContent">
                     <div className="chatHeader">
-                      <h3 className="chatUserName">{match.name}</h3>
+                      <h3 className="chatUserName">{user.name}</h3>
                     </div>
                   </div>
                 </div>
-              ))}
+              ))
+            )}
           </div>
         </div>
       </div>

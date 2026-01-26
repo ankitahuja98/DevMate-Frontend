@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatIcon from "@mui/icons-material/Chat";
+import { useNavigate } from "react-router-dom";
 
 const LikedYouUserCard = ({
   val,
@@ -44,19 +45,20 @@ const LikedYouUserCard = ({
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
   const [showDislikeAnimation, setShowDislikeAnimation] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const x = useMotionValue(0);
   const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
   const rotate = useTransform(x, [-150, 150], [-18, 18]);
 
   const isPremium = useAppSelector(
-    (store) => store.profile.userProfile.userProfileData.isPremium
+    (store) => store.profile.userProfile.userProfileData.isPremium,
   );
 
   const handleDragEnd = () => {
     if (x.get() > 50) {
       dispatch(
-        reviewConnectionReq({ status: "accepted", requestId: `${requestId}` })
+        reviewConnectionReq({ status: "accepted", requestId: `${requestId}` }),
       )
         .unwrap()
         .then(() => {
@@ -66,7 +68,7 @@ const LikedYouUserCard = ({
         });
     } else if (x.get() < -50) {
       dispatch(
-        reviewConnectionReq({ status: "rejected", requestId: `${requestId}` })
+        reviewConnectionReq({ status: "rejected", requestId: `${requestId}` }),
       )
         .unwrap()
         .then(() => {
@@ -80,7 +82,7 @@ const LikedYouUserCard = ({
   const handleLike = () => {
     setShowLikeAnimation(true);
     dispatch(
-      reviewConnectionReq({ status: "accepted", requestId: `${requestId}` })
+      reviewConnectionReq({ status: "accepted", requestId: `${requestId}` }),
     )
       .unwrap()
       .then(() => {
@@ -93,7 +95,7 @@ const LikedYouUserCard = ({
   const handleDislike = () => {
     setShowDislikeAnimation(true);
     dispatch(
-      reviewConnectionReq({ status: "rejected", requestId: `${requestId}` })
+      reviewConnectionReq({ status: "rejected", requestId: `${requestId}` }),
     )
       .unwrap()
       .then(() => {
@@ -101,6 +103,9 @@ const LikedYouUserCard = ({
           filterRequestData?.(requestId);
         }, 500);
       });
+  };
+  const handleDirectChat = (targetUserId: string) => {
+    navigate(`/chat/${targetUserId}`);
   };
 
   return (
@@ -216,6 +221,7 @@ const LikedYouUserCard = ({
               <button
                 className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer"
                 aria-label="Chat"
+                onClick={() => handleDirectChat(_id)}
               >
                 <ChatIcon sx={{ fontSize: "25px", color: "white" }} />
               </button>
@@ -361,7 +367,7 @@ const LikedYouUserCard = ({
                           >
                             {tech}
                           </span>
-                        )
+                        ),
                       )}
                     </div>
                   )}

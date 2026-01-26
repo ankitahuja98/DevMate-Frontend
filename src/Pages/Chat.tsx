@@ -1,15 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import "../CSS/Chat.css";
 import { creasteSocketConnetion } from "../utils/socket";
 import { useParams } from "react-router-dom";
-import { useAppSelector } from "../redux/store/store";
-import { v4 as uuid } from "uuid";
+import { useAppSelector, type AppDispatch } from "../redux/store/store";
+import { useDispatch } from "react-redux";
+import { getChat } from "../redux/actions/chatAction";
+import LikedYouUserCard from "../Components/LikedYouUserCard";
+import LoadingThreeDotsPulse from "../Components/Loader";
 
 type ChatMessage = {
-  id: string;
-  sender: string;
-  receiver: string;
+  _id: string;
+  senderId: {
+    _id: string;
+    name: string;
+  };
   message: string;
 };
 
@@ -25,7 +30,7 @@ const Bubble = ({ message, isMe }: { message: ChatMessage; isMe: boolean }) => {
           className={`p-3 shadow-sm ${
             isMe ? "rounded-lg rounded-br-sm" : "rounded-lg rounded-bl-sm"
           }`}
-          aria-label={`${isMe ? "You" : message.sender} said: ${
+          aria-label={`${isMe ? "You" : message.senderId.name} said: ${
             message.message
           }`}
         >
@@ -40,12 +45,21 @@ const Chat = () => {
   const { targetUserId } = useParams();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
+  const [reciverProfile, setReciverProfile] = useState(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
 
-  console.log("messages", messages);
+  const receiverDetails = useMemo(() => {
+    return matches.find((val: any) => val._id === targetUserId);
+  }, [matches, targetUserId]);
 
-  const userId = useAppSelector(
-    (store) => store.profile.userProfile.userProfileData._id
+  const { userProfileData } = useAppSelector(
+    (store) => store.profile.userProfile,
+  );
+
+  const { ChatData, isChatLoading } = useAppSelector(
+    (store) => store.chat || [],
   );
 
   const socketRef = useRef<any>(null);
@@ -54,7 +68,10 @@ const Chat = () => {
     e.preventDefault();
 
     socketRef.current.emit("sendMessage", {
-      sender: userId,
+      sender: {
+        _id: userProfileData._id,
+        name: userProfileData.name,
+      },
       receiver: targetUserId,
       message: input,
     });
@@ -62,90 +79,121 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    if (!userId) return;
+    if (ChatData) {
+      setMessages(ChatData);
+    }
+  }, [ChatData, targetUserId]);
+
+  useEffect(() => {
+    dispatch(getChat({ receiver: targetUserId }));
+
+    if (!userProfileData._id) return;
 
     socketRef.current = creasteSocketConnetion();
-    socketRef?.current?.emit("joinChat", { userId, targetUserId });
+    socketRef?.current?.emit("joinChat", {
+      userId: userProfileData._id,
+      targetUserId,
+    });
 
-    socketRef.current.on(
-      "newMessageReceived",
-      ({
-        sender,
-        receiver,
-        message,
-      }: {
-        sender: string;
-        receiver: string;
-        message: string;
-      }) => {
-        console.log("newMessageReceived", message);
-        let newMessage = {
-          id: uuid(),
-          sender,
-          receiver,
-          message,
-        };
-        setMessages((prev) => [...prev, newMessage]);
-      }
-    );
+    socketRef.current.on("newMessageReceived", (newMessage: ChatMessage) => {
+      setMessages((prev) => [...prev, newMessage]);
+    });
 
     return () => {
       socketRef.current?.off("newMessageReceived");
       socketRef.current?.disconnect();
     };
-  }, [userId, targetUserId]);
+  }, [userProfileData._id, targetUserId]);
+
+  const handleCloseCard = () => {
+    setReciverProfile(null);
+  };
 
   return (
-    <div className="chatContainer">
-      <header className="UserchatHeader">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-500 to-teal-500 flex items-center justify-center text-white font-semibold">
-            S
+    <>
+      <div className="chatContainer">
+        <header className="UserchatHeader">
+          <div className="flex items-center gap-3">
+            <div
+              className="chatAvatarWrapper"
+              onClick={() => setReciverProfile(receiverDetails)}
+            >
+              <img
+                src={receiverDetails.profilePhoto}
+                alt={receiverDetails.name}
+                className="chatAvatar"
+              />
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold">{receiverDetails.name}</h2>
+              {/* <div className="text-sm text-slate-500">Online</div> */}
+            </div>
           </div>
-          <div>
-            <h2 className="text-lg font-semibold">Sarah Mitchell</h2>
-            <div className="text-sm text-slate-500">Online</div>
+        </header>
+
+        <main ref={scrollRef} className="UserChatContent">
+          {isChatLoading ? (
+            <div className="h-full flex justify-center items-center">
+              <LoadingThreeDotsPulse />
+            </div>
+          ) : messages?.length === 0 ? (
+            <div className="flex justify-center items-center text-slate-500 h-full">
+              No messages yet — start the conversation
+            </div>
+          ) : (
+            messages?.map((msg) => (
+              <Bubble
+                key={msg._id}
+                message={msg}
+                isMe={msg.senderId._id === userProfileData._id}
+              />
+            ))
+          )}
+        </main>
+
+        <form onSubmit={handleSubmit} className="Chatform">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            type="text"
+            aria-label="Type your message"
+            placeholder="Type your message"
+            className="chatInput"
+          />
+
+          <button
+            type="submit"
+            disabled={input.trim().length === 0}
+            className={`rounded-full p-2 aspect-square flex items-center justify-center ${
+              input.trim().length === 0
+                ? "opacity-50 cursor-not-allowed"
+                : "shadow-md"
+            }`}
+            aria-label="Send message"
+            style={{ backgroundColor: "#128C7E", color: "white" }}
+          >
+            <SendIcon sx={{ fontSize: 18 }} />
+          </button>
+        </form>
+      </div>
+
+      {/* User Card Overlay using your existing LikedYouUserCard component */}
+      {reciverProfile && (
+        <div className="chatCardOverlay" onClick={handleCloseCard}>
+          <div
+            className="chatCardContainer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="chatCardCloseButton" onClick={handleCloseCard}>
+              ✕
+            </button>
+            <div className="chatCardWrapper">
+              <LikedYouUserCard val={receiverDetails} isMatched={true} />
+            </div>
           </div>
         </div>
-      </header>
-
-      <main ref={scrollRef} className="UserChatContent">
-        {messages?.length === 0 ? (
-          <div className="text-center text-slate-500">
-            No messages yet — start the conversation
-          </div>
-        ) : (
-          messages?.map((msg) => (
-            <Bubble key={msg.id} message={msg} isMe={msg.sender === userId} />
-          ))
-        )}
-      </main>
-
-      <form onSubmit={handleSubmit} className="Chatform">
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          type="text"
-          aria-label="Type your message"
-          placeholder="Type your message"
-          className="chatInput"
-        />
-
-        <button
-          type="submit"
-          disabled={input.trim().length === 0}
-          className={`rounded-full p-2 aspect-square flex items-center justify-center ${
-            input.trim().length === 0
-              ? "opacity-50 cursor-not-allowed"
-              : "shadow-md"
-          }`}
-          aria-label="Send message"
-          style={{ backgroundColor: "#128C7E", color: "white" }}
-        >
-          <SendIcon sx={{ fontSize: 18 }} />
-        </button>
-      </form>
-    </div>
+      )}
+    </>
   );
 };
 
