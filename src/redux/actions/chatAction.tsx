@@ -1,16 +1,22 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import callApi from "../../api/axiosInstance";
+import type { ChatResponse } from "../types/chatType";
 
 interface chatPayload {
   receiver: string | undefined;
+  pageno: number;
+  size: number;
 }
 
-export const getChat = createAsyncThunk<any, chatPayload>(
+export const getChat = createAsyncThunk<ChatResponse, chatPayload>(
   "/getChat",
-  async ({ receiver }, { rejectWithValue }) => {
+  async ({ receiver, pageno, size }, { rejectWithValue }) => {
     try {
-      const response = await callApi.get(`/chat/${receiver}`);
-      return response.data.data.messages;
+      const response = await callApi.get(
+        `/chat/${receiver}?page=${pageno}&size=${size}`,
+      );
+      console.log("chatdetails", response.data);
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data || "Get chat failed");
     }

@@ -15,7 +15,11 @@ const initialState: ChatState = {
 const chatSlice = createSlice({
   name: "chatSlice",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    clearChatData: (state) => {
+      state.ChatData = null;
+    },
+  },
   extraReducers: (builder) => {
     // get Chat Data
     builder.addCase(getChat.pending, (state) => {
@@ -46,4 +50,5 @@ const chatSlice = createSlice({
   },
 });
 
+export const { clearChatData } = chatSlice.actions;
 export default chatSlice.reducer;

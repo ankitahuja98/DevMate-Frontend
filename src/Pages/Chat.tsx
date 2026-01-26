@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { getChat } from "../redux/actions/chatAction";
 import LikedYouUserCard from "../Components/LikedYouUserCard";
 import LoadingThreeDotsPulse from "../Components/Loader";
+import { clearChatData } from "../redux/slices/chatSlice";
 
 type ChatMessage = {
   _id: string;
@@ -44,11 +45,16 @@ const Bubble = ({ message, isMe }: { message: ChatMessage; isMe: boolean }) => {
 const Chat = () => {
   const { targetUserId } = useParams();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [pageno, setpageno] = useState(1);
+  const [loading, setloading] = useState(false);
+  const [hasmore, sethasmore] = useState(true);
   const [input, setInput] = useState("");
   const [reciverProfile, setReciverProfile] = useState(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
+
+  console.log("pageno", pageno);
 
   const receiverDetails = useMemo(() => {
     return matches.find((val: any) => val._id === targetUserId);
@@ -57,9 +63,14 @@ const Chat = () => {
   const { userProfileData } = useAppSelector(
     (store) => store.profile.userProfile,
   );
+  const { isChatLoading } = useAppSelector((store) => store.chat || []);
 
-  const { ChatData, isChatLoading } = useAppSelector(
-    (store) => store.chat || [],
+  const ChatData = useAppSelector(
+    (store) => store.chat.ChatData?.data.messages || [],
+  );
+
+  const totalMessages = useAppSelector(
+    (store) => store.chat.ChatData?.totalMessages || 0,
   );
 
   const socketRef = useRef<any>(null);
@@ -85,8 +96,7 @@ const Chat = () => {
   }, [ChatData, targetUserId]);
 
   useEffect(() => {
-    dispatch(getChat({ receiver: targetUserId }));
-
+    dispatch(getChat({ receiver: targetUserId, pageno: pageno, size: 25 }));
     if (!userProfileData._id) return;
 
     socketRef.current = creasteSocketConnetion();
@@ -108,6 +118,23 @@ const Chat = () => {
   const handleCloseCard = () => {
     setReciverProfile(null);
   };
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      if (loading || !hasmore) return;
+
+      const threshold = 100;
+      if (!loading && hasmore && container.scrollTop <= threshold) {
+        setpageno((prev) => prev + 1);
+      }
+    };
+    container.addEventListener("scroll", handleScroll);
+
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, [loading, hasmore]);
 
   return (
     <>

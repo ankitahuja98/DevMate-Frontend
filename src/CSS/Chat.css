@@ -25,6 +25,12 @@
   background: linear-gradient(180deg, #f7fbff, #ffffff);
   border: 1px solid #e5e7eb;
   border-top: none;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+}
+
+.UserChatContent::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .Chatform {

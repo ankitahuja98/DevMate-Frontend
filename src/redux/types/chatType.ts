@@ -6,6 +6,14 @@ interface Message {
     name: string;
   };
 }
+
+export interface ChatResponse {
+  data: {
+    messages: Message[];
+  };
+  totalMessages: number;
+}
+
 export interface ChatUser {
   _id: string;
   name: string;
@@ -14,7 +22,7 @@ export interface ChatUser {
 
 export interface ChatState {
   isChatLoading: boolean;
-  ChatData: Message[] | null;
+  ChatData: ChatResponse | null;
   isChatError: boolean;
   isChatlistLoading: boolean;
   ChatList: ChatUser[];
