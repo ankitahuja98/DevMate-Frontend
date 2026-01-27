@@ -9,6 +9,7 @@ import { getChat } from "../redux/actions/chatAction";
 import LikedYouUserCard from "../Components/LikedYouUserCard";
 import LoadingThreeDotsPulse from "../Components/Loader";
 import { clearChatData } from "../redux/slices/chatSlice";
+import getDate from "../utils/getDate";
 
 type ChatMessage = {
   _id: string;
@@ -182,7 +183,9 @@ const Chat = () => {
             </div>
             <div>
               <h2 className="text-lg font-semibold">{receiverDetails.name}</h2>
-              {/* <div className="text-sm text-slate-500">Online</div> */}
+              <div className="text-sm text-slate-500">
+                {getDate(receiverDetails.lastSeen)}
+              </div>
             </div>
           </div>
         </header>

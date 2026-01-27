@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getChatList } from "../redux/actions/chatAction";
 import LoadingThreeDotsPulse from "../Components/Loader";
+import getDate from "../utils/getDate";
 
 const Matches = () => {
   const [selectedMatch, setSelectedMatch] = useState<userData | null>(null);
@@ -17,6 +18,8 @@ const Matches = () => {
   const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
   const { ChatList, isChatlistLoading } =
     useAppSelector((store) => store.chat) || [];
+
+  console.log("ChatList", ChatList);
 
   useEffect(() => {
     dispatch(getAllMatches());
@@ -102,6 +105,9 @@ const Matches = () => {
                   <div className="chatContent">
                     <div className="chatHeader">
                       <h3 className="chatUserName">{user.name}</h3>
+                      <p className="text-sm text-slate-500">
+                        {getDate(user.lastSeen)}
+                      </p>
                     </div>
                   </div>
                 </div>
