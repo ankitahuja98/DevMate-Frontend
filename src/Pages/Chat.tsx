@@ -51,10 +51,10 @@ const Chat = () => {
   const [input, setInput] = useState("");
   const [reciverProfile, setReciverProfile] = useState(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
   const dispatch = useDispatch<AppDispatch>();
   const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
-
-  console.log("pageno", pageno);
 
   const receiverDetails = useMemo(() => {
     return matches.find((val: any) => val._id === targetUserId);
@@ -90,13 +90,22 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    if (ChatData) {
-      setMessages(ChatData);
-    }
-  }, [ChatData, targetUserId]);
+    sethasmore(messages.length < totalMessages);
+  }, [messages, totalMessages]);
 
   useEffect(() => {
-    dispatch(getChat({ receiver: targetUserId, pageno: pageno, size: 25 }));
+    if (pageno === 1) {
+      setMessages(ChatData);
+    } else {
+      setMessages((prev) => {
+        const merged = [...ChatData, ...prev];
+        return Array.from(new Map(merged.map((m) => [m._id, m])).values());
+      });
+    }
+    setloading(false);
+  }, [ChatData, pageno, targetUserId]);
+
+  useEffect(() => {
     if (!userProfileData._id) return;
 
     socketRef.current = creasteSocketConnetion();
@@ -119,6 +128,17 @@ const Chat = () => {
     setReciverProfile(null);
   };
 
+  // Auto scroll to bottom
+  useEffect(() => {
+    if (pageno === 1) {
+      bottomRef.current?.scrollIntoView({ behavior: "auto" });
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    dispatch(getChat({ receiver: targetUserId, pageno: pageno, size: 25 }));
+  }, [pageno, targetUserId]);
+
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
@@ -126,8 +146,9 @@ const Chat = () => {
     const handleScroll = () => {
       if (loading || !hasmore) return;
 
-      const threshold = 100;
+      const threshold = 10;
       if (!loading && hasmore && container.scrollTop <= threshold) {
+        setloading(true);
         setpageno((prev) => prev + 1);
       }
     };
@@ -135,6 +156,14 @@ const Chat = () => {
 
     return () => container.removeEventListener("scroll", handleScroll);
   }, [loading, hasmore]);
+
+  // reset when target user change
+  useEffect(() => {
+    setMessages([]);
+    setpageno(1);
+    sethasmore(true);
+    dispatch(clearChatData());
+  }, [targetUserId]);
 
   return (
     <>
@@ -159,7 +188,7 @@ const Chat = () => {
         </header>
 
         <main ref={scrollRef} className="UserChatContent">
-          {isChatLoading ? (
+          {isChatLoading && pageno === 1 ? (
             <div className="h-full flex justify-center items-center">
               <LoadingThreeDotsPulse />
             </div>
@@ -168,14 +197,22 @@ const Chat = () => {
               No messages yet — start the conversation
             </div>
           ) : (
-            messages?.map((msg) => (
-              <Bubble
-                key={msg._id}
-                message={msg}
-                isMe={msg.senderId._id === userProfileData._id}
-              />
-            ))
+            <>
+              {isChatLoading && pageno > 1 && (
+                <p className="text-sm text-center text-gray-400">
+                  Loading more chats...
+                </p>
+              )}
+              {messages?.map((msg) => (
+                <Bubble
+                  key={msg._id}
+                  message={msg}
+                  isMe={msg.senderId._id === userProfileData._id}
+                />
+              ))}
+            </>
           )}
+          <div ref={bottomRef} />
         </main>
 
         <form onSubmit={handleSubmit} className="Chatform">

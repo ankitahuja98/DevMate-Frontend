@@ -15,7 +15,6 @@ export const getChat = createAsyncThunk<ChatResponse, chatPayload>(
       const response = await callApi.get(
         `/chat/${receiver}?page=${pageno}&size=${size}`,
       );
-      console.log("chatdetails", response.data);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data || "Get chat failed");
