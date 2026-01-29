@@ -189,9 +189,10 @@
 
 .chatHeader {
   display: flex;
+  /* flex-direction: column; */
   justify-content: space-between;
-  align-items: center;
-  gap: 10px;
+  align-items: start;
+  /* gap: 10px; */
 }
 
 .chatUserName {
@@ -222,6 +223,75 @@
 .chatUnreadText {
   color: #1f2937;
   font-weight: 600;
+}
+
+.chatMenuWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.chatMenuIcon {
+  padding: 6px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.chatMenuIcon:hover {
+  background: #f3f4f6;
+}
+
+.chatMenu {
+  position: absolute;
+  top: 32px;
+  right: 0;
+  min-width: 100px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  padding: 6px 0;
+  z-index: 999;
+  animation: scaleIn 0.15s ease-in-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.chatMenuItem {
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.chatMenuItem:hover {
+  background: #f3f4f6;
+}
+
+.chatMenuItem.delete {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.chatMenuItem.block {
+  color: #6b7280;
+}
+
+.chatMenuItem.delete:hover {
+  background: #fee2e2;
+}
+
+.chatMenuItem.block:hover {
+  background: #e5e7eb;
 }
 
 /* ==================== RESPONSIVE ==================== */

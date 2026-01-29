@@ -1,5 +1,5 @@
 import "../CSS/Matches.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import LikedYouUserCard from "../Components/LikedYouUserCard";
 import SearchIcon from "@mui/icons-material/Search";
@@ -10,20 +10,35 @@ import { useNavigate } from "react-router-dom";
 import { getChatList } from "../redux/actions/chatAction";
 import LoadingThreeDotsPulse from "../Components/Loader";
 import getDate from "../utils/getDate";
+import MatchesShimmer from "../Components/MatchesShimmer";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const Matches = () => {
   const [selectedMatch, setSelectedMatch] = useState<userData | null>(null);
+  const [selectedChatMenu, setSelectedChatMenu] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
   const { ChatList, isChatlistLoading } =
     useAppSelector((store) => store.chat) || [];
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   console.log("ChatList", ChatList);
 
   useEffect(() => {
     dispatch(getAllMatches());
     dispatch(getChatList());
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setSelectedChatMenu(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleMatchClick = (match: userData) => {
@@ -38,6 +53,12 @@ const Matches = () => {
     navigate(`/chat/${targetUserId}`);
   };
 
+  const handleChatMenuOpen = (id: string) => {
+    setSelectedChatMenu((prev) => (prev === id ? null : id));
+  };
+
+  const handleChatDelete = (targetUserId: string) => {};
+
   return (
     <div className="chatPageContainer">
       <div className="w-full h-full flex flex-col">
@@ -47,22 +68,26 @@ const Matches = () => {
             <h3 className="matchesTitle">Your matches</h3>
           </div> */}
           <div className="matchesScroll">
-            {matches.map((match: any) => (
-              <div
-                key={match._id}
-                className="matchItem"
-                onClick={() => handleMatchClick(match)}
-              >
-                <div className="matchAvatarWrapper">
-                  <img
-                    src={match.profilePhoto}
-                    alt={match.name}
-                    className="matchAvatar"
-                  />
+            {matches.length === 0 ? (
+              <MatchesShimmer />
+            ) : (
+              matches.map((match: any) => (
+                <div
+                  key={match._id}
+                  className="matchItem"
+                  onClick={() => handleMatchClick(match)}
+                >
+                  <div className="matchAvatarWrapper">
+                    <img
+                      src={match.profilePhoto}
+                      alt={match.name}
+                      className="matchAvatar"
+                    />
+                  </div>
+                  <p className="matchName">{match.name.split(" ")[0]}</p>
                 </div>
-                <p className="matchName">{match.name.split(" ")[0]}</p>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
@@ -104,10 +129,35 @@ const Matches = () => {
                   </div>
                   <div className="chatContent">
                     <div className="chatHeader">
-                      <h3 className="chatUserName">{user.name}</h3>
-                      <p className="text-sm text-slate-500">
-                        {getDate(user.lastSeen)}
-                      </p>
+                      <div>
+                        <h3 className="chatUserName">{user.name}</h3>
+                        <p className="text-sm text-slate-500">
+                          {getDate(user.lastSeen)}
+                        </p>
+                      </div>
+                      <div
+                        className="chatMenuWrapper"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div
+                          className="chatMenuIcon"
+                          onClick={() => handleChatMenuOpen(user._id)}
+                        >
+                          <MoreVertIcon />
+                        </div>
+
+                        {selectedChatMenu === user._id && (
+                          <div ref={menuRef} className="chatMenu">
+                            <div
+                              className="chatMenuItem delete"
+                              onClick={() => handleChatDelete(user._id)}
+                            >
+                              Delete
+                            </div>
+                            <div className="chatMenuItem block">Block</div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
