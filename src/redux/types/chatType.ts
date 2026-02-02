@@ -1,17 +1,20 @@
-interface Message {
+export interface Message {
   _id: string;
   message: string;
   senderId: {
     _id: string;
     name: string;
   };
+  createdAt?: string;
+  updatedAt?: string;
+  tempId?: string;
 }
 
 export interface ChatResponse {
-  data: {
-    messages: Message[];
-  };
+  data: Message[];
   totalMessages: number;
+  page: number;
+  size: number;
 }
 
 export interface ChatUser {

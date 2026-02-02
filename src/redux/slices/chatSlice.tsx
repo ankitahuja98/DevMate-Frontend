@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getChat, getChatList } from "../actions/chatAction";
+import { chatDelete, getChat, getChatList } from "../actions/chatAction";
 import type { ChatState } from "../types/chatType";
 
 const initialState: ChatState = {
@@ -26,8 +26,27 @@ const chatSlice = createSlice({
       state.isChatLoading = true;
     });
     builder.addCase(getChat.fulfilled, (state, action) => {
+      const { data, totalMessages, page, size } = action.payload;
+
+      if (!state.ChatData || page === 1) {
+        // First load or reset
+        state.ChatData = {
+          data: data,
+          totalMessages,
+          page,
+          size,
+        };
+      } else {
+        // Prepend older messages
+        state.ChatData = {
+          ...state.ChatData,
+          data: [...data, ...state.ChatData.data],
+          page,
+          totalMessages,
+        };
+      }
+
       state.isChatLoading = false;
-      state.ChatData = action.payload;
     });
     builder.addCase(getChat.rejected, (state) => {
       state.isChatLoading = false;
@@ -41,11 +60,18 @@ const chatSlice = createSlice({
     });
     builder.addCase(getChatList.fulfilled, (state, action) => {
       state.isChatlistLoading = false;
-      state.ChatList = action.payload;
+      state.ChatList = action.payload.data;
     });
     builder.addCase(getChatList.rejected, (state) => {
       state.isChatlistLoading = false;
       state.isChatlistError = true;
+    });
+    builder.addCase(chatDelete.fulfilled, (state, action) => {
+      const { targetUserId } = action.meta.arg;
+
+      state.ChatList = state.ChatList.filter((val) => val._id !== targetUserId);
+
+      state.ChatData = null;
     });
   },
 });

@@ -8,6 +8,10 @@ interface chatPayload {
   size: number;
 }
 
+interface chatDeletePayload {
+  targetUserId: string | undefined;
+}
+
 export const getChat = createAsyncThunk<ChatResponse, chatPayload>(
   "/getChat",
   async ({ receiver, pageno, size }, { rejectWithValue }) => {
@@ -27,7 +31,35 @@ export const getChatList = createAsyncThunk<any>(
   async (_, { rejectWithValue }) => {
     try {
       const response = await callApi.get("/chatList");
-      return response.data.data;
+      const chats = response.data.data;
+
+      // let chatsWithLastMsg = await Promise.all(
+      //   chats.map(async (val: any) => {
+      //     const lastMessageRes = await callApi.get(
+      //       `/chat/${val._id}?page=1&size=1`,
+      //     );
+      //     return {
+      //       ...val,
+      //       lastmsg: lastMessageRes.data.data[0] || null,
+      //     };
+      //   }),
+      // );
+
+      return {
+        data: chats,
+      };
+    } catch (error: any) {
+      return rejectWithValue(error.response.data || "Get chat failed");
+    }
+  },
+);
+
+export const chatDelete = createAsyncThunk<any, chatDeletePayload>(
+  "chatDelete",
+  async ({ targetUserId }, { rejectWithValue }) => {
+    try {
+      let response = await callApi.post(`/chatDelete/${targetUserId}`);
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data || "Get chat failed");
     }

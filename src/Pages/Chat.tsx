@@ -2,25 +2,18 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import "../CSS/Chat.css";
 import { creasteSocketConnetion } from "../utils/socket";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useDispatch } from "react-redux";
-import { getChat } from "../redux/actions/chatAction";
+import { chatDelete, getChat } from "../redux/actions/chatAction";
 import LikedYouUserCard from "../Components/LikedYouUserCard";
 import LoadingThreeDotsPulse from "../Components/Loader";
 import { clearChatData } from "../redux/slices/chatSlice";
 import getDate from "../utils/getDate";
+import type { Message } from "../redux/types/chatType";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-type ChatMessage = {
-  _id: string;
-  senderId: {
-    _id: string;
-    name: string;
-  };
-  message: string;
-};
-
-const Bubble = ({ message, isMe }: { message: ChatMessage; isMe: boolean }) => {
+const Bubble = ({ message, isMe }: { message: Message; isMe: boolean }) => {
   return (
     <div className={`flex ${isMe ? "justify-end" : "justify-start"} mb-3`}>
       <div className={`max-w-[75%] break-words`}>
@@ -32,9 +25,7 @@ const Bubble = ({ message, isMe }: { message: ChatMessage; isMe: boolean }) => {
           className={`p-3 shadow-sm ${
             isMe ? "rounded-lg rounded-br-sm" : "rounded-lg rounded-bl-sm"
           }`}
-          aria-label={`${isMe ? "You" : message.senderId.name} said: ${
-            message.message
-          }`}
+          aria-label={`${isMe ? "You" : ""} said: ${message.message}`}
         >
           <div className="whitespace-pre-wrap">{message.message}</div>
         </div>
@@ -45,16 +36,21 @@ const Bubble = ({ message, isMe }: { message: ChatMessage; isMe: boolean }) => {
 
 const Chat = () => {
   const { targetUserId } = useParams();
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [pageno, setpageno] = useState(1);
   const [loading, setloading] = useState(false);
   const [hasmore, sethasmore] = useState(true);
   const [input, setInput] = useState("");
   const [reciverProfile, setReciverProfile] = useState(null);
+  const [isChatDrawerOpen, setIsChatDrawerOpen] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  console.log("messages", messages);
 
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
 
   const receiverDetails = useMemo(() => {
@@ -66,9 +62,7 @@ const Chat = () => {
   );
   const { isChatLoading } = useAppSelector((store) => store.chat || []);
 
-  const ChatData = useAppSelector(
-    (store) => store.chat.ChatData?.data.messages || [],
-  );
+  const ChatData = useAppSelector((store) => store.chat.ChatData?.data || []);
 
   const totalMessages = useAppSelector(
     (store) => store.chat.ChatData?.totalMessages || 0,
@@ -79,49 +73,80 @@ const Chat = () => {
   const handleSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
 
-    socketRef.current.emit("sendMessage", {
-      sender: {
+    if (!input.trim()) return;
+
+    const tempId = crypto.randomUUID();
+
+    const newMessage: Message = {
+      _id: tempId, // temporary id
+      message: input,
+      senderId: {
         _id: userProfileData._id,
         name: userProfileData.name,
       },
+    };
+    setMessages((prev) => [...prev, newMessage]);
+
+    socketRef.current.emit("sendMessage", {
       receiver: targetUserId,
       message: input,
+      tempId,
     });
+
     setInput("");
   };
+
+  // Load initial messages from Redux
+  useEffect(() => {
+    if (!ChatData) return;
+
+    setMessages(ChatData);
+    setloading(false);
+  }, [ChatData]);
 
   useEffect(() => {
     sethasmore(messages.length < totalMessages);
   }, [messages, totalMessages]);
 
   useEffect(() => {
-    if (pageno === 1) {
-      setMessages(ChatData);
-    } else {
-      setMessages((prev) => {
-        const merged = [...ChatData, ...prev];
-        return Array.from(new Map(merged.map((m) => [m._id, m])).values());
-      });
-    }
-    setloading(false);
-  }, [ChatData, pageno, targetUserId]);
+    if (!userProfileData._id || !targetUserId) return;
 
-  useEffect(() => {
-    if (!userProfileData._id) return;
+    const socket = creasteSocketConnetion();
+    socketRef.current = socket;
 
-    socketRef.current = creasteSocketConnetion();
-    socketRef?.current?.emit("joinChat", {
-      userId: userProfileData._id,
-      targetUserId,
+    socket.on("connect", () => {
+      setTimeout(() => {
+        socket.emit("joinChat", {
+          targetUserId,
+        });
+      }, 100);
     });
 
-    socketRef.current.on("newMessageReceived", (newMessage: ChatMessage) => {
-      setMessages((prev) => [...prev, newMessage]);
+    socket.on("newMessageReceived", (newMessage: Message) => {
+      setMessages((prev) => {
+        // Check if this is replacing a temporary message
+        const tempIndex = prev.findIndex((m) => m._id === newMessage.tempId);
+
+        if (tempIndex !== -1) {
+          // Replace the temporary message with the real one
+          const updated = [...prev];
+          updated[tempIndex] = newMessage;
+          return updated;
+        }
+
+        // Check if message already exists (by real _id)
+        if (prev.some((m) => m._id === newMessage._id)) {
+          return prev;
+        }
+
+        return [...prev, newMessage];
+      });
     });
 
     return () => {
-      socketRef.current?.off("newMessageReceived");
-      socketRef.current?.disconnect();
+      socket.off("connect");
+      socket.off("newMessageReceived");
+      socket.disconnect();
     };
   }, [userProfileData._id, targetUserId]);
 
@@ -138,7 +163,7 @@ const Chat = () => {
 
   useEffect(() => {
     dispatch(getChat({ receiver: targetUserId, pageno: pageno, size: 25 }));
-  }, [pageno, targetUserId]);
+  }, [pageno, targetUserId, dispatch]);
 
   useEffect(() => {
     const container = scrollRef.current;
@@ -163,29 +188,63 @@ const Chat = () => {
     setMessages([]);
     setpageno(1);
     sethasmore(true);
+    setloading(false);
     dispatch(clearChatData());
   }, [targetUserId]);
+
+  const handleChatDelete = (targetUserId: string | undefined) => {
+    dispatch(chatDelete({ targetUserId }));
+    navigate("/matches");
+  };
 
   return (
     <>
       <div className="chatContainer">
         <header className="UserchatHeader">
-          <div className="flex items-center gap-3">
-            <div
-              className="chatAvatarWrapper"
-              onClick={() => setReciverProfile(receiverDetails)}
-            >
-              <img
-                src={receiverDetails.profilePhoto}
-                alt={receiverDetails.name}
-                className="chatAvatar"
-              />
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold">{receiverDetails.name}</h2>
-              <div className="text-sm text-slate-500">
-                {getDate(receiverDetails.lastSeen)}
+          <div className="flex items-center justify-between w-full">
+            <div className="flex gap-3 items-center ">
+              <div
+                className="chatAvatarWrapper"
+                onClick={() => setReciverProfile(receiverDetails)}
+              >
+                <img
+                  src={receiverDetails.profilePhoto}
+                  alt={receiverDetails.name}
+                  className="chatAvatar"
+                />
               </div>
+
+              <div>
+                <h2 className="text-lg font-semibold">
+                  {receiverDetails.name}
+                </h2>
+                <div className="text-sm text-slate-500">
+                  {getDate(receiverDetails.lastSeen)}
+                </div>
+              </div>
+            </div>
+
+            <div
+              className="chatMenuWrapper"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div
+                className="chatMenuIcon"
+                onClick={() => setIsChatDrawerOpen((prev) => !prev)}
+              >
+                <MoreVertIcon />
+              </div>
+
+              {isChatDrawerOpen && (
+                <div ref={menuRef} className="chatMenu">
+                  <div
+                    className="chatMenuItem delete"
+                    onClick={() => handleChatDelete(targetUserId)}
+                  >
+                    Delete
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </header>

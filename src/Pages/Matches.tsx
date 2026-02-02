@@ -11,34 +11,20 @@ import { getChatList } from "../redux/actions/chatAction";
 import LoadingThreeDotsPulse from "../Components/Loader";
 import getDate from "../utils/getDate";
 import MatchesShimmer from "../Components/MatchesShimmer";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const Matches = () => {
   const [selectedMatch, setSelectedMatch] = useState<userData | null>(null);
-  const [selectedChatMenu, setSelectedChatMenu] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
   const { ChatList, isChatlistLoading } =
     useAppSelector((store) => store.chat) || [];
-  const menuRef = useRef<HTMLDivElement | null>(null);
 
   console.log("ChatList", ChatList);
 
   useEffect(() => {
     dispatch(getAllMatches());
     dispatch(getChatList());
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setSelectedChatMenu(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleMatchClick = (match: userData) => {
@@ -53,11 +39,7 @@ const Matches = () => {
     navigate(`/chat/${targetUserId}`);
   };
 
-  const handleChatMenuOpen = (id: string) => {
-    setSelectedChatMenu((prev) => (prev === id ? null : id));
-  };
-
-  const handleChatDelete = (targetUserId: string) => {};
+  console.log("ChatList", ChatList);
 
   return (
     <div className="chatPageContainer">
@@ -131,32 +113,12 @@ const Matches = () => {
                     <div className="chatHeader">
                       <div>
                         <h3 className="chatUserName">{user.name}</h3>
+                        {/* <p className={`text-sm `}>{user.lastmsg.message}</p> */}
+                      </div>
+                      <div>
                         <p className="text-sm text-slate-500">
                           {getDate(user.lastSeen)}
                         </p>
-                      </div>
-                      <div
-                        className="chatMenuWrapper"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <div
-                          className="chatMenuIcon"
-                          onClick={() => handleChatMenuOpen(user._id)}
-                        >
-                          <MoreVertIcon />
-                        </div>
-
-                        {selectedChatMenu === user._id && (
-                          <div ref={menuRef} className="chatMenu">
-                            <div
-                              className="chatMenuItem delete"
-                              onClick={() => handleChatDelete(user._id)}
-                            >
-                              Delete
-                            </div>
-                            <div className="chatMenuItem block">Block</div>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>
