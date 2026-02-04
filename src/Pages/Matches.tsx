@@ -1,5 +1,5 @@
 import "../CSS/Matches.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import LikedYouUserCard from "../Components/LikedYouUserCard";
 import SearchIcon from "@mui/icons-material/Search";
@@ -11,6 +11,7 @@ import { getChatList } from "../redux/actions/chatAction";
 import LoadingThreeDotsPulse from "../Components/Loader";
 import getDate from "../utils/getDate";
 import MatchesShimmer from "../Components/MatchesShimmer";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 const Matches = () => {
   const [selectedMatch, setSelectedMatch] = useState<userData | null>(null);
@@ -96,34 +97,52 @@ const Matches = () => {
               </div>
             ) : (
               ChatList?.length !== 0 &&
-              ChatList.map((user: any) => (
-                <div
-                  key={user._id}
-                  className="chatItem"
-                  onClick={() => handleChatClick(user._id)}
-                >
-                  <div className="chatAvatarWrapper">
-                    <img
-                      src={user.profilePhoto}
-                      alt={user.name}
-                      className="chatAvatar"
-                    />
-                  </div>
-                  <div className="chatContent">
-                    <div className="chatHeader">
-                      <div>
-                        <h3 className="chatUserName">{user.name}</h3>
-                        {/* <p className={`text-sm `}>{user.lastmsg.message}</p> */}
+              ChatList.map((val: any) => {
+                const { user, lastmessage, isUnread } = val;
+                return (
+                  <>
+                    <div
+                      key={user._id}
+                      className="chatItem"
+                      onClick={() => handleChatClick(user._id)}
+                    >
+                      <div className="chatAvatarWrapper">
+                        <img
+                          src={user.profilePhoto}
+                          alt={user.name}
+                          className="chatAvatar"
+                        />
                       </div>
-                      <div>
-                        <p className="text-sm text-slate-500">
-                          {getDate(user.lastSeen)}
-                        </p>
+                      <div className="chatContent">
+                        <div className="chatHeader">
+                          <div>
+                            <h3 className="chatUserName">{user.name}</h3>
+                            <p
+                              className={`text-sm ${isUnread ? "text-gray-800 font-semibold" : "text-gray-600"}`}
+                            >
+                              {isUnread && (
+                                <FiberManualRecordIcon
+                                  sx={{
+                                    fontSize: "10px",
+                                    color: "#6C6ACE",
+                                    marginRight: "5px",
+                                  }}
+                                />
+                              )}
+                              {lastmessage.message}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-slate-500">
+                              {getDate(user.lastSeen)}
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))
+                  </>
+                );
+              })
             )}
           </div>
         </div>

@@ -10,7 +10,7 @@ const getDate = (date: Date) => {
   const diffDay = Math.floor(diffHr / 24);
 
   if (diffMin < 1) {
-    return "just now";
+    return "Just now";
   }
   if (diffMin < 60) {
     return `${diffMin} min ago`;

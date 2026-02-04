@@ -5,7 +5,11 @@ import { creasteSocketConnetion } from "../utils/socket";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useDispatch } from "react-redux";
-import { chatDelete, getChat } from "../redux/actions/chatAction";
+import {
+  chatDelete,
+  getChat,
+  markMessagesAsRead,
+} from "../redux/actions/chatAction";
 import LikedYouUserCard from "../Components/LikedYouUserCard";
 import LoadingThreeDotsPulse from "../Components/Loader";
 import { clearChatData } from "../redux/slices/chatSlice";
@@ -196,6 +200,22 @@ const Chat = () => {
     dispatch(chatDelete({ targetUserId }));
     navigate("/matches");
   };
+
+  const hasMarkedReadRef = useRef(false);
+
+  useEffect(() => {
+    if (!targetUserId) return;
+    if (messages.length === 0) return;
+
+    if (!hasMarkedReadRef.current) {
+      dispatch(markMessagesAsRead({ targetUserId }));
+      hasMarkedReadRef.current = true;
+    }
+  }, [targetUserId, messages.length]);
+
+  useEffect(() => {
+    hasMarkedReadRef.current = false;
+  }, [targetUserId]);
 
   return (
     <>
