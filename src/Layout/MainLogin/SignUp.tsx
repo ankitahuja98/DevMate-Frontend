@@ -1,15 +1,13 @@
 import React, { useState, type SetStateAction } from "react";
 import TextField from "@mui/material/TextField";
 import googleLogo from "../../Images/googleLogo.avif";
-import { useDispatch } from "react-redux";
-import { signup } from "../../redux/actions/authAction";
-import type { AppDispatch } from "../../redux/store/store";
+
 import {
   validateSignup,
   type signupdata,
 } from "../../utils/validations/loginValidation";
 import { Box } from "@mui/material";
-import { toast } from "react-toastify";
+import VerifyEmail from "../../Components/VerifyEmail";
 
 const SignUp = ({
   setIsSignIn,
@@ -22,8 +20,7 @@ const SignUp = ({
     password: "",
   });
   const [errors, setErros] = useState<signupdata>({});
-
-  const dispatch = useDispatch<AppDispatch>();
+  const [isOtpvVrifying, setIsOtpvVrifying] = useState<boolean>(false);
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault(); // ⛔ stop page refresh
@@ -34,18 +31,7 @@ const SignUp = ({
     if (Object.keys(isErrors).length !== 0) {
       return;
     } else {
-      dispatch(signup(singupform))
-        .unwrap()
-        .then((res) => {
-          toast.success(res.message);
-          setIsSignIn((prev: boolean) => !prev);
-          setSignupform({
-            name: "",
-            email: "",
-            password: "",
-          });
-        })
-        .catch((err) => toast.error(err.message));
+      setIsOtpvVrifying(true);
     }
   };
 
@@ -61,53 +47,61 @@ const SignUp = ({
   };
 
   return (
-    <div className="SignupPage p-10 flex flex-col justify-center">
-      <form className="flex flex-col gap-5">
-        <Box>
-          <TextField
-            required
-            fullWidth
-            label="Full Name"
-            variant="outlined"
-            size="small"
-            name="name"
-            value={singupform.name}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage error={errors.name} />
-        </Box>
-        <Box>
-          <TextField
-            required
-            fullWidth
-            label="Email"
-            variant="outlined"
-            size="small"
-            name="email"
-            value={singupform.email}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage error={errors.email} />
-        </Box>
-        <Box>
-          <TextField
-            required
-            fullWidth
-            label="Password"
-            type="password"
-            variant="outlined"
-            size="small"
-            name="password"
-            value={singupform.password}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage error={errors.password} />
-        </Box>
+    <div className="SignupPage p-6 sm:p-10 flex flex-col justify-center">
+      {!isOtpvVrifying ? (
+        <form className="flex flex-col gap-4 sm:gap-5">
+          <Box>
+            <TextField
+              required
+              fullWidth
+              label="Full Name"
+              variant="outlined"
+              size="small"
+              name="name"
+              value={singupform.name}
+              onChange={handleInputChange}
+            />
+            <ErrorMessage error={errors.name} />
+          </Box>
+          <Box>
+            <TextField
+              required
+              fullWidth
+              label="Email"
+              variant="outlined"
+              size="small"
+              name="email"
+              value={singupform.email}
+              onChange={handleInputChange}
+            />
+            <ErrorMessage error={errors.email} />
+          </Box>
+          <Box>
+            <TextField
+              required
+              fullWidth
+              label="Password"
+              type="password"
+              variant="outlined"
+              size="small"
+              name="password"
+              value={singupform.password}
+              onChange={handleInputChange}
+            />
+            <ErrorMessage error={errors.password} />
+          </Box>
 
-        <button type="submit" className="signinBtn" onClick={handleSignup}>
-          Sign up
-        </button>
-      </form>
+          <button type="submit" className="signinBtn" onClick={handleSignup}>
+            Sign up
+          </button>
+        </form>
+      ) : (
+        <VerifyEmail
+          setIsOtpvVrifying={setIsOtpvVrifying}
+          singupform={singupform}
+          setSignupform={setSignupform}
+        />
+      )}
 
       {/* OR Divider */}
       <div className="flex items-center my-6">
@@ -118,7 +112,7 @@ const SignUp = ({
 
       {/* Google Sign-up */}
       <button className="googleBtn">
-        <img src={googleLogo} alt="Google" className="w-10 h-5" />
+        <img src={googleLogo} alt="Google" className="w-8 h-4 sm:w-10 sm:h-5" />
         <span className="text-gray-700 font-medium">Sign in with Google</span>
       </button>
     </div>

@@ -13,7 +13,7 @@ const LoginSignup = () => {
   };
   return (
     <div className="loginContainer h-screen flex justify-center items-center">
-      <div className="relative h-8/12 w-7/12 rounded-2xl overflow-hidden shadow-xl bg-white">
+      <div className="relative h-full sm:h-5/6 w-full sm:w-10/12 lg:w-7/12 rounded-2xl overflow-hidden shadow-xl bg-white">
         {/* Sliding Panel Start*/}
         <div className={`slider ${isSignIn ? "SignUp" : "SignIn"} `}>
           <div className="px-5 ">
