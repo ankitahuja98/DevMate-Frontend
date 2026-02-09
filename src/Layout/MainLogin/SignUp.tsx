@@ -1,6 +1,7 @@
 import React, { useState, type SetStateAction } from "react";
 import TextField from "@mui/material/TextField";
 import googleLogo from "../../Images/googleLogo.avif";
+import { toast } from "react-toastify";
 
 import {
   validateSignup,
@@ -8,6 +9,9 @@ import {
 } from "../../utils/validations/loginValidation";
 import { Box } from "@mui/material";
 import VerifyEmail from "../../Components/VerifyEmail";
+import { signup } from "../../redux/actions/authAction";
+import { useDispatch } from "react-redux";
+import { type AppDispatch } from "../../redux/store/store";
 
 const SignUp = ({
   setIsSignIn,
@@ -21,6 +25,7 @@ const SignUp = ({
   });
   const [errors, setErros] = useState<signupdata>({});
   const [isOtpvVrifying, setIsOtpvVrifying] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault(); // ⛔ stop page refresh
@@ -31,7 +36,13 @@ const SignUp = ({
     if (Object.keys(isErrors).length !== 0) {
       return;
     } else {
-      setIsOtpvVrifying(true);
+      dispatch(signup(singupform))
+        .unwrap()
+        .then((res) => {
+          // toast.success(res.message);
+          setIsOtpvVrifying(true);
+        })
+        .catch((err) => toast.error(err.message));
     }
   };
 
@@ -100,6 +111,7 @@ const SignUp = ({
           setIsOtpvVrifying={setIsOtpvVrifying}
           singupform={singupform}
           setSignupform={setSignupform}
+          setIsSignIn={setIsSignIn}
         />
       )}
 
@@ -118,5 +130,4 @@ const SignUp = ({
     </div>
   );
 };
-
 export default SignUp;

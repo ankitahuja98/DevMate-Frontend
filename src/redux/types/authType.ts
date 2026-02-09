@@ -4,6 +4,11 @@ export interface signupformData {
   password: string;
 }
 
+export interface OtpformData {
+  email: string;
+  otp: string;
+}
+
 export interface loginformData {
   email: string;
   password: string;
@@ -21,7 +26,14 @@ interface loginInitialState {
   loginIsError: boolean;
 }
 
+interface verifyOtpInitialState {
+  verifyOtpIsLoading: boolean;
+  verifyOtpData: any | null;
+  verifyOtpIsError: boolean;
+}
+
 export interface AuthInitialState {
   signup: singupInitialState;
   login: loginInitialState;
+  verifyOtp: verifyOtpInitialState;
 }

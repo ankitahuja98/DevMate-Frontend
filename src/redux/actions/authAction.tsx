@@ -1,6 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import callApi from "../../api/axiosInstance";
-import type { signupformData, loginformData } from "../types/authType";
+import type {
+  signupformData,
+  loginformData,
+  OtpformData,
+} from "../types/authType";
 import { fetchUserProfile } from "./profileAction";
 
 //Action
@@ -13,7 +17,19 @@ export const signup = createAsyncThunk<any, signupformData>(
     } catch (error: any) {
       return rejectWithValue(error.response.data || "Signup failed");
     }
-  }
+  },
+);
+
+export const verifyOtp = createAsyncThunk<any, OtpformData>(
+  "verifyEmail",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await callApi.post("/auth/verifyEmail", formData);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data || "Invalid Otp");
+    }
+  },
 );
 
 export const login = createAsyncThunk<any, loginformData>(
@@ -29,7 +45,7 @@ export const login = createAsyncThunk<any, loginformData>(
     } catch (error: any) {
       return rejectWithValue(error.response.data || "Login failed");
     }
-  }
+  },
 );
 
 export const logout = createAsyncThunk<any>(
@@ -41,5 +57,5 @@ export const logout = createAsyncThunk<any>(
     } catch (error: any) {
       return rejectWithValue(error.response.data || "Logout failed");
     }
-  }
+  },
 );

@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React, { useEffect, useRef, useState, type SetStateAction } from "react";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { signup } from "../redux/actions/authAction";
+import { signup, verifyOtp } from "../redux/actions/authAction";
 import type { AppDispatch } from "../redux/store/store";
 
 type SignupFormType = {
@@ -15,10 +15,12 @@ const VerifyEmail = ({
   setIsOtpvVrifying,
   singupform,
   setSignupform,
+  setIsSignIn,
 }: {
   setIsOtpvVrifying: React.Dispatch<SetStateAction<boolean>>;
   singupform: SignupFormType;
   setSignupform: React.Dispatch<SetStateAction<SignupFormType>>;
+  setIsSignIn: React.Dispatch<SetStateAction<boolean>>;
 }) => {
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const inputref = useRef<(HTMLInputElement | null)[]>([]);
@@ -46,19 +48,19 @@ const VerifyEmail = ({
     inputref.current[0]?.focus();
   }, []);
 
-  const handleVerifyOtp = () => {
-    setIsOtpvVrifying(false);
+  const otpFormData = {
+    email: singupform.email,
+    otp: otp.join(""),
+  };
 
-    dispatch(signup(singupform))
+  const handleVerifyOtp = () => {
+    dispatch(verifyOtp(otpFormData))
       .unwrap()
       .then((res) => {
+        setIsOtpvVrifying(false);
+        setIsSignIn((prev: boolean) => !prev);
         toast.success(res.message);
-
-        setSignupform({
-          name: "",
-          email: "",
-          password: "",
-        });
+        setOtp(new Array(6).fill(""));
       })
       .catch((err) => toast.error(err.message));
   };
@@ -71,6 +73,33 @@ const VerifyEmail = ({
       inputref.current[ind - 1]?.focus();
     }
   };
+
+  const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text").trim();
+
+    if (!/^\d+$/.test(pastedData)) return;
+
+    const digits = pastedData.slice(0, 6).split("");
+    const newOtp = [...otp];
+
+    digits.forEach((digit, i) => {
+      newOtp[i] = digit;
+      if (inputref.current[i]) {
+        inputref.current[i]!.value = digit;
+      }
+    });
+
+    setOtp(newOtp);
+
+    // focus last filled input
+    const lastIndex = digits.length - 1;
+    if (lastIndex >= 0 && lastIndex < 6) {
+      inputref.current[lastIndex]?.focus();
+    }
+  };
+
+  const isOtpComplete = otp.every((d) => d !== "");
 
   return (
     <div className="w-full flex justify-center items-center px-4">
@@ -104,6 +133,7 @@ const VerifyEmail = ({
                 onChange={(e) => handleOtpChange(e, ind)}
                 maxLength={1}
                 onKeyDown={(e) => handleOtpClear(e, ind)}
+                onPaste={handleOtpPaste}
               />
             </Box>
           ))}
@@ -121,6 +151,7 @@ const VerifyEmail = ({
         <button
           type="button"
           className="signinBtn mt-2"
+          disabled={!isOtpComplete}
           onClick={handleVerifyOtp}
         >
           Verify Email

@@ -4,6 +4,8 @@ import SignUp from "./SignUp";
 import "./Login.css";
 import AppLogo from "../../Images/devmateLogo-white.avif";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../redux/store/store";
+import LoadingThreeDotsPulse from "../../Components/Loader";
 
 const LoginSignup = () => {
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
@@ -11,9 +13,21 @@ const LoginSignup = () => {
   const handleTypeChange = () => {
     setIsSignIn(!isSignIn);
   };
+  const { signupIsLoading } = useAppSelector((store) => store.auth.signup);
+  const { loginIsLoading } = useAppSelector((store) => store.auth.login);
+  const { verifyOtpIsLoading } = useAppSelector(
+    (store) => store.auth.verifyOtp,
+  );
+
   return (
     <div className="loginContainer h-screen flex justify-center items-center">
       <div className="relative h-full sm:h-5/6 w-full sm:w-10/12 lg:w-7/12 rounded-2xl overflow-hidden shadow-xl bg-white">
+        {(signupIsLoading || loginIsLoading || verifyOtpIsLoading) && (
+          <div className="absolute inset-0 flex items-center justify-center z-50 bg-white/60">
+            <LoadingThreeDotsPulse />
+          </div>
+        )}
+
         {/* Sliding Panel Start*/}
         <div className={`slider ${isSignIn ? "SignUp" : "SignIn"} `}>
           <div className="px-5 ">

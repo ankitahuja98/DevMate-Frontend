@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, signup } from "../actions/authAction";
+import { login, signup, verifyOtp } from "../actions/authAction";
 import type { AuthInitialState } from "../types/authType";
 
 const initialState: AuthInitialState = {
@@ -12,6 +12,11 @@ const initialState: AuthInitialState = {
     loginIsLoading: false,
     loginData: null,
     loginIsError: false,
+  },
+  verifyOtp: {
+    verifyOtpIsLoading: false,
+    verifyOtpData: null,
+    verifyOtpIsError: false,
   },
 };
 
@@ -44,6 +49,19 @@ const authSlice = createSlice({
     builder.addCase(login.rejected, (state) => {
       state.login.loginIsLoading = false;
       state.login.loginIsError = true;
+    });
+
+    // for verifyOtp
+    builder.addCase(verifyOtp.pending, (state) => {
+      state.verifyOtp.verifyOtpIsLoading = true;
+    });
+    builder.addCase(verifyOtp.fulfilled, (state, action) => {
+      state.verifyOtp.verifyOtpIsLoading = false;
+      state.verifyOtp.verifyOtpData = action.payload;
+    });
+    builder.addCase(verifyOtp.rejected, (state) => {
+      state.verifyOtp.verifyOtpIsLoading = false;
+      state.verifyOtp.verifyOtpIsError = true;
     });
   },
 });
