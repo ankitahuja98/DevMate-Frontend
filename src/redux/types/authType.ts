@@ -9,6 +9,10 @@ export interface OtpformData {
   otp: string;
 }
 
+export interface resendotpformData {
+  email: string;
+}
+
 export interface loginformData {
   email: string;
   password: string;
@@ -32,8 +36,15 @@ interface verifyOtpInitialState {
   verifyOtpIsError: boolean;
 }
 
+interface resendOtpInitialState {
+  resendOtpIsLoading: boolean;
+  resendOtpData: any | null;
+  resendOtpIsError: boolean;
+}
+
 export interface AuthInitialState {
   signup: singupInitialState;
   login: loginInitialState;
   verifyOtp: verifyOtpInitialState;
+  resendOtp: resendOtpInitialState;
 }

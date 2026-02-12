@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React, { useEffect, useRef, useState, type SetStateAction } from "react";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { signup, verifyOtp } from "../redux/actions/authAction";
+import { resendOtp, signup, verifyOtp } from "../redux/actions/authAction";
 import type { AppDispatch } from "../redux/store/store";
 
 type SignupFormType = {
@@ -23,6 +23,8 @@ const VerifyEmail = ({
   setIsSignIn: React.Dispatch<SetStateAction<boolean>>;
 }) => {
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
+  const [isResendActive, setIsResendActive] = useState<boolean>(true);
+  const [resendTimer, setResendTimer] = useState<number>(60);
   const inputref = useRef<(HTMLInputElement | null)[]>([]);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -99,6 +101,36 @@ const VerifyEmail = ({
     }
   };
 
+  const handleResend = () => {
+    if (!isResendActive) return;
+
+    dispatch(resendOtp({ email: singupform.email }))
+      .unwrap()
+      .then((res) => {
+        toast.success(res.message);
+        setOtp(new Array(6).fill(""));
+
+        setIsResendActive(false);
+        setResendTimer(60);
+      })
+      .catch((err) => toast.error(err.message));
+  };
+
+  useEffect(() => {
+    if (!isResendActive && resendTimer > 0) {
+      const timer = setTimeout(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+
+    if (resendTimer === 0) {
+      setIsResendActive(true);
+    }
+  }, [resendTimer, isResendActive]);
+
+  console.log("resendTimer", resendTimer);
+
   const isOtpComplete = otp.every((d) => d !== "");
 
   return (
@@ -142,9 +174,16 @@ const VerifyEmail = ({
         {/* Resend */}
         <div className="text-xs sm:text-sm text-gray-500 text-center">
           Didn't receive the code?{" "}
-          <span className="text-[#3c4b70] font-medium cursor-pointer hover:underline">
+          <button
+            className={`hover:underline ${isResendActive ? "text-[#3c4b70] cursor-pointer font-medium" : "text-gray-400 cursor-wait"} `}
+            onClick={handleResend}
+            disabled={!isResendActive}
+          >
             Resend
-          </span>
+          </button>{" "}
+          {!isResendActive && (
+            <span className="text-gray-400">({resendTimer} Sec)</span>
+          )}
         </div>
 
         {/* Button */}

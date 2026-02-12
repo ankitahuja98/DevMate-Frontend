@@ -4,6 +4,7 @@ import type {
   signupformData,
   loginformData,
   OtpformData,
+  resendotpformData,
 } from "../types/authType";
 import { fetchUserProfile } from "./profileAction";
 
@@ -28,6 +29,18 @@ export const verifyOtp = createAsyncThunk<any, OtpformData>(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data || "Invalid Otp");
+    }
+  },
+);
+
+export const resendOtp = createAsyncThunk<any, resendotpformData>(
+  "resendOtp",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await callApi.post("/auth/resendOtp", formData);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data || "resend otp failed");
     }
   },
 );

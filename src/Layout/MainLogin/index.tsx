@@ -18,11 +18,20 @@ const LoginSignup = () => {
   const { verifyOtpIsLoading } = useAppSelector(
     (store) => store.auth.verifyOtp,
   );
+  const { resendOtpIsLoading } = useAppSelector(
+    (store) => store.auth.resendOtp,
+  );
 
   return (
     <div className="loginContainer h-screen flex justify-center items-center">
-      <div className="relative h-full sm:h-5/6 w-full sm:w-10/12 lg:w-7/12 rounded-2xl overflow-hidden shadow-xl bg-white">
-        {(signupIsLoading || loginIsLoading || verifyOtpIsLoading) && (
+      <div
+        className="relative w-full sm:w-10/12 lg:w-7/12 rounded-2xl overflow-hidden shadow-xl bg-white"
+        style={{ height: "70%" }}
+      >
+        {(signupIsLoading ||
+          loginIsLoading ||
+          verifyOtpIsLoading ||
+          resendOtpIsLoading) && (
           <div className="absolute inset-0 flex items-center justify-center z-50 bg-white/60">
             <LoadingThreeDotsPulse />
           </div>
