@@ -10,6 +10,7 @@ import {
 } from "../../utils/validations/loginValidation";
 import { Box } from "@mui/material";
 import { toast } from "react-toastify";
+import VerifyEmail from "../../Components/VerifyEmail";
 
 const SignUp = ({
   setIsSignIn,
@@ -22,6 +23,8 @@ const SignUp = ({
     password: "",
   });
   const [errors, setErros] = useState<signupdata>({});
+
+  const [isOtpvVrifying, setIsOtpvVrifying] = useState<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -37,13 +40,8 @@ const SignUp = ({
       dispatch(signup(singupform))
         .unwrap()
         .then((res) => {
-          toast.success(res.message);
-          setIsSignIn((prev: boolean) => !prev);
-          setSignupform({
-            name: "",
-            email: "",
-            password: "",
-          });
+          // toast.success(res.message);
+          setIsOtpvVrifying(true);
         })
         .catch((err) => toast.error(err.message));
     }
@@ -62,59 +60,70 @@ const SignUp = ({
 
   return (
     <div className="MobileSignupPage flex flex-col justify-center">
-      <div className="mb-5">
-        <span className="text-xl font-bold">Create an Account</span>
-      </div>
-      <form className="flex flex-col gap-4">
-        <Box>
-          <TextField
-            required
-            fullWidth
-            label="Full Name"
-            variant="outlined"
-            size="small"
-            name="name"
-            value={singupform.name}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage error={errors.name} />
-        </Box>
-        <Box>
-          <TextField
-            required
-            fullWidth
-            label="Email"
-            variant="outlined"
-            size="small"
-            name="email"
-            value={singupform.email}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage error={errors.email} />
-        </Box>
-        <Box>
-          <TextField
-            required
-            fullWidth
-            label="Password"
-            type="password"
-            variant="outlined"
-            size="small"
-            name="password"
-            value={singupform.password}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage error={errors.password} />
-        </Box>
+      {!isOtpvVrifying ? (
+        <>
+          <div className="mb-5">
+            <span className="text-xl font-bold">Create an Account</span>
+          </div>
+          <form className="flex flex-col gap-4">
+            <Box>
+              <TextField
+                required
+                fullWidth
+                label="Full Name"
+                variant="outlined"
+                size="small"
+                name="name"
+                value={singupform.name}
+                onChange={handleInputChange}
+              />
+              <ErrorMessage error={errors.name} />
+            </Box>
+            <Box>
+              <TextField
+                required
+                fullWidth
+                label="Email"
+                variant="outlined"
+                size="small"
+                name="email"
+                value={singupform.email}
+                onChange={handleInputChange}
+              />
+              <ErrorMessage error={errors.email} />
+            </Box>
+            <Box>
+              <TextField
+                required
+                fullWidth
+                label="Set Password"
+                type="password"
+                variant="outlined"
+                size="small"
+                name="password"
+                value={singupform.password}
+                onChange={handleInputChange}
+              />
+              <ErrorMessage error={errors.password} />
+            </Box>
 
-        <button
-          type="submit"
-          className="MobilesigninBtn"
-          onClick={handleSignup}
-        >
-          Sign up
-        </button>
-      </form>
+            <button
+              type="submit"
+              className="MobilesigninBtn"
+              onClick={handleSignup}
+            >
+              Sign up
+            </button>
+          </form>
+        </>
+      ) : (
+        <VerifyEmail
+          setIsOtpvVrifying={setIsOtpvVrifying}
+          singupform={singupform}
+          setSignupform={setSignupform}
+          setIsSignIn={setIsSignIn}
+        />
+      )}
 
       {/* OR Divider */}
       <div className="flex items-center my-3">

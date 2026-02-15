@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React, { useEffect, useRef, useState, type SetStateAction } from "react";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { resendOtp, signup, verifyOtp } from "../redux/actions/authAction";
+import { resendOtp, verifyOtp } from "../redux/actions/authAction";
 import type { AppDispatch } from "../redux/store/store";
 
 type SignupFormType = {

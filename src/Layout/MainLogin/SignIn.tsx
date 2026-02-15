@@ -11,6 +11,7 @@ import {
   type logindata,
 } from "../../utils/validations/loginValidation";
 import { Box } from "@mui/material";
+import ForgetPassword from "./ForgetPassword";
 
 const SignIn = () => {
   const [loginformData, setloginformData] = useState({
@@ -68,64 +69,70 @@ const SignIn = () => {
   };
 
   return (
-    <div className="SigninPage p-10 flex flex-col justify-center">
-      <form className="flex flex-col gap-5">
-        <Box>
-          <TextField
-            required
-            fullWidth
-            label="Email"
-            variant="outlined"
-            size="small"
-            name="email"
-            value={loginformData.email}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage error={errors.email} />
-        </Box>
-
-        <Box>
-          <TextField
-            required
-            fullWidth
-            label={isForgetPassword ? "Set new password" : "password"}
-            type="password"
-            variant="outlined"
-            size="small"
-            name="password"
-            value={loginformData.password}
-            onChange={handleInputChange}
-          />
-          <ErrorMessage error={errors.password} />
-          {!isForgetPassword && (
-            <Box
-              className="text-xs text-end font-semibold mt-1 cursor-pointer"
-              style={{ color: "#3C4B70" }}
-              onClick={() => setIsForgetPassword(true)}
-            >
-              Forget password?
+    <>
+      {!isForgetPassword ? (
+        <div className="SigninPage p-10 flex flex-col justify-center">
+          <form className="flex flex-col gap-5">
+            <Box>
+              <TextField
+                required
+                fullWidth
+                label="Email"
+                variant="outlined"
+                size="small"
+                name="email"
+                value={loginformData.email}
+                onChange={handleInputChange}
+              />
+              <ErrorMessage error={errors.email} />
             </Box>
-          )}
-        </Box>
 
-        <button type="submit" className="signinBtn" onClick={handleLogin}>
-          {isForgetPassword ? "Submit" : "Sign in"}
-        </button>
-      </form>
+            <Box>
+              <TextField
+                required
+                fullWidth
+                label="Password"
+                type="password"
+                variant="outlined"
+                size="small"
+                name="password"
+                value={loginformData.password}
+                onChange={handleInputChange}
+              />
+              <ErrorMessage error={errors.password} />
+              <Box
+                className="text-xs text-end font-semibold mt-1 cursor-pointer"
+                style={{ color: "#3C4B70" }}
+                onClick={() => setIsForgetPassword(true)}
+              >
+                Forget password?
+              </Box>
+            </Box>
 
-      {/* OR Divider */}
-      <div className="flex items-center my-6">
-        <span className="flex-grow h-px bg-gray-300"></span>
-        <span className="px-3 text-gray-500 text-sm">or</span>
-        <span className="flex-grow h-px bg-gray-300"></span>
-      </div>
+            <button type="submit" className="signinBtn" onClick={handleLogin}>
+              Sign in
+            </button>
+          </form>
 
-      {/* Google Sign-in */}
-      <button className="googleBtn">
-        <img src={googleLogo} alt="Google" className="w-10 h-5" />
-        <span className="text-gray-700 font-medium">Sign in with Google</span>
-      </button>
-    </div>
+          {/* OR Divider */}
+          <div className="flex items-center my-6">
+            <span className="flex-grow h-px bg-gray-300"></span>
+            <span className="px-3 text-gray-500 text-sm">or</span>
+            <span className="flex-grow h-px bg-gray-300"></span>
+          </div>
+
+          {/* Google Sign-in */}
+          <button className="googleBtn">
+            <img src={googleLogo} alt="Google" className="w-10 h-5" />
+            <span className="text-gray-700 font-medium">
+              Sign in with Google
+            </span>
+          </button>
+        </div>
+      ) : (
+        <ForgetPassword setIsForgetPassword={setIsForgetPassword} />
+      )}
+    </>
   );
 };
 
