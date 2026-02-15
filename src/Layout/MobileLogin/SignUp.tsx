@@ -2,7 +2,7 @@ import React, { useState, type SetStateAction } from "react";
 import TextField from "@mui/material/TextField";
 import googleLogo from "../../Images/googleLogo.avif";
 import { useDispatch } from "react-redux";
-import { signup } from "../../redux/actions/authAction";
+import { resendOtp, signup, verifyOtp } from "../../redux/actions/authAction";
 import type { AppDispatch } from "../../redux/store/store";
 import {
   validateSignup,
@@ -118,10 +118,16 @@ const SignUp = ({
         </>
       ) : (
         <VerifyEmail
-          setIsOtpvVrifying={setIsOtpvVrifying}
-          singupform={singupform}
-          setSignupform={setSignupform}
-          setIsSignIn={setIsSignIn}
+          email={singupform.email}
+          verifyAction={verifyOtp}
+          resendAction={resendOtp}
+          title="Verify your email"
+          description="Enter the 6-digit code sent to your email to complete registration."
+          verifyotpSuccessToastMsg="Your account has been created successfully"
+          onSuccess={() => {
+            setIsOtpvVrifying(false);
+            setIsSignIn(true);
+          }}
         />
       )}
 

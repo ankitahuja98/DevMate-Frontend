@@ -14,3 +14,18 @@ export const forgetPasswordVerifyEmail = createAsyncThunk<any, string>(
     }
   },
 );
+
+export const resetPassword = createAsyncThunk<
+  any,
+  { email: string; newPassword: string }
+>("resetPassword", async ({ email, newPassword }, { rejectWithValue }) => {
+  try {
+    const response = await callApi.post("/forgetPassword/resetPassword", {
+      email,
+      newPassword,
+    });
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.response.data || "Reset password failed");
+  }
+});

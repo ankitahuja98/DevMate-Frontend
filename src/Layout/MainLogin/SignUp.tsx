@@ -9,7 +9,7 @@ import {
 } from "../../utils/validations/loginValidation";
 import { Box } from "@mui/material";
 import VerifyEmail from "../../Components/VerifyEmail";
-import { signup } from "../../redux/actions/authAction";
+import { resendOtp, signup, verifyOtp } from "../../redux/actions/authAction";
 import { useDispatch } from "react-redux";
 import { type AppDispatch } from "../../redux/store/store";
 
@@ -108,10 +108,16 @@ const SignUp = ({
         </form>
       ) : (
         <VerifyEmail
-          setIsOtpvVrifying={setIsOtpvVrifying}
-          singupform={singupform}
-          setSignupform={setSignupform}
-          setIsSignIn={setIsSignIn}
+          email={singupform.email}
+          verifyAction={verifyOtp}
+          resendAction={resendOtp}
+          title="Verify your email"
+          description="Enter the 6-digit code sent to your email to complete registration."
+          verifyotpSuccessToastMsg="Your account has been created successfully"
+          onSuccess={() => {
+            setIsOtpvVrifying(false);
+            setIsSignIn(true);
+          }}
         />
       )}
 

@@ -16,6 +16,12 @@ const LoginSignup = () => {
   const { resendOtpIsLoading } = useAppSelector(
     (store) => store.auth.resendOtp,
   );
+  const { forgetPasswordVerifyEmailIsLoading } = useAppSelector(
+    (store) => store.forgetPassword.forgetPasswordVerifyEmail,
+  );
+  const { resetPasswordIsLoading } = useAppSelector(
+    (store) => store.forgetPassword.resetPassword,
+  );
 
   return (
     <div className="MobileloginContainer h-screen flex justify-center items-center">
@@ -23,7 +29,9 @@ const LoginSignup = () => {
         {(signupIsLoading ||
           loginIsLoading ||
           verifyOtpIsLoading ||
-          resendOtpIsLoading) && (
+          resendOtpIsLoading ||
+          forgetPasswordVerifyEmailIsLoading ||
+          resetPasswordIsLoading) && (
           <div className="absolute inset-0 flex items-center justify-center z-50 bg-white/60">
             <LoadingThreeDotsPulse />
           </div>

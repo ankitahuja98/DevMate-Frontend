@@ -3,28 +3,32 @@ import TextField from "@mui/material/TextField";
 import googleLogo from "../../Images/googleLogo.avif";
 import { useDispatch } from "react-redux";
 import { type AppDispatch } from "../../redux/store/store";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Box } from "@mui/material";
-import { forgetPasswordVerifyEmail } from "../../redux/actions/forgetPasswordAction";
+import {
+  forgetPasswordVerifyEmail,
+  resetPassword,
+} from "../../redux/actions/forgetPasswordAction";
 import VerifyEmail from "../../Components/VerifyEmail";
+import { resendOtp, verifyOtp } from "../../redux/actions/authAction";
 
 const ForgetPassword = ({
   setIsForgetPassword,
+  isMobile,
 }: {
   setIsForgetPassword: React.Dispatch<SetStateAction<boolean>>;
+  isMobile: boolean;
 }) => {
   const [FPEmail, setFPEmail] = useState("");
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [isOtpvVrifying, setIsOtpvVrifying] = useState<boolean>(false);
   const [FPPassword, setFPPassword] = useState({
     newPassword: "",
     ReEnterNewPassword: "",
   });
 
   const dispatch = useDispatch<AppDispatch>();
-
-  const navigate = useNavigate();
 
   const handlePasswordChange = (e: any) => {
     const { value, name } = e.target;
@@ -38,16 +42,37 @@ const ForgetPassword = ({
     if (!isEmailVerified && !isOtpVerified) {
       dispatch(forgetPasswordVerifyEmail(FPEmail))
         .unwrap()
-        .then(() => setIsEmailVerified(true))
+        .then(() => {
+          setIsEmailVerified(true);
+          setIsOtpvVrifying(true);
+        })
+        .catch((err) => toast.error(err.message));
+    } else if (isEmailVerified && isOtpVerified) {
+      if (
+        FPPassword.newPassword.trim() !== FPPassword.ReEnterNewPassword.trim()
+      )
+        return;
+      dispatch(
+        resetPassword({ email: FPEmail, newPassword: FPPassword.newPassword }),
+      )
+        .unwrap()
+        .then((res) => {
+          toast.success(res.message);
+          setIsForgetPassword(false);
+        })
         .catch((err) => toast.error(err.message));
     }
   };
 
   return (
-    <div className="SigninPage p-10 flex flex-col justify-center">
-      <div className="mb-5">
-        <span className="text-xl font-bold">Forget Password</span>
-      </div>
+    <div
+      className={`${isMobile ? "MobileSigninPage" : "SigninPage p-10"}  flex flex-col justify-center`}
+    >
+      {!isOtpvVrifying && (
+        <div className="mb-5">
+          <span className="text-xl font-bold">Forget Password</span>
+        </div>
+      )}
       <form className="flex flex-col gap-5">
         {!isEmailVerified && !isOtpVerified && (
           <Box>
@@ -65,11 +90,19 @@ const ForgetPassword = ({
           </Box>
         )}
 
-        {/* {isEmailVerified && !isOtpVerified && (
+        {isEmailVerified && !isOtpVerified && (
           <VerifyEmail
-          
+            email={FPEmail}
+            verifyAction={verifyOtp}
+            resendAction={resendOtp}
+            title="Verify reset code"
+            description="Enter the 6-digit code sent to your email to reset your password."
+            onSuccess={() => {
+              setIsOtpVerified(true);
+              setIsOtpvVrifying(false);
+            }}
           />
-        )} */}
+        )}
 
         {isEmailVerified && isOtpVerified && (
           <>
@@ -105,17 +138,21 @@ const ForgetPassword = ({
           </>
         )}
 
-        <Box
-          className="text-xs text-end font-semibold mt-1 cursor-pointer"
-          style={{ color: "#3C4B70" }}
-          onClick={() => setIsForgetPassword(false)}
-        >
-          Back to login
-        </Box>
+        {!isOtpvVrifying && (
+          <>
+            <Box
+              className="text-xs text-end font-semibold mt-1 cursor-pointer"
+              style={{ color: "#3C4B70" }}
+              onClick={() => setIsForgetPassword(false)}
+            >
+              Back to login
+            </Box>
 
-        <button type="submit" className="signinBtn" onClick={handleSubmit}>
-          Submit
-        </button>
+            <button type="submit" className="signinBtn" onClick={handleSubmit}>
+              Submit
+            </button>
+          </>
+        )}
       </form>
 
       {/* OR Divider */}

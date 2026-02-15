@@ -130,7 +130,10 @@ const SignIn = () => {
           </button>
         </div>
       ) : (
-        <ForgetPassword setIsForgetPassword={setIsForgetPassword} />
+        <ForgetPassword
+          setIsForgetPassword={setIsForgetPassword}
+          isMobile={false}
+        />
       )}
     </>
   );

@@ -1,27 +1,28 @@
 import { Box } from "@mui/material";
-import React, { useEffect, useRef, useState, type SetStateAction } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { resendOtp, verifyOtp } from "../redux/actions/authAction";
 import type { AppDispatch } from "../redux/store/store";
 
-type SignupFormType = {
-  name: string;
+type VerifyOtpProps = {
   email: string;
-  password: string;
+  onSuccess: () => void;
+  verifyAction: any;
+  resendAction: any;
+  title: string;
+  description: string;
+  verifyotpSuccessToastMsg?: string;
 };
 
 const VerifyEmail = ({
-  setIsOtpvVrifying,
-  singupform,
-  setSignupform,
-  setIsSignIn,
-}: {
-  setIsOtpvVrifying: React.Dispatch<SetStateAction<boolean>>;
-  singupform: SignupFormType;
-  setSignupform: React.Dispatch<SetStateAction<SignupFormType>>;
-  setIsSignIn: React.Dispatch<SetStateAction<boolean>>;
-}) => {
+  email,
+  onSuccess,
+  verifyAction,
+  resendAction,
+  title,
+  description,
+  verifyotpSuccessToastMsg,
+}: VerifyOtpProps) => {
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
   const [isResendActive, setIsResendActive] = useState<boolean>(true);
   const [resendTimer, setResendTimer] = useState<number>(60);
@@ -51,20 +52,22 @@ const VerifyEmail = ({
   }, []);
 
   const otpFormData = {
-    email: singupform.email,
+    email: email,
     otp: otp.join(""),
   };
 
   const handleVerifyOtp = () => {
-    dispatch(verifyOtp(otpFormData))
+    dispatch(verifyAction(otpFormData))
       .unwrap()
-      .then((res) => {
-        setIsOtpvVrifying(false);
-        setIsSignIn((prev: boolean) => !prev);
-        toast.success(res.message);
+      .then((res: any) => {
+        if (title === "Verify your email") {
+          toast.success(verifyotpSuccessToastMsg);
+        }
+
+        onSuccess();
         setOtp(new Array(6).fill(""));
       })
-      .catch((err) => toast.error(err.message));
+      .catch((err: any) => toast.error(err.message));
   };
 
   const handleOtpClear = (
@@ -104,16 +107,15 @@ const VerifyEmail = ({
   const handleResend = () => {
     if (!isResendActive) return;
 
-    dispatch(resendOtp({ email: singupform.email }))
+    dispatch(resendAction({ email: email }))
       .unwrap()
-      .then((res) => {
+      .then((res: any) => {
         toast.success(res.message);
         setOtp(new Array(6).fill(""));
-
         setIsResendActive(false);
         setResendTimer(60);
       })
-      .catch((err) => toast.error(err.message));
+      .catch((err: any) => toast.error(err.message));
   };
 
   useEffect(() => {
@@ -129,8 +131,6 @@ const VerifyEmail = ({
     }
   }, [resendTimer, isResendActive]);
 
-  console.log("resendTimer", resendTimer);
-
   const isOtpComplete = otp.every((d) => d !== "");
 
   return (
@@ -139,11 +139,9 @@ const VerifyEmail = ({
         {/* Header */}
         <div className="text-center">
           <p className="text-xl sm:text-2xl font-semibold text-gray-800">
-            Verify your email
+            {title}
           </p>
-          <p className="text-gray-500 text-xs sm:text-sm mt-1">
-            Enter the 6-digit code sent to your email
-          </p>
+          <p className="text-gray-500 text-xs sm:text-sm mt-1">{description}</p>
         </div>
 
         {/* OTP inputs */}
