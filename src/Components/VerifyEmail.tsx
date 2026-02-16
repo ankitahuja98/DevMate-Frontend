@@ -61,7 +61,7 @@ const VerifyEmail = ({
   const handleVerifyOtp = () => {
     dispatch(verifyAction(otpFormData))
       .unwrap()
-      .then((res: any) => {
+      .then(() => {
         if (title === "Verify your email") {
           toast.success(verifyotpSuccessToastMsg);
         }

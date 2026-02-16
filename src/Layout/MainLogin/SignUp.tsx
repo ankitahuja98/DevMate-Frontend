@@ -38,7 +38,7 @@ const SignUp = ({
     } else {
       dispatch(signup(singupform))
         .unwrap()
-        .then((res) => {
+        .then(() => {
           // toast.success(res.message);
           setIsOtpvVrifying(true);
         })
