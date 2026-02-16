@@ -60,11 +60,6 @@ const ForgetPassword = ({
           .catch((err) => toast.error(err.message));
       }
     } else if (isEmailVerified && isOtpVerified) {
-      if (
-        FPPassword.newPassword.trim() !== FPPassword.ReEnterNewPassword.trim()
-      )
-        return;
-
       const isErrors = forgetPasswordPassword(
         FPPassword.newPassword,
         FPPassword.ReEnterNewPassword,
@@ -103,7 +98,7 @@ const ForgetPassword = ({
           <span className="text-xl font-bold">Forget Password</span>
         </div>
       )}
-      <form className="flex flex-col gap-5">
+      <form className="flex flex-col">
         {!isEmailVerified && !isOtpVerified && (
           <Box>
             <TextField
@@ -123,6 +118,7 @@ const ForgetPassword = ({
         {isEmailVerified && !isOtpVerified && (
           <VerifyEmail
             email={FPEmail}
+            purpose="forgotPassword"
             verifyAction={verifyOtp}
             resendAction={resendOtp}
             title="Verify reset code"
@@ -136,7 +132,7 @@ const ForgetPassword = ({
 
         {isEmailVerified && isOtpVerified && (
           <>
-            <Box>
+            <Box style={{ marginBottom: "15px" }}>
               <TextField
                 required
                 fullWidth
@@ -171,7 +167,7 @@ const ForgetPassword = ({
         {!isOtpvVrifying && (
           <>
             <Box
-              className="text-xs text-end font-semibold mt-1 cursor-pointer"
+              className="text-xs text-end font-semibold mt-1 mb-4 cursor-pointer"
               style={{ color: "#3C4B70" }}
               onClick={() => setIsForgetPassword(false)}
             >

@@ -6,6 +6,7 @@ import type { AppDispatch } from "../redux/store/store";
 
 type VerifyOtpProps = {
   email: string;
+  purpose: string;
   onSuccess: () => void;
   verifyAction: any;
   resendAction: any;
@@ -16,6 +17,7 @@ type VerifyOtpProps = {
 
 const VerifyEmail = ({
   email,
+  purpose,
   onSuccess,
   verifyAction,
   resendAction,
@@ -107,7 +109,7 @@ const VerifyEmail = ({
   const handleResend = () => {
     if (!isResendActive) return;
 
-    dispatch(resendAction({ email: email }))
+    dispatch(resendAction({ email: email, purpose: purpose }))
       .unwrap()
       .then((res: any) => {
         toast.success(res.message);
@@ -173,6 +175,7 @@ const VerifyEmail = ({
         <div className="text-xs sm:text-sm text-gray-500 text-center">
           Didn't receive the code?{" "}
           <button
+            type="button"
             className={`hover:underline ${isResendActive ? "text-[#3c4b70] cursor-pointer font-medium" : "text-gray-400 cursor-wait"} `}
             onClick={handleResend}
             disabled={!isResendActive}

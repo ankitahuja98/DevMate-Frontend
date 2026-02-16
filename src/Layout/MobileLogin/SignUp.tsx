@@ -119,6 +119,7 @@ const SignUp = ({
       ) : (
         <VerifyEmail
           email={singupform.email}
+          purpose="signup"
           verifyAction={verifyOtp}
           resendAction={resendOtp}
           title="Verify your email"
