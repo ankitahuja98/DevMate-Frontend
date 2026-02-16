@@ -11,6 +11,10 @@ import {
 } from "../../redux/actions/forgetPasswordAction";
 import VerifyEmail from "../../Components/VerifyEmail";
 import { resendOtp, verifyOtp } from "../../redux/actions/authAction";
+import {
+  forgetPasswordEmail,
+  forgetPasswordPassword,
+} from "../../utils/validations/forgetPasswordValidation";
 
 const ForgetPassword = ({
   setIsForgetPassword,
@@ -28,6 +32,8 @@ const ForgetPassword = ({
     ReEnterNewPassword: "",
   });
 
+  const [errors, setErros] = useState<any>({});
+
   const dispatch = useDispatch<AppDispatch>();
 
   const handlePasswordChange = (e: any) => {
@@ -40,28 +46,52 @@ const ForgetPassword = ({
     e.preventDefault();
 
     if (!isEmailVerified && !isOtpVerified) {
-      dispatch(forgetPasswordVerifyEmail(FPEmail))
-        .unwrap()
-        .then(() => {
-          setIsEmailVerified(true);
-          setIsOtpvVrifying(true);
-        })
-        .catch((err) => toast.error(err.message));
+      const isErrors = forgetPasswordEmail(FPEmail);
+      setErros(isErrors);
+      if (Object.keys(isErrors).length !== 0) {
+        return;
+      } else {
+        dispatch(forgetPasswordVerifyEmail(FPEmail))
+          .unwrap()
+          .then(() => {
+            setIsEmailVerified(true);
+            setIsOtpvVrifying(true);
+          })
+          .catch((err) => toast.error(err.message));
+      }
     } else if (isEmailVerified && isOtpVerified) {
       if (
         FPPassword.newPassword.trim() !== FPPassword.ReEnterNewPassword.trim()
       )
         return;
-      dispatch(
-        resetPassword({ email: FPEmail, newPassword: FPPassword.newPassword }),
-      )
-        .unwrap()
-        .then((res) => {
-          toast.success(res.message);
-          setIsForgetPassword(false);
-        })
-        .catch((err) => toast.error(err.message));
+
+      const isErrors = forgetPasswordPassword(
+        FPPassword.newPassword,
+        FPPassword.ReEnterNewPassword,
+      );
+      setErros(isErrors);
+      if (Object.keys(isErrors).length !== 0) {
+        return;
+      } else {
+        dispatch(
+          resetPassword({
+            email: FPEmail,
+            newPassword: FPPassword.newPassword,
+          }),
+        )
+          .unwrap()
+          .then((res) => {
+            toast.success(res.message);
+            setIsForgetPassword(false);
+          })
+          .catch((err) => toast.error(err.message));
+      }
     }
+  };
+
+  const ErrorMessage = ({ error }: { error?: string }) => {
+    if (!error) return null;
+    return <p style={{ fontSize: "11px", color: "red" }}>{error}</p>;
   };
 
   return (
@@ -86,7 +116,7 @@ const ForgetPassword = ({
               value={FPEmail}
               onChange={(e) => setFPEmail(e.target.value)}
             />
-            {/* <ErrorMessage error={errors.email} /> */}
+            <ErrorMessage error={errors.email} />
           </Box>
         )}
 
@@ -118,7 +148,7 @@ const ForgetPassword = ({
                 value={FPPassword.newPassword}
                 onChange={handlePasswordChange}
               />
-              {/* <ErrorMessage error={errors.password} /> */}
+              <ErrorMessage error={errors.password} />
             </Box>
 
             <Box>
@@ -133,7 +163,7 @@ const ForgetPassword = ({
                 value={FPPassword.ReEnterNewPassword}
                 onChange={handlePasswordChange}
               />
-              {/* <ErrorMessage error={errors.password} /> */}
+              <ErrorMessage error={errors.password} />
             </Box>
           </>
         )}
