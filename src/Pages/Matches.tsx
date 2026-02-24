@@ -21,8 +21,6 @@ const Matches = () => {
   const { ChatList, isChatlistLoading } =
     useAppSelector((store) => store.chat) || [];
 
-  console.log("ChatList", ChatList);
-
   useEffect(() => {
     dispatch(getAllMatches());
     dispatch(getChatList());
@@ -36,8 +34,10 @@ const Matches = () => {
     setSelectedMatch(null);
   };
 
-  const handleChatClick = (targetUserId: string) => {
-    navigate(`/chat/${targetUserId}`);
+  const handleChatClick = (targetUserDetails: any) => {
+    navigate(`/chat/${targetUserDetails._id}`, {
+      state: { targetUserDetails },
+    });
   };
 
   console.log("ChatList", ChatList);
@@ -104,7 +104,7 @@ const Matches = () => {
                     <div
                       key={user._id}
                       className="chatItem"
-                      onClick={() => handleChatClick(user._id)}
+                      onClick={() => handleChatClick(user)}
                     >
                       <div className="chatAvatarWrapper">
                         <img

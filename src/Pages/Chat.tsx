@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import "../CSS/Chat.css";
 import { creasteSocketConnetion } from "../utils/socket";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useDispatch } from "react-redux";
 import {
@@ -40,6 +40,9 @@ const Bubble = ({ message, isMe }: { message: Message; isMe: boolean }) => {
 
 const Chat = () => {
   const { targetUserId } = useParams();
+  const { state } = useLocation();
+  const receiverDetails = state?.targetUserDetails;
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [pageno, setpageno] = useState(1);
   const [loading, setloading] = useState(false);
@@ -51,15 +54,8 @@ const Chat = () => {
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  console.log("messages", messages);
-
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
-
-  const receiverDetails = useMemo(() => {
-    return matches.find((val: any) => val._id === targetUserId);
-  }, [matches, targetUserId]);
 
   const { userProfileData } = useAppSelector(
     (store) => store.profile.userProfile,

@@ -11,6 +11,8 @@ import ChatIcon from "@mui/icons-material/Chat";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useDispatch } from "react-redux";
 import { sendConnectionReq } from "../redux/actions/connectionAction";
+import { useNavigate } from "react-router-dom";
+import Chat from "../Pages/Chat";
 
 const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
   const {
@@ -29,13 +31,14 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
     availability,
     projects,
   } = val;
+  const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
   const [showDislikeAnimation, setShowDislikeAnimation] = useState(false);
 
   const isPremium = useAppSelector(
-    (store) => store.profile.userProfile.userProfileData?.isPremium ?? false
+    (store) => store.profile.userProfile.userProfileData?.isPremium ?? false,
   );
 
   const x = useMotionValue(0);
@@ -84,6 +87,12 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
           filterUserData(_id);
         }, 500);
       });
+  };
+
+  const handleDirectChat = (targetUserDetails: any) => {
+    navigate(`/chat/${targetUserDetails._id}`, {
+      state: { targetUserDetails },
+    });
   };
 
   return (
@@ -192,6 +201,7 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
               <button
                 className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer"
                 aria-label="Chat"
+                onClick={() => handleDirectChat(val)}
               >
                 <ChatIcon sx={{ fontSize: "25px", color: "white" }} />
               </button>
@@ -338,7 +348,7 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
                           >
                             {tech}
                           </span>
-                        )
+                        ),
                       )}
                     </div>
                   )}

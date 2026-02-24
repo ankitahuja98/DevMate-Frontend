@@ -104,8 +104,11 @@ const LikedYouUserCard = ({
         }, 500);
       });
   };
-  const handleDirectChat = (targetUserId: string) => {
-    navigate(`/chat/${targetUserId}`);
+
+  const handleDirectChat = (targetUserDetails: any) => {
+    navigate(`/chat/${targetUserDetails._id}`, {
+      state: { targetUserDetails },
+    });
   };
 
   return (
@@ -221,7 +224,7 @@ const LikedYouUserCard = ({
               <button
                 className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer"
                 aria-label="Chat"
-                onClick={() => handleDirectChat(_id)}
+                onClick={() => handleDirectChat(val)}
               >
                 <ChatIcon sx={{ fontSize: "25px", color: "white" }} />
               </button>
