@@ -23,11 +23,18 @@ export interface ChatUser {
   profilePhoto: string;
 }
 
+interface chatList {
+  chatId: string;
+  isUnread: boolean;
+  lastmessage?: {};
+  user: ChatUser;
+}
+
 export interface ChatState {
   isChatLoading: boolean;
   ChatData: ChatResponse | null;
   isChatError: boolean;
   isChatlistLoading: boolean;
-  ChatList: ChatUser[];
+  ChatList: chatList[];
   isChatlistError: boolean;
 }

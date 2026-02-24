@@ -60,7 +60,7 @@ const TopBar = ({
   };
 
   const userProfile = useAppSelector(
-    (store) => store.profile.userProfile.userProfileData
+    (store) => store.profile.userProfile.userProfileData,
   );
 
   return (
@@ -70,7 +70,7 @@ const TopBar = ({
       </div>
       <div className="text-white w-full">
         <div className="p-3 float-right flex items-center">
-          <TooltipWrapper
+          {/* <TooltipWrapper
             title="Notification"
             arrow
             PopperProps={{
@@ -84,7 +84,7 @@ const TopBar = ({
                 <NotificationsActiveIcon style={useStyle.iconStyle} />
               )}
             </Button>
-          </TooltipWrapper>
+          </TooltipWrapper> */}
           <TooltipWrapper
             title={isFullscreen ? "Exit Full screen" : "Full screen"}
             arrow

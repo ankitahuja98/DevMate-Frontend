@@ -1,5 +1,5 @@
 import "../CSS/Matches.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import LikedYouUserCard from "../Components/LikedYouUserCard";
 import SearchIcon from "@mui/icons-material/Search";
@@ -15,16 +15,33 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 const Matches = () => {
   const [selectedMatch, setSelectedMatch] = useState<userData | null>(null);
+  const [searchChats, setSearchChats] = useState("");
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
+  const { matchesDataIsloading } = useAppSelector((store) => store.user) || [];
+
   const { ChatList, isChatlistLoading } =
     useAppSelector((store) => store.chat) || [];
+
+  console.log("ChatList", ChatList);
 
   useEffect(() => {
     dispatch(getAllMatches());
     dispatch(getChatList());
   }, []);
+
+  const filteredChatList = useMemo(() => {
+    if (!ChatList) return [];
+    const search = searchChats.toLowerCase().trim();
+
+    if (!search) return ChatList;
+
+    return ChatList.filter((val) => {
+      const name = val.user?.name?.toLowerCase() || "";
+      return name.includes(search);
+    });
+  }, [searchChats, ChatList]);
 
   const handleMatchClick = (match: userData) => {
     setSelectedMatch(match);
@@ -40,8 +57,6 @@ const Matches = () => {
     });
   };
 
-  console.log("ChatList", ChatList);
-
   return (
     <div className="chatPageContainer">
       <div className="w-full h-full flex flex-col">
@@ -51,9 +66,9 @@ const Matches = () => {
             <h3 className="matchesTitle">Your matches</h3>
           </div> */}
           <div className="matchesScroll">
-            {matches.length === 0 ? (
+            {matchesDataIsloading ? (
               <MatchesShimmer />
-            ) : (
+            ) : matches.length !== 0 ? (
               matches.map((match: any) => (
                 <div
                   key={match._id}
@@ -70,6 +85,15 @@ const Matches = () => {
                   <p className="matchName">{match.name.split(" ")[0]}</p>
                 </div>
               ))
+            ) : (
+              <div className="flex flex-col px-3">
+                <h3 className="text-lg font-semibold text-slate-900">
+                  No Matches yet
+                </h3>
+                <p className="text-smmt-1 mb-3 text-slate-900">
+                  Explore developers to find new matches and start connecting.
+                </p>
+              </div>
             )}
           </div>
         </div>
@@ -86,6 +110,7 @@ const Matches = () => {
                 className="searchConvoInput"
                 type="text"
                 placeholder="Search Conversations"
+                onChange={(e) => setSearchChats(e.target.value)}
               />
             </div>
           </div>
@@ -95,9 +120,8 @@ const Matches = () => {
               <div className="h-full flex justify-center items-center">
                 <LoadingThreeDotsPulse />
               </div>
-            ) : (
-              ChatList?.length !== 0 &&
-              ChatList.map((val: any) => {
+            ) : filteredChatList?.length !== 0 ? (
+              filteredChatList?.map((val: any) => {
                 const { user, lastmessage, isUnread } = val;
                 return (
                   <>
@@ -143,6 +167,22 @@ const Matches = () => {
                   </>
                 );
               })
+            ) : (
+              <div className="flex flex-col items-center justify-center h-[300px] px-6 text-center">
+                <div className="text-4xl mb-3 opacity-80">💬</div>
+                <h3 className="text-lg font-semibold text-slate-800">
+                  No conversations yet
+                </h3>
+                <p className="text-sm text-slate-500 mt-1 mb-3 max-w-xs">
+                  Start chatting with developers from the Explore page.
+                </p>
+                <button
+                  onClick={() => navigate("/explore")}
+                  className="mt-4 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600 transition cursor-pointer"
+                >
+                  Explore Developers
+                </button>
+              </div>
             )}
           </div>
         </div>
