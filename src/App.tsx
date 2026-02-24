@@ -20,14 +20,12 @@ import Premium from "./Pages/info/Premium";
 import Features from "./Pages/info/Features";
 import PublicRoutesLayout from "./Layout/PublicRoutesLayout/PublicRoutesLayout";
 import Founder from "./Pages/info/Founder";
-import useAuth from "./Layout/Auth/useAuth";
-import LoadingThreeDotsPulse from "./Components/Loader";
 import { FullscreenProvider } from "./context/FullscreenContext";
 import { useEffect, useState } from "react";
+import useAuth from "./Layout/Auth/useAuth";
 
 function App() {
-  const { isLoading } = useAuth();
-
+  useAuth();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
 
   useEffect(() => {
@@ -38,14 +36,6 @@ function App() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <LoadingThreeDotsPulse />
-      </div>
-    );
-  }
 
   return (
     <FullscreenProvider>

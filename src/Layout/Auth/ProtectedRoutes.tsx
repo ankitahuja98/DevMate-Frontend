@@ -1,21 +1,27 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAppSelector } from "../../redux/store/store";
+import LoadingThreeDotsPulse from "../../Components/Loader";
 
 const ProtectedRoutes = () => {
+  const location = useLocation();
+
   const { userProfileData, userProfileIsloading } = useAppSelector(
-    (store) => store.profile.userProfile
+    (store) => store.profile.userProfile,
   );
 
-  // While checking, DON’T redirect yet
   if (userProfileIsloading) {
-    return <div>Checking authentication...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <LoadingThreeDotsPulse />
+      </div>
+    );
   }
 
-  if (userProfileData) {
-    return <Outlet />; // user is authenticated
+  if (!userProfileData) {
+    return <Navigate to="/" replace state={{ from: location.pathname }} />;
   }
 
-  return <Navigate to="/" replace />; // not logged in → go to home
+  return <Outlet />;
 };
 
 export default ProtectedRoutes;

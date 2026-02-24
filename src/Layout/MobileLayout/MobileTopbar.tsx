@@ -40,8 +40,10 @@ const MobileTopbar = ({
 
   let ispublicRoutes = publicRoutes.includes(location.pathname);
 
+  const ChatPage = location.pathname.startsWith("/chat/");
+
   return (
-    <div className="MobileTopbarContainer">
+    <div className={`MobileTopbarContainer ${ChatPage && "ChatPage"}`}>
       {/* <img className="AppLogo" src={DevMateLogo} alt="DevMate" /> */}
       {location.pathname === "/profile" && (
         <div className="w-full flex items-center justify-between">
@@ -50,13 +52,13 @@ const MobileTopbar = ({
             <Button onClick={() => navigate("/setting")}>
               <SettingsIcon style={useStyle.iconStyle} />
             </Button>
-            <Button onClick={handleNotification}>
+            {/* <Button onClick={handleNotification}>
               {!NotificationIsOpen ? (
                 <NotificationsIcon style={useStyle.iconStyle} />
               ) : (
                 <NotificationsActiveIcon style={useStyle.iconStyle} />
               )}
-            </Button>
+            </Button> */}
           </div>
         </div>
       )}
@@ -76,7 +78,7 @@ const MobileTopbar = ({
       {location.pathname === "/matches" && (
         <div className="w-full flex items-center justify-between">
           <p className="text-3xl font-bold">Chats</p>
-          <SearchIcon style={{ fontSize: "30px" }} />
+          {/* <SearchIcon style={{ fontSize: "30px" }} /> */}
         </div>
       )}
 

@@ -24,8 +24,6 @@ const Matches = () => {
   const { ChatList, isChatlistLoading } =
     useAppSelector((store) => store.chat) || [];
 
-  console.log("ChatList", ChatList);
-
   useEffect(() => {
     dispatch(getAllMatches());
     dispatch(getChatList());

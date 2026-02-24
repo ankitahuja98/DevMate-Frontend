@@ -9,8 +9,10 @@ const useAuth = () => {
     useAppSelector((store) => store.profile.userProfile);
 
   useEffect(() => {
-    dispatch(fetchUserProfile());
-  }, [dispatch]);
+    if (!userProfileData) {
+      dispatch(fetchUserProfile());
+    }
+  }, [dispatch, userProfileData]);
 
   return {
     isAuthenticated: Boolean(userProfileData),
