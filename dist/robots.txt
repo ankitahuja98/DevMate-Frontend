@@ -1,0 +1,15 @@
+User-agent: *
+
+Allow: /
+
+# Block protected/private routes
+Disallow: /explore
+Disallow: /profile
+Disallow: /likedyou
+Disallow: /matches
+Disallow: /chat
+Disallow: /setting
+Disallow: /premium
+Disallow: /login
+
+Sitemap: https://devmate.co.in/sitemap.xml

@@ -19,7 +19,8 @@ body {
 .mainContent {
   min-height: 100vh;
   overflow: auto;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at top center,
       rgba(108, 92, 231, 0.12),
       transparent 60%
@@ -33,4 +34,10 @@ body {
   #root {
     background-color: rgb(245, 245, 245);
   }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 1s;
+  animation-fill-mode: both;
 }

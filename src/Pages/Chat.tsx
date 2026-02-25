@@ -16,6 +16,7 @@ import { clearChatData } from "../redux/slices/chatSlice";
 import getDate from "../utils/getDate";
 import type { Message } from "../redux/types/chatType";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import SEO from "../Components/SEO";
 
 const Bubble = ({ message, isMe }: { message: Message; isMe: boolean }) => {
   return (
@@ -215,6 +216,10 @@ const Chat = () => {
 
   return (
     <>
+      <SEO
+        title="Chat - Devmate"
+        description="Chat with your matches and build developer connections."
+      />
       <div className="chatContainer">
         <header className="UserchatHeader">
           <div className="flex items-center justify-between w-full">
