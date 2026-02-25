@@ -262,7 +262,7 @@
 
   /* Optional: Stack tags on mobile */
   .flex.gap-5 {
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px !important;
   }
 

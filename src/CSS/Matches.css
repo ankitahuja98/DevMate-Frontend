@@ -9,27 +9,28 @@
 /* ==================== MATCHES SECTION ==================== */
 .matchesSection {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 7px 5px 3px 5px;
   border: 1px solid #e5e7eb;
   border-radius: 10px 10px 0px 0px;
+  padding-left: 8px;
 }
 
 .matchesSectionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 4px 7px 0px 7px;
 }
 
 .matchesTitle {
   font-size: 16px;
   font-weight: 700;
-  color: white;
+  color: rgb(26, 26, 26);
   margin: 0;
 }
 
 .matchesScroll {
   display: flex;
+  flex-direction: column;
   gap: 15px;
   overflow-x: auto;
   scrollbar-width: none;
@@ -43,11 +44,12 @@
 .matchItem {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   gap: 1px;
   cursor: pointer;
   transition: transform 0.2s;
   min-width: 70px;
+  padding-left: 4px;
 }
 
 .matchItem:hover {
@@ -298,10 +300,6 @@
 @media (max-width: 768px) {
   .chatPageContainer {
     height: calc(100vh - 90px);
-  }
-
-  .matchesSection {
-    padding: 5px 10px;
   }
 
   .matchesScroll {

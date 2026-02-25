@@ -60,9 +60,9 @@ const Matches = () => {
       <div className="w-full h-full flex flex-col">
         {/* Matches Section */}
         <div className="matchesSection">
-          {/* <div className="matchesSectionHeader">
-            <h3 className="matchesTitle">Your matches</h3>
-          </div> */}
+          <div className="matchesSectionHeader">
+            <h3 className="matchesTitle">Connections</h3>
+          </div>
           <div className="matchesScroll">
             {matchesDataIsloading ? (
               <MatchesShimmer />
@@ -73,14 +73,16 @@ const Matches = () => {
                   className="matchItem"
                   onClick={() => handleMatchClick(match)}
                 >
-                  <div className="matchAvatarWrapper">
-                    <img
-                      src={match.profilePhoto}
-                      alt={match.name}
-                      className="matchAvatar"
-                    />
+                  <div>
+                    <div className="matchAvatarWrapper">
+                      <img
+                        src={match.profilePhoto}
+                        alt={match.name}
+                        className="matchAvatar"
+                      />
+                    </div>
+                    <p className="matchName">{match.name.split(" ")[0]}</p>
                   </div>
-                  <p className="matchName">{match.name.split(" ")[0]}</p>
                 </div>
               ))
             ) : (
@@ -107,7 +109,7 @@ const Matches = () => {
               <input
                 className="searchConvoInput"
                 type="text"
-                placeholder="Search Conversations"
+                placeholder="Search"
                 onChange={(e) => setSearchChats(e.target.value)}
               />
             </div>

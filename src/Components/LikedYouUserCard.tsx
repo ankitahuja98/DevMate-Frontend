@@ -12,6 +12,8 @@ import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatIcon from "@mui/icons-material/Chat";
 import { useNavigate } from "react-router-dom";
+import { Button, IconButton } from "@mui/material";
+import TooltipWrapper from "../utils/TooltipWrapper";
 
 const LikedYouUserCard = ({
   val,
@@ -54,6 +56,9 @@ const LikedYouUserCard = ({
   const isPremium = useAppSelector(
     (store) => store.profile.userProfile.userProfileData.isPremium,
   );
+
+  const isChatEnabled = isPremium;
+  const tooltipTitle = isPremium ? "Start Chat" : "Upgrade to Premium to chat";
 
   const handleDragEnd = () => {
     if (x.get() > 50) {
@@ -115,7 +120,7 @@ const LikedYouUserCard = ({
     <motion.div
       className={`LikedYouCard ${
         activeCard === _id ? "active border-2 border-gray-400" : ""
-      } ${isPremium && "isPremium"}`}
+      }`}
       onClick={() => setActiveCard(activeCard === _id ? null : _id)}
       drag={isPremium ? "x" : false}
       onDragEnd={handleDragEnd}
@@ -221,13 +226,16 @@ const LikedYouUserCard = ({
             </div>
 
             {(isPremium || isMatched) && (
-              <button
-                className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer"
-                aria-label="Chat"
-                onClick={() => handleDirectChat(val)}
-              >
-                <ChatIcon sx={{ fontSize: "25px", color: "white" }} />
-              </button>
+              <TooltipWrapper title={tooltipTitle} arrow>
+                <IconButton
+                  className="icon-button"
+                  aria-label="Chat"
+                  disabled={!isChatEnabled}
+                  onClick={() => isChatEnabled && handleDirectChat(val)}
+                >
+                  <ChatIcon sx={{ fontSize: "25px", color: "white" }} />
+                </IconButton>
+              </TooltipWrapper>
             )}
           </div>
         </div>
