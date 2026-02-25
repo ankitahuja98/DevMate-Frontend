@@ -69,7 +69,9 @@ const chatSlice = createSlice({
     builder.addCase(chatDelete.fulfilled, (state, action) => {
       const { targetUserId } = action.meta.arg;
 
-      state.ChatList = state.ChatList.filter((val) => val._id !== targetUserId);
+      state.ChatList = state.ChatList.filter(
+        (val) => val?._id !== targetUserId,
+      );
 
       state.ChatData = null;
     });

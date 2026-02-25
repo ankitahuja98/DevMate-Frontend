@@ -12,7 +12,7 @@ import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatIcon from "@mui/icons-material/Chat";
 import { useNavigate } from "react-router-dom";
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import TooltipWrapper from "../utils/TooltipWrapper";
 
 const LikedYouUserCard = ({

@@ -3,7 +3,6 @@ import MobileTopbar from "./MobileTopbar";
 import "./MobileLayout.css";
 import BottomBar from "./BottomBar";
 import EditProfile from "../../Components/EditProfile";
-import { useState } from "react";
 
 const index = ({
   children,
@@ -12,7 +11,6 @@ const index = ({
   children: any;
   editorRef: React.RefObject<HTMLDivElement | null>;
 }) => {
-  const [NotificationIsOpen, setNotificationIsOpen] = useState(false);
   const location = useLocation();
 
   const needsBottomPadding = location.pathname === "/likedyou";
@@ -21,10 +19,7 @@ const index = ({
       {/* Right Section (Topbar + Page Content) */}
       <div className=" flex flex-col flex-1 overflow-hidden bg-white">
         {/* Mobile Top bar */}
-        <MobileTopbar
-          NotificationIsOpen={NotificationIsOpen}
-          setNotificationIsOpen={setNotificationIsOpen}
-        />
+        <MobileTopbar />
         {/* Page content */}
         <div
           className={`flex-1 overflow-y-auto overflow-x-hidden ${

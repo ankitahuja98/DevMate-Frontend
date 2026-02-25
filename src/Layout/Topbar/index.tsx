@@ -1,5 +1,5 @@
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+// import NotificationsIcon from "@mui/icons-material/Notifications";
+// import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -36,13 +36,9 @@ const useStyle = {
 };
 
 const TopBar = ({
-  NotificationIsOpen,
-  setNotificationIsOpen,
   editorRef,
 }: {
-  NotificationIsOpen: boolean;
   editorRef?: RefObject<HTMLDivElement | null>;
-  setNotificationIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { isFullscreen, toggleFullscreen } = useFullscreen();
 
@@ -53,10 +49,6 @@ const TopBar = ({
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
-  };
-
-  const handleNotification = () => {
-    setNotificationIsOpen((prev) => !prev);
   };
 
   const userProfile = useAppSelector(

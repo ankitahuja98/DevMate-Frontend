@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/Search";
+// import SearchIcon from "@mui/icons-material/Search";
 import SettingsIcon from "@mui/icons-material/Settings";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+// import NotificationsIcon from "@mui/icons-material/Notifications";
+// import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import { Button } from "@mui/material";
 import DevMateLogo from "../../Images/devmateLogo.avif";
 
@@ -13,19 +13,10 @@ const useStyle = {
     color: "black",
   },
 };
-const MobileTopbar = ({
-  NotificationIsOpen,
-  setNotificationIsOpen,
-}: {
-  NotificationIsOpen: boolean;
-  setNotificationIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const MobileTopbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleNotification = () => {
-    setNotificationIsOpen((prev) => !prev);
-  };
   let publicRoutes = [
     "/",
     "/about",

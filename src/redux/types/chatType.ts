@@ -24,6 +24,7 @@ export interface ChatUser {
 }
 
 interface chatList {
+  _id: string;
   chatId: string;
   isUnread: boolean;
   lastmessage?: {};

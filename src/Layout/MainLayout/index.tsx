@@ -12,7 +12,6 @@ const index = ({
   editorRef: React.RefObject<HTMLDivElement | null>;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [NotificationIsOpen, setNotificationIsOpen] = useState(false);
 
   return (
     <div ref={editorRef} className="flex h-screen w-screen overflow-hidden">
@@ -22,11 +21,7 @@ const index = ({
       {/* Right Section (Topbar + Page Content) */}
       <div className="mainContent flex flex-col flex-1 overflow-hidden rounded-tl-3xl">
         {/* Top bar */}
-        <Topbar
-          NotificationIsOpen={NotificationIsOpen}
-          setNotificationIsOpen={setNotificationIsOpen}
-          editorRef={editorRef}
-        />
+        <Topbar editorRef={editorRef} />
 
         {/* Page content */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden">

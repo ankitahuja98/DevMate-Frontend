@@ -12,7 +12,6 @@ import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useDispatch } from "react-redux";
 import { sendConnectionReq } from "../redux/actions/connectionAction";
 import { useNavigate } from "react-router-dom";
-import Chat from "../Pages/Chat";
 
 const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
   const {

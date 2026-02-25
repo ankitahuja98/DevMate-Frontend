@@ -109,7 +109,7 @@ const Matches = () => {
               <input
                 className="searchConvoInput"
                 type="text"
-                placeholder="Search"
+                placeholder="Search Chats"
                 onChange={(e) => setSearchChats(e.target.value)}
               />
             </div>
