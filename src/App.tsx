@@ -4,6 +4,7 @@ import "./App.css";
 import { ToastContainer } from "react-toastify";
 import { FullscreenProvider } from "./context/FullscreenContext";
 import useAuth from "./Layout/Auth/useAuth";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 // ─── Eagerly loaded layouts ────
 import PublicRoutesLayout from "./Layout/PublicRoutesLayout/PublicRoutesLayout";
@@ -56,12 +57,20 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const GoogleAuthWrapper = () => {
+    return (
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_OAUTH_CLIENTID}>
+        <ResponsiveLogin />
+      </GoogleOAuthProvider>
+    );
+  };
+
   return (
     <FullscreenProvider>
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* ── Public: Auth ─── */}
-          <Route path="/login" element={<ResponsiveLogin />} />
+          <Route path="/login" element={<GoogleAuthWrapper />} />
 
           {/* ── Public: Informational pages ─── */}
           <Route element={<PublicRoutesLayout />}>
