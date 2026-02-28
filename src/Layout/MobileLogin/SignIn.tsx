@@ -12,6 +12,7 @@ import {
 } from "../../utils/validations/loginValidation";
 import { Box } from "@mui/material";
 import ForgetPassword from "../MainLogin/ForgetPassword";
+import SigninWithGoogle from "../../Components/SigninWithGoogle";
 
 const SignIn = ({
   setIsSignIn,
@@ -133,12 +134,7 @@ const SignIn = ({
           </div>
 
           {/* Google Sign-in */}
-          <button className="MobilegoogleBtn">
-            <img src={googleLogo} alt="Google" className="MobileGoogleLogo" />
-            <span className="text-gray-700 font-medium">
-              Sign in with Google
-            </span>
-          </button>
+          <SigninWithGoogle />
 
           <div className="text-center mt-3 text-xs">
             <span className="text-gray-500">New here? </span>

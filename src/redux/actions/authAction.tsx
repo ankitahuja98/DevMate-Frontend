@@ -63,9 +63,24 @@ export const login = createAsyncThunk<any, loginformData>(
 
 export const logout = createAsyncThunk<any>(
   "logout",
-  async (__DO_NOT_USE__ActionTypes, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       let response = await callApi.post("/auth/logout");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data || "Logout failed");
+    }
+  },
+);
+
+export const googleLoginApi = createAsyncThunk<any, any>(
+  "googleLogin",
+  async (code, { dispatch, rejectWithValue }) => {
+    try {
+      let response = await callApi.get(`/auth/googleLogin?code=${code}`);
+      if (response.status === 200) {
+        dispatch(fetchUserProfile());
+      }
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data || "Logout failed");

@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, resendOtp, signup, verifyOtp } from "../actions/authAction";
+import {
+  googleLoginApi,
+  login,
+  resendOtp,
+  signup,
+  verifyOtp,
+} from "../actions/authAction";
 import type { AuthInitialState } from "../types/authType";
 
 const initialState: AuthInitialState = {
@@ -23,6 +29,11 @@ const initialState: AuthInitialState = {
     resendOtpIsLoading: false,
     resendOtpData: null,
     resendOtpIsError: false,
+  },
+  googleLogin: {
+    GoogleLoginIsLoading: false,
+    GoogleLoginData: null,
+    GoogleLoginIsError: false,
   },
 };
 
@@ -81,6 +92,19 @@ const authSlice = createSlice({
     builder.addCase(resendOtp.rejected, (state) => {
       state.resendOtp.resendOtpIsLoading = false;
       state.resendOtp.resendOtpIsError = true;
+    });
+
+    // for googleLogin
+    builder.addCase(googleLoginApi.pending, (state) => {
+      state.googleLogin.GoogleLoginIsLoading = true;
+    });
+    builder.addCase(googleLoginApi.fulfilled, (state, action) => {
+      state.googleLogin.GoogleLoginIsLoading = false;
+      state.googleLogin.GoogleLoginData = action.payload;
+    });
+    builder.addCase(googleLoginApi.rejected, (state) => {
+      state.googleLogin.GoogleLoginIsLoading = false;
+      state.googleLogin.GoogleLoginIsError = true;
     });
   },
 });

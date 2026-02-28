@@ -1,8 +1,6 @@
 import React, { useState, type SetStateAction } from "react";
 import TextField from "@mui/material/TextField";
-import googleLogo from "../../Images/googleLogo.avif";
 import { toast } from "react-toastify";
-import { useGoogleLogin } from "@react-oauth/google";
 import {
   validateSignup,
   type signupdata,
@@ -12,6 +10,7 @@ import VerifyEmail from "../../Components/VerifyEmail";
 import { resendOtp, signup, verifyOtp } from "../../redux/actions/authAction";
 import { useDispatch } from "react-redux";
 import { type AppDispatch } from "../../redux/store/store";
+import SigninWithGoogle from "../../Components/SigninWithGoogle";
 
 const SignUp = ({
   setIsSignIn,
@@ -56,20 +55,6 @@ const SignUp = ({
     if (!error) return null;
     return <p style={{ fontSize: "11px", color: "red" }}>{error}</p>;
   };
-
-  const responseGoogle = async (authResult: any) => {
-    try {
-      console.log("authResult", authResult);
-    } catch (error) {
-      console.log("error while requesting to google Code:", error);
-    }
-  };
-
-  const googleLogin = useGoogleLogin({
-    onSuccess: responseGoogle,
-    onError: responseGoogle,
-    flow: "auth-code",
-  });
 
   return (
     <div className="SignupPage p-6 sm:p-10 flex flex-col justify-center">
@@ -144,10 +129,7 @@ const SignUp = ({
       </div>
 
       {/* Google Sign-up */}
-      <button className="googleBtn" onClick={googleLogin}>
-        <img src={googleLogo} alt="Google" className="w-8 h-4 sm:w-10 sm:h-5" />
-        <span className="text-gray-700 font-medium">Sign in with Google</span>
-      </button>
+      <SigninWithGoogle />
     </div>
   );
 };

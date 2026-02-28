@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
-import googleLogo from "../../Images/googleLogo.avif";
 import { useDispatch } from "react-redux";
 import { useAppSelector, type AppDispatch } from "../../redux/store/store";
 import { login } from "../../redux/actions/authAction";
@@ -12,6 +11,7 @@ import {
 } from "../../utils/validations/loginValidation";
 import { Box } from "@mui/material";
 import ForgetPassword from "./ForgetPassword";
+import SigninWithGoogle from "../../Components/SigninWithGoogle";
 
 const SignIn = () => {
   const [loginformData, setloginformData] = useState({
@@ -122,12 +122,7 @@ const SignIn = () => {
           </div>
 
           {/* Google Sign-in */}
-          <button className="googleBtn">
-            <img src={googleLogo} alt="Google" className="w-10 h-5" />
-            <span className="text-gray-700 font-medium">
-              Sign in with Google
-            </span>
-          </button>
+          <SigninWithGoogle />
         </div>
       ) : (
         <ForgetPassword

@@ -11,6 +11,7 @@ import {
 import { Box } from "@mui/material";
 import { toast } from "react-toastify";
 import VerifyEmail from "../../Components/VerifyEmail";
+import SigninWithGoogle from "../../Components/SigninWithGoogle";
 
 const SignUp = ({
   setIsSignIn,
@@ -140,10 +141,7 @@ const SignUp = ({
       </div>
 
       {/* Google Sign-up */}
-      <button className="MobilegoogleBtn">
-        <img src={googleLogo} alt="Google" className="w-10 h-5" />
-        <span className="text-gray-700 font-medium">Sign up with Google</span>
-      </button>
+      <SigninWithGoogle />
 
       <div className="text-center mt-3 text-xs">
         <span className="text-gray-500">Already have an account? </span>

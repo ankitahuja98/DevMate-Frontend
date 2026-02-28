@@ -42,9 +42,16 @@ interface resendOtpInitialState {
   resendOtpIsError: boolean;
 }
 
+interface googleLoginInitialState {
+  GoogleLoginIsLoading: boolean;
+  GoogleLoginData: any | null;
+  GoogleLoginIsError: boolean;
+}
+
 export interface AuthInitialState {
   signup: singupInitialState;
   login: loginInitialState;
   verifyOtp: verifyOtpInitialState;
   resendOtp: resendOtpInitialState;
+  googleLogin: googleLoginInitialState;
 }
