@@ -1,17 +1,25 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import callApi from "../../api/axiosInstance";
 
-export const getAllUsers = createAsyncThunk<any>(
-  "getAllUsers",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await callApi.get("/feed");
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data || "Get users failed");
+export const getAllUsers = createAsyncThunk<
+  any,
+  { cursor?: string | null; limit?: number }
+>("getAllUsers", async ({ cursor, limit = 10 }, { rejectWithValue }) => {
+  try {
+    const params = new URLSearchParams();
+
+    params.append("limit", String(limit));
+
+    if (cursor) {
+      params.append("cursor", cursor);
     }
+
+    const response = await callApi.get(`/feed?${params.toString()}`);
+    return response?.data;
+  } catch (error: any) {
+    return rejectWithValue(error.response.data || "Get users failed");
   }
-);
+});
 
 export const getAllRequests = createAsyncThunk<any>(
   "getAllRequests",
@@ -22,7 +30,7 @@ export const getAllRequests = createAsyncThunk<any>(
     } catch (error: any) {
       return rejectWithValue(error.response.data || "Get requests failed");
     }
-  }
+  },
 );
 
 export const getAllMatches = createAsyncThunk<any>(
@@ -34,5 +42,5 @@ export const getAllMatches = createAsyncThunk<any>(
     } catch (error: any) {
       return rejectWithValue(error.response.data || "Get matches failed");
     }
-  }
+  },
 );

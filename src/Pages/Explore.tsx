@@ -11,9 +11,17 @@ import LoadingThreeDotsPulse from "../Components/Loader";
 import SEO from "../Components/SEO";
 
 const Explore = () => {
-  const [AllUsers, setAllUsers] = useState([]);
+  const [AllUsers, setAllUsers] = useState<userData[]>([]);
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [isFetchingNext, setIsFetchingNext] = useState(false);
+
   const getallUsers =
     useAppSelector((store) => store.user.userData?.data) || [];
+
+  const hasMoreUsers = useAppSelector((store) => store.user.userData?.hasMore);
+
+  const nextCursor =
+    useAppSelector((store) => store.user.userData?.nextCursor) || null;
 
   const getallUsersisLoading = useAppSelector(
     (store) => store.user.userDataIsloading,
@@ -22,20 +30,63 @@ const Explore = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(getAllUsers());
-  }, []);
+    dispatch(getAllUsers({ cursor: null }));
+  }, [dispatch]);
 
   useEffect(() => {
-    setAllUsers(getallUsers);
-  }, [getallUsers]);
+    if (getallUsers?.length) {
+      setAllUsers((prev) => {
+        const map = new Map();
+
+        [...prev, ...getallUsers].forEach((user) => {
+          map.set(user._id.toString(), user);
+        });
+
+        return Array.from(map.values());
+      });
+    }
+
+    // save next cursor from backend
+    if (nextCursor) {
+      setCursor(nextCursor ?? null);
+    }
+
+    if (!getallUsersisLoading && isFetchingNext) {
+      setIsFetchingNext(false);
+    }
+  }, [getallUsers, nextCursor, getallUsersisLoading]);
 
   const handleRefresh = () => {
-    dispatch(getAllUsers());
+    setAllUsers([]);
+    setCursor(null);
+    setIsFetchingNext(false);
+    dispatch(getAllUsers({ cursor: null }));
   };
 
   const filterUserData = (id: string) => {
     setAllUsers((prev) => prev.filter((val: userData) => val._id !== id));
   };
+
+  useEffect(() => {
+    if (
+      !getallUsersisLoading &&
+      !isFetchingNext &&
+      hasMoreUsers &&
+      cursor &&
+      AllUsers.length > 0 &&
+      AllUsers.length < 5
+    ) {
+      setIsFetchingNext(true);
+      dispatch(getAllUsers({ cursor }));
+    }
+  }, [
+    AllUsers.length,
+    getallUsersisLoading,
+    hasMoreUsers,
+    isFetchingNext,
+    cursor,
+    dispatch,
+  ]);
 
   return (
     <>

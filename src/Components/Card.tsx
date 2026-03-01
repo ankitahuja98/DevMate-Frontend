@@ -5,8 +5,10 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import WorkIcon from "@mui/icons-material/Work";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import CloseIcon from "@mui/icons-material/Close";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+// import CloseIcon from "@mui/icons-material/Close";
+// import FavoriteIcon from "@mui/icons-material/Favorite";
+import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ChatIcon from "@mui/icons-material/Chat";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useDispatch } from "react-redux";
@@ -107,12 +109,12 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
       <motion.button
         onClick={handleDislike}
         className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-r-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
-        initial={{ x: -40 }}
-        whileHover={{ x: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        initial={{ x: -10 }}
+        // whileHover={{ x: 0 }}
+        // transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
         <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-r from-red-500 to-pink-500">
-          <CloseIcon sx={{ fontSize: 28, color: "white" }} />
+          <ThumbDownAltIcon sx={{ fontSize: 28, color: "white" }} />
         </div>
       </motion.button>
 
@@ -120,12 +122,12 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
       <motion.button
         onClick={handleLike}
         className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-l-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
-        initial={{ x: 40 }}
-        whileHover={{ x: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        initial={{ x: 10 }}
+        // whileHover={{ x: 0 }}
+        // transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
         <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-l from-green-500 to-emerald-500">
-          <FavoriteIcon sx={{ fontSize: 28, color: "white" }} />
+          <ThumbUpAltIcon sx={{ fontSize: 28, color: "white" }} />
         </div>
       </motion.button>
 
@@ -139,7 +141,7 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
           onAnimationComplete={() => setShowLikeAnimation(false)}
         >
           <div className="bg-green-500 rounded-full p-8 shadow-2xl">
-            <FavoriteIcon sx={{ fontSize: 80, color: "white" }} />
+            <ThumbUpAltIcon sx={{ fontSize: 80, color: "white" }} />
           </div>
         </motion.div>
       )}
@@ -158,7 +160,7 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
           onAnimationComplete={() => setShowDislikeAnimation(false)}
         >
           <div className="bg-red-500 rounded-full p-8 shadow-2xl">
-            <CloseIcon sx={{ fontSize: 80, color: "white" }} />
+            <ThumbDownAltIcon sx={{ fontSize: 80, color: "white" }} />
           </div>
         </motion.div>
       )}

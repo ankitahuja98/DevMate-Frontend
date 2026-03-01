@@ -25,10 +25,33 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getAllUsers.pending, (state) => {
       state.userDataIsloading = true;
+      state.userData = null;
     });
     builder.addCase(getAllUsers.fulfilled, (state, action) => {
       state.userDataIsloading = false;
-      state.userData = action.payload;
+
+      // At first time feed load
+      if (!state.userData) {
+        state.userData = action.payload;
+        return;
+      }
+
+      // after first time feed load
+      const existing = new Map();
+
+      // old users
+      state.userData.data.forEach((val: any) => {
+        existing.set(val._id.toString(), val);
+      });
+
+      // new users
+      action.payload.data.forEach((val: any) => {
+        existing.set(val._id.toString(), val);
+      });
+
+      state.userData.data = Array.from(existing.values());
+      state.userData.nextCursor = action.payload.nextCursor;
+      state.userData.hasMore = action.payload.hasMore;
     });
     builder.addCase(getAllUsers.rejected, (state) => {
       state.userDataIsloading = false;
