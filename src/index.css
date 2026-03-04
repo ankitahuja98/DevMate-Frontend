@@ -1,1 +1,111 @@
 @import "tailwindcss";
+
+/* ============================================================
+   GLOBAL MOBILE PERFORMANCE & RENDERING FIXES
+   ============================================================
+
+   Why these are needed:
+   Mobile browsers (Android Chrome, iOS Safari) differ from desktop in 3 ways:
+   1. Split render/compositor threads → GPU layers created mid-animation render
+      as transparent until pixel data is transferred
+   2. position:fixed inside overflow:auto containers gets trapped in the scroll
+      compositing context instead of escaping to the viewport
+   3. 100vh includes browser chrome (address bar) which changes on scroll,
+      causing layout reflows that trigger repaints
+   ============================================================ */
+
+/* Use border-box sizing everywhere — prevents width/padding math surprises
+   that cause horizontal scroll on mobile */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Prevent horizontal overflow at the root level */
+html,
+body {
+  overflow-x: hidden;
+  /* Use dvh (dynamic viewport height) for the root — it correctly tracks
+     the visible area as mobile browser chrome shows/hides.
+     100vh lies on mobile: it includes the address bar in its calculation
+     but then that bar hides on scroll, causing layout jumps. */
+  height: 100dvh;
+}
+
+/* Root app container */
+#root {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* ── Touch interaction improvements ─────────────────────────────────────────
+   touch-action: manipulation disables the 300ms tap delay that mobile browsers
+   add for double-tap zoom detection. Makes buttons feel instantly responsive. */
+button,
+a,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+/* ── Disable hover effects on touch devices ──────────────────────────────────
+   Mobile browsers synthesize a hover event after a tap, causing buttons/cards
+   to stay in their hover visual state after being tapped (stuck highlight).
+   We only disable hover-triggered SCALE transforms — NOT positional transforms
+   like translateY(-50%) which are used for layout centering. */
+@media (hover: none) and (pointer: coarse) {
+  /* Only kill hover-triggered Tailwind scale classes — not all transforms.
+     Using *:hover { transform: none } would break any element that uses
+     transform for positioning (e.g. buttons centered with translateY(-50%)) */
+  .hover\:scale-110:hover,
+  .hover\:scale-105:hover,
+  .hover\:shadow-xl:hover,
+  .hover\:shadow-md:hover,
+  .hover\:border-purple-400:hover {
+    transform: none !important;
+    box-shadow: inherit !important;
+    border-color: inherit !important;
+  }
+}
+
+/* ── MUI Dialog global fixes ─────────────────────────────────────────────────
+   These ensure the dialog portal renders above everything on mobile,
+   and that the backdrop is always fully opaque (no bleed-through) */
+.MuiModal-root.MuiDialog-root {
+  z-index: 1400 !important;
+}
+
+.MuiDialog-root .MuiBackdrop-root {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+  /* Disabling backdrop-filter prevents a mobile Chrome bug where blur
+     compositing creates a transparent window into the content behind */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Disable ALL MUI Dialog transition animations.
+   The default Grow animation uses transform:scale() which promotes the dialog
+   to a GPU compositing layer. On mobile, that layer is transparent for the
+   first few frames while pixel data transfers from CPU → GPU → compositor.
+   No animation = no transparent flicker. */
+.MuiDialog-root .MuiDialog-paper,
+.MuiDialog-root .MuiDialog-container {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* ── Scrollable areas ────────────────────────────────────────────────────────
+   -webkit-overflow-scrolling: touch enables momentum (inertia) scrolling on
+   iOS Safari. Without this, scrolling inside the dialog feels sluggish/broken */
+.editProfileContent,
+.UserChatContent,
+.leftSection,
+.RightSection {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Prevent text selection during drag/swipe ────────────────────────────── */
+.ExploreCard {
+  -webkit-user-select: none;
+  user-select: none;
+}

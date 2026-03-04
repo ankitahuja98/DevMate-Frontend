@@ -15,7 +15,7 @@ import SigninWithGoogle from "../../Components/SigninWithGoogle";
 
 const SignIn = () => {
   const [loginformData, setloginformData] = useState({
-    email: "ahujaankit05@gmail.com",
+    email: "ankitahuja098@gmail.com",
     password: "ankit",
   });
   const [isForgetPassword, setIsForgetPassword] = useState(false);

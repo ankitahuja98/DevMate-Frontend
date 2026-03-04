@@ -4,6 +4,7 @@ import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAllUsers } from "../redux/actions/userAction";
+import { resetUsers } from "../redux/slices/userSlice";
 import AllSwipe from "../Images/AllSwipe.avif";
 import { Button } from "@mui/material";
 import type { userData } from "../types/userData";
@@ -11,18 +12,14 @@ import LoadingThreeDotsPulse from "../Components/Loader";
 import SEO from "../Components/SEO";
 
 const Explore = () => {
-  const [AllUsers, setAllUsers] = useState<userData[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [isFetchingNext, setIsFetchingNext] = useState(false);
 
-  const getallUsers =
+  const AllUsers: userData[] =
     useAppSelector((store) => store.user.userData?.data) || [];
-
   const hasMoreUsers = useAppSelector((store) => store.user.userData?.hasMore);
-
   const nextCursor =
     useAppSelector((store) => store.user.userData?.nextCursor) || null;
-
   const getallUsersisLoading = useAppSelector(
     (store) => store.user.userDataIsloading,
   );
@@ -34,39 +31,11 @@ const Explore = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (getallUsers?.length) {
-      setAllUsers((prev) => {
-        const map = new Map();
+    if (nextCursor) setCursor(nextCursor);
+    if (!getallUsersisLoading && isFetchingNext) setIsFetchingNext(false);
+  }, [nextCursor, getallUsersisLoading]);
 
-        [...prev, ...getallUsers].forEach((user) => {
-          map.set(user._id.toString(), user);
-        });
-
-        return Array.from(map.values());
-      });
-    }
-
-    // save next cursor from backend
-    if (nextCursor) {
-      setCursor(nextCursor ?? null);
-    }
-
-    if (!getallUsersisLoading && isFetchingNext) {
-      setIsFetchingNext(false);
-    }
-  }, [getallUsers, nextCursor, getallUsersisLoading]);
-
-  const handleRefresh = () => {
-    setAllUsers([]);
-    setCursor(null);
-    setIsFetchingNext(false);
-    dispatch(getAllUsers({ cursor: null }));
-  };
-
-  const filterUserData = (id: string) => {
-    setAllUsers((prev) => prev.filter((val: userData) => val._id !== id));
-  };
-
+  // Auto-fetch next batch when the stack runs low (< 5 cards left)
   useEffect(() => {
     if (
       !getallUsersisLoading &&
@@ -88,6 +57,13 @@ const Explore = () => {
     dispatch,
   ]);
 
+  const handleRefresh = () => {
+    setCursor(null);
+    setIsFetchingNext(false);
+    dispatch(resetUsers());
+    dispatch(getAllUsers({ cursor: null }));
+  };
+
   return (
     <>
       <SEO
@@ -97,13 +73,16 @@ const Explore = () => {
       <div className="ExploreContainer">
         {!getallUsersisLoading ? (
           AllUsers.length !== 0 ? (
-            AllUsers.map((val: any) => {
-              return (
-                <Card key={val._id} val={val} filterUserData={filterUserData} />
-              );
-            })
+            AllUsers.map((val: any, index: number) => (
+              <Card
+                key={val._id}
+                val={val}
+                zIndex={AllUsers.length - index}
+                isVisible={index <= 1}
+              />
+            ))
           ) : (
-            <div className="flex justify-center items-center flex-col">
+            <div className="flex justify-center items-center flex-col gap-4">
               <img
                 className="w-10/12 md:w-6/12 h-auto"
                 src={AllSwipe}

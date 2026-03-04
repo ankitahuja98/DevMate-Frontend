@@ -96,7 +96,7 @@ const SignUp = ({
               <TextField
                 required
                 fullWidth
-                label="Set Password"
+                label="Set New Password"
                 type="password"
                 variant="outlined"
                 size="small"

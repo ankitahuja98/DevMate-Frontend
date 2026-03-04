@@ -19,8 +19,8 @@ const SignIn = ({
   setIsSignIn: React.Dispatch<SetStateAction<boolean>>;
 }) => {
   const [loginformData, setloginformData] = useState({
-    email: "neha@gmail.com",
-    password: "neha",
+    email: "ankitahuja098@gmail.com",
+    password: "ankit",
   });
   const [isForgetPassword, setIsForgetPassword] = useState(false);
   const [errors, setErros] = useState<logindata>({});

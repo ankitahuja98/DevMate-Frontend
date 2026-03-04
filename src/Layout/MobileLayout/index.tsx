@@ -15,22 +15,20 @@ const index = ({
 
   const needsBottomPadding = location.pathname === "/likedyou";
   return (
-    <div ref={editorRef} className="flex h-screen w-screen overflow-hidden">
+    <div ref={editorRef} className="flex h-dvh w-screen">
       {/* Right Section (Topbar + Page Content) */}
-      <div className=" flex flex-col flex-1 overflow-hidden bg-white">
-        {/* Mobile Top bar */}
+      <div className="flex flex-col flex-1 overflow-hidden bg-white">
         <MobileTopbar />
-        {/* Page content */}
         <div
           className={`flex-1 overflow-y-auto overflow-x-hidden ${
             needsBottomPadding ? "pb-[60px]" : ""
           }`}
         >
           {children || <Outlet />}
-          <EditProfile />
-          <BottomBar />
         </div>
+        <BottomBar />
       </div>
+      <EditProfile />
     </div>
   );
 };

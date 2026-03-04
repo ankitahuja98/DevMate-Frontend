@@ -5,17 +5,24 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import WorkIcon from "@mui/icons-material/Work";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-// import CloseIcon from "@mui/icons-material/Close";
-// import FavoriteIcon from "@mui/icons-material/Favorite";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ChatIcon from "@mui/icons-material/Chat";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
 import { useDispatch } from "react-redux";
 import { sendConnectionReq } from "../redux/actions/connectionAction";
+import { removeUser } from "../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 
-const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
+const Card = ({
+  val,
+  zIndex,
+  isVisible,
+}: {
+  val: any;
+  zIndex?: number;
+  isVisible?: boolean;
+}) => {
   const {
     _id,
     name,
@@ -32,39 +39,44 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
     availability,
     projects,
   } = val;
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [showLikeAnimation, setShowLikeAnimation] = useState(false);
   const [showDislikeAnimation, setShowDislikeAnimation] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const isPremium = useAppSelector(
     (store) => store.profile.userProfile.userProfileData?.isPremium ?? false,
   );
 
   const x = useMotionValue(0);
-  const opacity = useTransform(x, [-150, 0, 150], [0, 1, 0]);
-  const rotate = useTransform(x, [-150, 150], [-18, 18]);
+
+  const opacity = useTransform(
+    x,
+    [-200, -40, 0, 40, 200],
+    isDragging ? [0, 1, 1, 1, 0] : [1, 1, 1, 1, 1],
+  );
+  const rotate = useTransform(x, [-150, 0, 150], [-18, 0, 18]);
+
+  const dismiss = (id: string) => {
+    setTimeout(() => dispatch(removeUser(id)), 500);
+  };
+
+  const handleDragStart = () => setIsDragging(true);
 
   const handleDragEnd = () => {
-    if (x.get() > 50) {
+    setIsDragging(false);
+    if (x.get() > 15) {
       setShowLikeAnimation(true);
       dispatch(sendConnectionReq({ status: "interested", toUserId: _id }))
         .unwrap()
-        .then(() => {
-          setTimeout(() => {
-            filterUserData(_id);
-          }, 500);
-        });
-    } else if (x.get() < -50) {
+        .then(() => dismiss(_id));
+    } else if (x.get() < -15) {
       setShowDislikeAnimation(true);
       dispatch(sendConnectionReq({ status: "ignored", toUserId: _id }))
         .unwrap()
-        .then(() => {
-          setTimeout(() => {
-            filterUserData(_id);
-          }, 500);
-        });
+        .then(() => dismiss(_id));
     }
   };
 
@@ -72,22 +84,14 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
     setShowLikeAnimation(true);
     dispatch(sendConnectionReq({ status: "interested", toUserId: _id }))
       .unwrap()
-      .then(() => {
-        setTimeout(() => {
-          filterUserData(_id);
-        }, 500);
-      });
+      .then(() => dismiss(_id));
   };
 
   const handleDislike = () => {
     setShowDislikeAnimation(true);
     dispatch(sendConnectionReq({ status: "ignored", toUserId: _id }))
       .unwrap()
-      .then(() => {
-        setTimeout(() => {
-          filterUserData(_id);
-        }, 500);
-      });
+      .then(() => dismiss(_id));
   };
 
   const handleDirectChat = (targetUserDetails: any) => {
@@ -98,46 +102,27 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
 
   return (
     <motion.div
-      className="ExploreCard relative"
+      className="ExploreCardOuter"
       drag="x"
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      style={{ x, opacity, rotate }}
+      style={{
+        x,
+        opacity,
+        rotate,
+        zIndex: zIndex ?? 0,
+        visibility: isVisible === false ? "hidden" : "visible",
+      }}
       dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.1}
     >
-      {/* ================= FLOATING ACTION BUTTONS ================= */}
-      {/* Dislike Button - Left Side */}
-      <motion.button
-        onClick={handleDislike}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 rounded-r-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
-        initial={{ x: -10 }}
-        // whileHover={{ x: 0 }}
-        // transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      >
-        <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-r from-red-500 to-pink-500">
-          <ThumbDownAltIcon sx={{ fontSize: 28, color: "white" }} />
-        </div>
-      </motion.button>
-
-      {/* Like Button - Right Side */}
-      <motion.button
-        onClick={handleLike}
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 rounded-l-full shadow-2xl flex items-center overflow-hidden cursor-pointer"
-        initial={{ x: 10 }}
-        // whileHover={{ x: 0 }}
-        // transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      >
-        <div className="w-14 h-14 flex items-center justify-center bg-gradient-to-l from-green-500 to-emerald-500">
-          <ThumbUpAltIcon sx={{ fontSize: 28, color: "white" }} />
-        </div>
-      </motion.button>
-
-      {/* ================= LIKE ANIMATION OVERLAY ================= */}
+      {/* ── SWIPE ANIMATIONS ─────────────────────────────────────────────── */}
       {showLikeAnimation && (
         <motion.div
           className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: [0, 1, 1, 0], scale: [0, 1.2, 1, 1.3] }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           onAnimationComplete={() => setShowLikeAnimation(false)}
         >
           <div className="bg-green-500 rounded-full p-8 shadow-2xl">
@@ -146,7 +131,6 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
         </motion.div>
       )}
 
-      {/* ================= DISLIKE ANIMATION OVERLAY ================= */}
       {showDislikeAnimation && (
         <motion.div
           className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
@@ -156,7 +140,7 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
             scale: [0, 1.2, 1, 1.3],
             rotate: [0, -10, 10, 0],
           }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           onAnimationComplete={() => setShowDislikeAnimation(false)}
         >
           <div className="bg-red-500 rounded-full p-8 shadow-2xl">
@@ -165,243 +149,267 @@ const Card = ({ val, filterUserData }: { val: any; filterUserData: any }) => {
         </motion.div>
       )}
 
-      <div className="CardImageWrapper">
-        <img
-          src={profilePhoto}
-          alt={name}
-          className="cardProfilePic"
-          draggable={false}
-        />
+      {/* ── INNER: scrollable content ─────────────────────────────────────── */}
+      <div className="ExploreCardInner">
+        <div className="CardImageWrapper">
+          <div className="CardImagePlaceholder" />
+          <img
+            src={profilePhoto}
+            alt={name}
+            className="cardProfilePic"
+            draggable={false}
+            style={
+              {
+                userSelect: "none",
+                WebkitUserSelect: "none",
+              } as React.CSSProperties
+            }
+          />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
+          {/* ── LIKE / DISLIKE BUTTONS ──── */}
+          <button
+            className="CardActionBtn CardActionBtn--dislike"
+            onClick={handleDislike}
+            onPointerDown={(e) => e.stopPropagation()}
+            style={{ touchAction: "manipulation" }}
+            aria-label="Dislike"
+          >
+            <ThumbDownAltIcon sx={{ fontSize: 28, color: "white" }} />
+          </button>
 
-        <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3">
-          <div className="backdrop-blur-md bg-white/10 border border-white/10 rounded-lg p-2 flex items-center gap-3">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-baseline gap-2">
-                <h2 className="text-lg sm:text-2xl font-bold text-white truncate">
-                  {name}
-                </h2>
-                {age && (
-                  <span className="text-sm sm:text-xl text-white/90">
-                    {age}
-                  </span>
+          <button
+            className="CardActionBtn CardActionBtn--like"
+            onClick={handleLike}
+            onPointerDown={(e) => e.stopPropagation()}
+            style={{ touchAction: "manipulation" }}
+            aria-label="Like"
+          >
+            <ThumbUpAltIcon sx={{ fontSize: 28, color: "white" }} />
+          </button>
+
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
+
+          <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3">
+            <div className="backdrop-blur-md bg-white/10 border border-white/10 rounded-lg p-2 flex items-center gap-3">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-baseline gap-2">
+                  <h2 className="text-lg sm:text-2xl font-bold text-white truncate">
+                    {name}
+                  </h2>
+                  {age && (
+                    <span className="text-sm sm:text-xl text-white/90">
+                      {age}
+                    </span>
+                  )}
+                </div>
+                {location && (
+                  <div className="flex items-center gap-1 text-white/80">
+                    <LocationOnOutlinedIcon sx={{ fontSize: 14 }} />
+                    <span className="text-xs sm:text-sm truncate">
+                      {location}
+                    </span>
+                  </div>
                 )}
               </div>
-
-              {location && (
-                <div className="flex items-center gap-1 text-white/80">
-                  <LocationOnOutlinedIcon sx={{ fontSize: 14 }} />
-                  <span className="text-xs sm:text-sm truncate">
-                    {location}
-                  </span>
-                </div>
+              {isPremium && (
+                <button
+                  className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full shadow-lg active:scale-95 cursor-pointer"
+                  aria-label="Chat"
+                  onClick={() => handleDirectChat(val)}
+                  style={{ touchAction: "manipulation" }}
+                >
+                  <ChatIcon sx={{ fontSize: "25px", color: "white" }} />
+                </button>
               )}
             </div>
-            {isPremium && (
-              <button
-                className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition-all duration-200 active:scale-95 cursor-pointer"
-                aria-label="Chat"
-                onClick={() => handleDirectChat(val)}
-              >
-                <ChatIcon sx={{ fontSize: "25px", color: "white" }} />
-              </button>
-            )}
           </div>
         </div>
-      </div>
 
-      {/* ================= DETAILS SECTION ================= */}
-      <div className="bg-gradient-to-br from-purple-50 to-indigo-50 px-4 pt-5 pb-15 space-y-5">
-        {/* BIO */}
-        {bio && (
-          <div>
-            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
-              My Bio
-            </h3>
-            <div className="card-box">
-              <p className="text-sm text-gray-700 leading-relaxed">{bio}</p>
-            </div>
-          </div>
-        )}
-
-        {/* ABOUT */}
-        <div>
-          <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-            <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
-            About Me
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            <span className="CardTag CardTag1">
-              ⚡ Available {availability}
-            </span>
-            <span className="CardTag CardTag3">
-              ⭐ {experience} yrs experience
-            </span>
-            <span className="CardTag CardTag2">
-              🤝 Looking for {lookingForTitle}
-            </span>
-          </div>
-
-          {lookingForDesc && (
-            <div className="card-highlight mt-3">
-              <p className="text-sm text-gray-700">{lookingForDesc}</p>
+        {/* ── DETAILS ──────────────────────────────────────────────────────── */}
+        <div className="bg-gradient-to-br from-purple-50 to-indigo-50 px-4 pt-5 pb-20 space-y-5">
+          {bio && (
+            <div>
+              <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+                <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+                My Bio
+              </h3>
+              <div className="card-box">
+                <p className="text-sm text-gray-700 leading-relaxed">{bio}</p>
+              </div>
             </div>
           )}
-        </div>
 
-        {/* TECH STACK */}
-        {techStack?.length > 0 && (
           <div>
             <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
               <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
-              Tech Stack
+              About Me
             </h3>
             <div className="flex flex-wrap gap-2">
-              {techStack.map((tech: string, i: number) => (
-                <span key={i} className="tech-pill">
-                  {tech}
-                </span>
-              ))}
+              <span className="CardTag CardTag1">
+                ⚡ Available {availability}
+              </span>
+              <span className="CardTag CardTag3">
+                ⭐ {experience} yrs experience
+              </span>
+              <span className="CardTag CardTag2">
+                🤝 Looking for {lookingForTitle}
+              </span>
             </div>
+            {lookingForDesc && (
+              <div className="card-highlight mt-3">
+                <p className="text-sm text-gray-700">{lookingForDesc}</p>
+              </div>
+            )}
           </div>
-        )}
 
-        {/* INTERESTS */}
-        {interests?.length > 0 && (
-          <div>
-            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
-              Interests
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {interests.map((item: string, i: number) => (
-                <span key={i} className="interest-pill">
-                  {item}
-                </span>
-              ))}
+          {techStack?.length > 0 && (
+            <div>
+              <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+                <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+                Tech Stack
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {techStack.map((tech: string, i: number) => (
+                  <span key={i} className="tech-pill">
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Projects - Premium Cards */}
-        {projects && projects.length > 0 && (
-          <div>
-            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
-              Featured Projects
-            </h3>
-            <div className="space-y-3">
-              {projects.map((project: any, index: number) => (
-                <div
-                  key={project._id || index}
-                  className="bg-white rounded-xl p-4 border-2 border-gray-200 shadow-sm hover:border-purple-400 hover:shadow-md transition-all"
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1">
-                      <h4 className="font-bold text-sm text-gray-900 mb-1">
-                        {project.title || project.name}
-                      </h4>
-                      {project.role && (
-                        <p className="text-xs text-gray-600 italic mb-2">
-                          {project.role}
-                        </p>
+          {interests?.length > 0 && (
+            <div>
+              <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+                <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+                Interests
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {interests.map((item: string, i: number) => (
+                  <span key={i} className="interest-pill">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {projects && projects.length > 0 && (
+            <div>
+              <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+                <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+                Featured Projects
+              </h3>
+              <div className="space-y-3">
+                {projects.map((project: any, index: number) => (
+                  <div
+                    key={project._id || index}
+                    className="bg-white rounded-xl p-4 border-2 border-gray-200 shadow-sm"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <h4 className="font-bold text-sm text-gray-900 mb-1">
+                          {project.title || project.name}
+                        </h4>
+                        {project.role && (
+                          <p className="text-xs text-gray-600 italic mb-2">
+                            {project.role}
+                          </p>
+                        )}
+                      </div>
+                      {(project.githubUrl || project.liveUrl) && (
+                        <div className="flex gap-2 ml-2">
+                          {project.githubUrl && (
+                            <a
+                              href={project.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg"
+                            >
+                              <GitHubIcon sx={{ fontSize: 16 }} />
+                            </a>
+                          )}
+                          {project.liveUrl && (
+                            <a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg"
+                            >
+                              <OpenInNewIcon sx={{ fontSize: 16 }} />
+                            </a>
+                          )}
+                        </div>
                       )}
                     </div>
-                    {(project.githubUrl || project.liveUrl) && (
-                      <div className="flex gap-2 ml-2">
-                        {project.githubUrl && (
-                          <a
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all"
-                          >
-                            <GitHubIcon sx={{ fontSize: 16 }} />
-                          </a>
-                        )}
-                        {project.liveUrl && (
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all"
-                          >
-                            <OpenInNewIcon sx={{ fontSize: 16 }} />
-                          </a>
+                    {project.description && (
+                      <p className="text-xs text-gray-600 mb-2 leading-relaxed">
+                        {project.description}
+                      </p>
+                    )}
+                    {project.techUsed && project.techUsed.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.techUsed.map(
+                          (tech: string, techIndex: number) => (
+                            <span
+                              key={techIndex}
+                              className="text-xs bg-indigo-50 text-indigo-700 px-2 py-1 rounded-md border border-indigo-100 font-medium"
+                            >
+                              {tech}
+                            </span>
+                          ),
                         )}
                       </div>
                     )}
                   </div>
-                  {project.description && (
-                    <p className="text-xs text-gray-600 mb-2 leading-relaxed">
-                      {project.description}
-                    </p>
-                  )}
-                  {project.techUsed && project.techUsed.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.techUsed.map(
-                        (tech: string, techIndex: number) => (
-                          <span
-                            key={techIndex}
-                            className="text-xs bg-indigo-50 text-indigo-700 px-2 py-1 rounded-md border border-indigo-100 font-medium"
-                          >
-                            {tech}
-                          </span>
-                        ),
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* SOCIAL */}
-        {(socialLinks.github ||
-          socialLinks.linkedin ||
-          socialLinks.portfolio) && (
-          <div>
-            <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
-              Social Links
-            </h3>
-            <div className="flex justify-center gap-4">
-              {socialLinks.github && (
-                <a
-                  href={socialLinks.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 flex items-center justify-center bg-gray-900 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
-                >
-                  <GitHubIcon sx={{ fontSize: 22 }} />
-                </a>
-              )}
-              {socialLinks.linkedin && (
-                <a
-                  href={socialLinks.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 flex items-center justify-center bg-blue-600 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
-                >
-                  <LinkedInIcon sx={{ fontSize: 22 }} />
-                </a>
-              )}
-              {socialLinks.portfolio && (
-                <a
-                  href={socialLinks.portfolio}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
-                >
-                  <WorkIcon sx={{ fontSize: 22 }} />
-                </a>
-              )}
+          {(socialLinks.github ||
+            socialLinks.linkedin ||
+            socialLinks.portfolio) && (
+            <div>
+              <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
+                <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+                Social Links
+              </h3>
+              <div className="flex justify-center gap-4">
+                {socialLinks.github && (
+                  <a
+                    href={socialLinks.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 flex items-center justify-center bg-gray-900 text-white rounded-lg shadow-lg"
+                  >
+                    <GitHubIcon sx={{ fontSize: 22 }} />
+                  </a>
+                )}
+                {socialLinks.linkedin && (
+                  <a
+                    href={socialLinks.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 flex items-center justify-center bg-blue-600 text-white rounded-lg shadow-lg"
+                  >
+                    <LinkedInIcon sx={{ fontSize: 22 }} />
+                  </a>
+                )}
+                {socialLinks.portfolio && (
+                  <a
+                    href={socialLinks.portfolio}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg shadow-lg"
+                  >
+                    <WorkIcon sx={{ fontSize: 22 }} />
+                  </a>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </motion.div>
   );

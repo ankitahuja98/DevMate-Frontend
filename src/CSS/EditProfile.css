@@ -1,14 +1,11 @@
-/* STEPPER */
+/* ── Stepper ─────────────────────────────────────────────────────────────── */
 .stepper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* background: #f9fafb; */
-  /* border-bottom: 1px solid #e5e7eb; */
   position: relative;
 }
 
-/* STEP ITEM */
 .step {
   display: flex;
   flex-direction: column;
@@ -19,7 +16,6 @@
   z-index: 1;
 }
 
-/* CONNECTOR LINE - USING ::before */
 .step:not(:last-child)::before {
   content: "";
   position: absolute;
@@ -29,20 +25,18 @@
   height: 2px;
   background: #e5e7eb;
   z-index: -1;
+  /* Only transition color, not transform — transform transitions create
+     GPU layers on mobile that can flicker */
   transition: background 0.3s ease;
 }
 
-/* ACTIVE STEP LINE */
 .step.active:not(:last-child)::before {
   background: #6366f1;
 }
-
-/* COMPLETED STEP LINE */
 .step.completed:not(:last-child)::before {
   background: #10b981;
 }
 
-/* STEP CIRCLE */
 .step-circle {
   width: 27px;
   height: 27px;
@@ -55,12 +49,14 @@
   font-size: 14px;
   font-weight: 600;
   color: #9ca3af;
-  transition: all 0.3s;
+  transition:
+    background 0.3s,
+    border-color 0.3s,
+    color 0.3s;
   position: relative;
   z-index: 2;
 }
 
-/* ACTIVE CIRCLE */
 .step.active .step-circle {
   background: #6366f1;
   border-color: #6366f1;
@@ -68,14 +64,12 @@
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
-/* COMPLETED CIRCLE */
 .step.completed .step-circle {
   background: #10b981;
   border-color: #10b981;
   color: white;
 }
 
-/* STEP LABEL */
 .step-label {
   font-size: 13px;
   font-weight: 600;
@@ -88,55 +82,57 @@
   color: #1f2937;
   font-weight: 700;
 }
-
 .step.completed .step-label {
   color: #10b981;
 }
 
+/* ── Dialog title ─────────────────────────────────────────────────────────── */
 .EditProfileDialogTitlte {
   font-weight: 700;
   font-size: 20px;
+  color: white;
 }
 .EditProfileDialogTitlteDesc {
   font-size: 14px;
   font-style: italic;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-/* RESPONSIVE - MOBILE */
-@media (max-width: 768px) {
-  .stepper {
-    padding: 20px 16px;
-  }
-
-  .step-label {
-    font-size: 11px;
-    max-width: 70px;
-    line-height: 1.2;
-  }
-
-  .step-circle {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
-  }
-
-  .step:not(:last-child)::before {
-    top: 14px;
-  }
-}
+/* ── Dialog content ───────────────────────────────────────────────────────── */
 .ActiveComponent {
   padding: 30px;
 }
 
 .editProfileContent {
-  overflow-y: auto; /* keep scrolling */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE / Edge */
+  overflow-y: auto;
+  /* Momentum scrolling on iOS Safari — without this the dialog content
+     scrolls sluggishly or not at all on iPhone */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-
-/* Chrome / Safari */
 .editProfileContent::-webkit-scrollbar {
   display: none;
+}
+
+/* ── Tablet / mobile ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .stepper {
+    padding: 20px 16px;
+  }
+  .step-label {
+    font-size: 11px;
+    max-width: 70px;
+    line-height: 1.2;
+  }
+  .step-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  .step:not(:last-child)::before {
+    top: 14px;
+  }
 }
 
 @media (width < 650px) {
@@ -154,20 +150,17 @@
   }
 }
 
-/* EXTRA SMALL MOBILE */
 @media (max-width: 480px) {
+  /* Hide step labels on very small screens to save space */
   .step-label {
-    display: none; /* Hide labels on very small screens */
+    display: none;
   }
-
   .stepper {
     padding: 16px;
   }
 }
 
-/* ----------- Basic Info Start ------------ */
-
-/* Modern Form Styles */
+/* ── Form elements ─────────────────────────────────────────────────────────── */
 .form-group {
   margin-bottom: 0;
 }
@@ -186,10 +179,18 @@
   border: 2px solid #e5e7eb;
   border-radius: 8px;
   font-size: 14px;
-  transition: all 0.2s;
+  /* Only transition border-color — avoid transitioning transform/opacity
+     on form inputs as it creates extra GPU work on mobile */
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   font-family: inherit;
   background-color: white;
   color: #1f2937;
+  /* Prevent iOS from auto-zooming into inputs smaller than 16px font.
+     The browser zooms in when focusing an input with font-size < 16px,
+     causing a jarring layout jump. Set font-size to at least 16px on mobile. */
+  font-size: max(16px, 14px);
 }
 
 .form-input::placeholder {
@@ -207,8 +208,6 @@
   border-color: #cbd5e1;
 }
 
-/* Select dropdown styling */
-.form-input select,
 select.form-input {
   cursor: pointer;
   appearance: none;
@@ -219,31 +218,24 @@ select.form-input {
   padding-right: 40px;
 }
 
-/* Textarea specific */
 textarea.form-input {
   resize: vertical;
   min-height: 100px;
 }
 
-/* Disabled state */
 .form-input:disabled {
   background-color: #f3f4f6;
   cursor: not-allowed;
 }
 
-/* Error state */
 .form-input.error {
   border-color: #ef4444;
 }
-
 .form-input.error:focus {
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
-/* ----------- Basic Info End ------------ */
-
-/* ----------- Skills Start ------------ */
-
+/* ── Skills helper text ─────────────────────────────────────────────────── */
 .interesthelpertxt {
   font-size: 11px;
   font-weight: 400;
@@ -251,5 +243,3 @@ textarea.form-input {
   color: gray;
   margin-left: 10px;
 }
-
-/* ----------- Skills End ------------ */

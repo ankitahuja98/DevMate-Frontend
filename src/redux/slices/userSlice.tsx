@@ -21,11 +21,22 @@ const initialState: userDataInitialState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    removeUser(state, action) {
+      if (state.userData?.data) {
+        state.userData.data = state.userData.data.filter(
+          (user: any) => user._id.toString() !== action.payload,
+        );
+      }
+    },
+    // Resets the entire feed (used by the Refresh button)
+    resetUsers(state) {
+      state.userData = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getAllUsers.pending, (state) => {
       state.userDataIsloading = true;
-      state.userData = null;
     });
     builder.addCase(getAllUsers.fulfilled, (state, action) => {
       state.userDataIsloading = false;
@@ -82,5 +93,5 @@ const userSlice = createSlice({
     });
   },
 });
-
+export const { removeUser, resetUsers } = userSlice.actions;
 export default userSlice.reducer;
