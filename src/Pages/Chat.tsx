@@ -18,22 +18,15 @@ import type { Message } from "../redux/types/chatType";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SEO from "../Components/SEO";
 
+// ── Bubble uses new CSS classes instead of inline styles ──
 const Bubble = ({ message, isMe }: { message: Message; isMe: boolean }) => {
   return (
     <div className={`flex ${isMe ? "justify-end" : "justify-start"} mb-3`}>
-      <div className={`max-w-[75%] break-words`}>
-        <div
-          style={{
-            borderRadius: !isMe ? "10px 10px 10px 0px" : "10px 10px 0px 10px",
-            backgroundColor: isMe ? "oklch(0.97 0.04 159.44)" : "white",
-          }}
-          className={`p-3 shadow-sm ${
-            isMe ? "rounded-lg rounded-br-sm" : "rounded-lg rounded-bl-sm"
-          }`}
-          aria-label={`${isMe ? "You" : ""} said: ${message.message}`}
-        >
-          <div className="whitespace-pre-wrap">{message.message}</div>
-        </div>
+      <div
+        className={`chatBubble ${isMe ? "chatBubble--me" : "chatBubble--other"}`}
+        aria-label={`${isMe ? "You" : ""} said: ${message.message}`}
+      >
+        {message.message}
       </div>
     </div>
   );
@@ -63,7 +56,7 @@ const Chat = () => {
   );
   const { isChatLoading } = useAppSelector((store) => store.chat || []);
 
-  const ChatData = useAppSelector((store) => store.chat.ChatData?.data || []);
+  const ChatData = useAppSelector((store) => store.chat.ChatData?.data ?? null);
 
   const totalMessages = useAppSelector(
     (store) => store.chat.ChatData?.totalMessages || 0,
@@ -76,7 +69,10 @@ const Chat = () => {
 
     if (!input.trim()) return;
 
-    const tempId = crypto.randomUUID();
+    const tempId =
+      typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+        ? crypto.randomUUID()
+        : `temp-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
     const newMessage: Message = {
       _id: tempId, // temporary id
@@ -214,6 +210,24 @@ const Chat = () => {
     hasMarkedReadRef.current = false;
   }, [targetUserId]);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e as any);
+    }
+  };
+
+  useEffect(() => {
+    if (!isChatDrawerOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsChatDrawerOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [isChatDrawerOpen]);
+
   return (
     <>
       <SEO
@@ -223,7 +237,7 @@ const Chat = () => {
       <div className="chatContainer">
         <header className="UserchatHeader">
           <div className="flex items-center justify-between w-full">
-            <div className="flex gap-3 items-center ">
+            <div className="flex gap-3 items-center">
               <div
                 className="chatAvatarWrapper"
                 onClick={() => setReciverProfile(receiverDetails)}
@@ -236,10 +250,11 @@ const Chat = () => {
               </div>
 
               <div>
-                <h2 className="text-lg font-semibold">
+                <h2 className="text-base font-semibold">
                   {receiverDetails.name}
                 </h2>
-                <div className="text-sm text-slate-500">
+                {/* chatHeaderSub class gives white-tinted colour on the gradient header */}
+                <div className="chatHeaderSub">
                   {getDate(receiverDetails.lastSeen)}
                 </div>
               </div>
@@ -276,8 +291,12 @@ const Chat = () => {
               <LoadingThreeDotsPulse />
             </div>
           ) : messages?.length === 0 ? (
-            <div className="flex justify-center items-center text-slate-500 h-full">
-              No messages yet — start the conversation
+            <div className="flex flex-col justify-center items-center h-full gap-3">
+              <div className="chatEmptyIcon">💬</div>
+              <p className="text-sm font-medium text-slate-500">
+                No messages yet
+              </p>
+              <p className="text-xs text-slate-400">Say hi to get started!</p>
             </div>
           ) : (
             <>
@@ -299,25 +318,25 @@ const Chat = () => {
         </main>
 
         <form onSubmit={handleSubmit} className="Chatform">
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            type="text"
-            aria-label="Type your message"
-            placeholder="Type your message"
-            className="chatInput"
-          />
+          {/* chatInputWrapper gives the pill shape + focus glow */}
+          <div className="chatInputWrapper">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              type="text"
+              aria-label="Type your message"
+              placeholder="Type your message"
+              className="chatInput"
+              autoComplete="off"
+            />
+          </div>
 
           <button
             type="submit"
             disabled={input.trim().length === 0}
-            className={`rounded-full p-2 aspect-square flex items-center justify-center ${
-              input.trim().length === 0
-                ? "opacity-50 cursor-not-allowed"
-                : "shadow-md"
-            }`}
+            className="chatSendBtn"
             aria-label="Send message"
-            style={{ backgroundColor: "#128C7E", color: "white" }}
           >
             <SendIcon sx={{ fontSize: 18 }} />
           </button>

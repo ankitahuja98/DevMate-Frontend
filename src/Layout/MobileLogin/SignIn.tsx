@@ -11,6 +11,10 @@ import {
 } from "../../utils/validations/loginValidation";
 import { Box } from "@mui/material";
 import ForgetPassword from "../MainLogin/ForgetPassword";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import SigninWithGoogle from "../../Components/SigninWithGoogle";
 
 const SignIn = ({
@@ -24,6 +28,7 @@ const SignIn = ({
   });
   const [isForgetPassword, setIsForgetPassword] = useState(false);
   const [errors, setErros] = useState<logindata>({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -106,12 +111,25 @@ const SignIn = ({
                 required
                 fullWidth
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 variant="outlined"
                 size="small"
                 name="password"
                 value={loginformData.password}
                 onChange={handleInputChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        onMouseDown={(e) => e.preventDefault()}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               <ErrorMessage error={errors.password} />
               <Box
