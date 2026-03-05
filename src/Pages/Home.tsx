@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import SEO from "../Components/SEO";
 
 // HeroSection loads eagerly — it's above the fold (critical for first render)
 import HeroSection from "./HomeSections/HeroSection";
@@ -8,9 +9,66 @@ const FeatureSection = lazy(() => import("./HomeSections/FeatureSection"));
 const CTASection = lazy(() => import("./HomeSections/CTASection"));
 const Footer = lazy(() => import("./Footer"));
 
+const homeSchemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Devmate",
+    alternateName: "devmate.co.in",
+    url: "https://devmate.co.in/",
+    applicationCategory: "SocialNetworkingApplication",
+    operatingSystem: "Web",
+    description:
+      "Devmate is a developer matching platform where developers connect, find coding partners, and collaborate on projects.",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.8",
+      reviewCount: "500",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is Devmate?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Devmate (devmate.co.in) is an Indian developer matching platform that helps developers find coding partners, collaborate on projects, and grow their tech network.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "How does Devmate work?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Create a free profile, explore developers by skills and interests, send connection requests, match with compatible developers, and start collaborating via chat.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Is Devmate free to use?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes, Devmate is free to join. Premium plans are available for advanced features like unlimited matches and priority visibility.",
+        },
+      },
+    ],
+  },
+];
+
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50">
+      <SEO
+        title="Devmate — Find Your Perfect Developer Partner in India"
+        description="Devmate is India's developer matching platform. Connect with skilled developers, find coding partners, collaborate on projects, and build amazing products together."
+        canonical="https://devmate.co.in/"
+        schemas={homeSchemas}
+      />
+
       {/* Hero Section — eagerly loaded (above the fold) */}
       <HeroSection />
 
