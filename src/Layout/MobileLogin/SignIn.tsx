@@ -45,7 +45,14 @@ const SignIn = ({
             password: "",
           });
         })
-        .catch((err) => toast.error(err.message));
+        .catch((err) => {
+          const message =
+            err?.response?.data?.message ||
+            err?.message ||
+            "Server temporarily unavailable";
+
+          toast.error(message);
+        });
     }
   };
 
