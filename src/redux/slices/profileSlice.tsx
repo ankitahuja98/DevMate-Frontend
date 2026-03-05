@@ -5,7 +5,7 @@ import { logout } from "../actions/authAction";
 
 const initialState: ProfileInitialState = {
   userProfile: {
-    userProfileIsloading: false,
+    userProfileIsloading: true,
     userProfileData: null,
     userProfileIserror: null,
   },

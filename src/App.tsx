@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { useAppSelector } from "./redux/store/store";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
 import { FullscreenProvider } from "./context/FullscreenContext";
@@ -46,6 +47,18 @@ const PageLoader = () => (
     </div>
   </div>
 );
+
+const NotFoundRedirect = () => {
+  const { userProfileData, userProfileIsloading } = useAppSelector(
+    (store) => store.profile.userProfile,
+  );
+
+  if (userProfileIsloading) {
+    return <PageLoader />;
+  }
+
+  return <Navigate to={userProfileData ? "/explore" : "/"} replace />;
+};
 
 function App() {
   useAuth();
@@ -98,7 +111,7 @@ function App() {
             </Route>
           </Route>
 
-          <Route path="*" element={<Navigate to="/explore" replace />} />
+          <Route path="*" element={<NotFoundRedirect />} />
         </Routes>
       </Suspense>
 
