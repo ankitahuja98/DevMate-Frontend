@@ -1,102 +1,161 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIKED YOU PAGE
+   ═══════════════════════════════════════════════════════════════════════════
+
+   Layout (all screen sizes):
+   ┌─ LikedyouContainer ───────────────────────────────────────────┐
+   │  LikedYouHeader   (count + hint)                               │
+   │  LikedYouPhotoGrid                                             │
+   │    2 cols mobile  •  3 cols tablet  •  4 cols desktop          │
+   │    LikedYouPhotoTile  (tap → opens modal)                      │
+   └───────────────────────────────────────────────────────────────┘
+
+   Modal — reuses .chatCardOverlay / .chatCardContainer /
+           .chatCardWrapper / .chatCardCloseButton from Matches.css
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Page wrapper ─────────────────────────────────────────────────────────── */
 .LikedyouContainer {
-  height: 84vh; /* BottomBar height */
-  /* border: 2px solid black; */
-  margin: 15px;
-  display: grid;
-  padding: 10px;
-  gap: 30px;
-  justify-content: center;
-  cursor: grab;
+  min-height: calc(100dvh - 70px);
+  padding: 16px;
+  overflow-y: auto;
 }
 
-.LikedyouContainer.MultiReq {
-  grid-template-columns: repeat(2, 25rem);
-  justify-content: space-evenly;
-}
-
-.LikedYouCard {
-  width: 25rem;
-  height: 100%;
-
-  border-radius: 12px;
-  background-color: white;
-  position: relative;
-
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-
-  box-shadow: 0px 0px 10px rgba(174, 174, 174, 0.785);
-}
-
-/* When active (clicked) */
-.LikedYouCard.active {
-  overflow-y: auto; /* ✅ becomes scrollable */
-}
-
-/* Hide scrollbar (optional) */
-.LikedYouCard.active::-webkit-scrollbar {
-  display: none;
-}
-
-.icon-button {
-  flex-shrink: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.LikedYouHeader {
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: linear-gradient(to bottom right, #9333ea, #4f46e5);
-
-  border-radius: 50% !important; /* force perfect circle */
-  min-width: 0 !important; /* remove MUI min-width */
-  padding: 0 !important; /* remove MUI padding */
-  overflow: hidden; /* keep ripple inside circle */
-
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -4px rgba(0, 0, 0, 0.1);
-
-  transition: all 0.2s ease;
-  cursor: pointer;
-  border: none;
-}
-/* enabled hover */
-.icon-button:hover:not(:disabled) {
-  transform: scale(1.1);
-  box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 16px;
+  padding: 0 2px;
 }
 
-.icon-button:active:not(:disabled) {
-  transform: scale(0.95);
+.LikedYouHeaderCount {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1f2937;
+  letter-spacing: -0.02em;
 }
 
-/* disabled style */
-.icon-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+.LikedYouHeaderHint {
+  font-size: 0.78rem;
+  color: #9ca3af;
 }
 
-.LikedCardImageWrapper {
+/* ── Photo grid ───────────────────────────────────────────────────────────── */
+.LikedYouPhotoGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* desktop: 4 cols */
+  gap: 12px;
+  padding-bottom: 32px;
+}
+
+/* ── Photo tile ───────────────────────────────────────────────────────────── */
+.LikedYouPhotoTile {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 21.5;
+  aspect-ratio: 3 / 4;
+  border-radius: 14px;
   overflow: hidden;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: #e5e7eb;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.cardProfilePic {
+.LikedYouPhotoTile:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.LikedYouPhotoTile:active {
+  transform: scale(0.97);
+}
+
+.LikedYouPhotoTile img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
+/* Name / age overlay at tile bottom */
+.LikedYouPhotoTileOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px 10px 10px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.LikedYouPhotoTileName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.LikedYouPhotoTileAge {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.85);
+  flex-shrink: 0;
+}
+
+/* ── Loader ───────────────────────────────────────────────────────────────── */
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODAL — identical pattern to Matches page (.chatCardOverlay etc.)
+   Card lives inside .chatCardWrapper which is already scrollable in Matches.css.
+   We just need the sheet-mode card to fill the wrapper correctly.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Override Card when shown inside the modal wrapper */
+.chatCardWrapper .LikedYouCard,
+.chatCardWrapper .LikedYouCard.LikedYouCard--sheet {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  cursor: default;
+  transform: none !important;
+  touch-action: pan-y;
+}
+
+.chatCardWrapper .LikedYouCard:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+.chatCardWrapper .LikedYouCardInner {
+  height: auto;
+  overflow-y: visible;
+}
+
+/* Shared card content styles (also used by explore) */
 .card-box {
   background: rgba(255, 255, 255, 0.8);
   border-radius: 0.75rem;
@@ -125,88 +184,115 @@
   font-size: 12px;
 }
 
-.loader-wrapper {
-  grid-column: 1 / -1; /* span all columns */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 60vh;
-}
-
-.chatIcon {
+/* Icon button (chat, inside card name bar) */
+.icon-button {
+  flex-shrink: 0;
+  width: 2.5rem !important;
+  height: 2.5rem !important;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* Lighter yellow → orange gradient */
-  background: linear-gradient(135deg, #fde68a, #fdba74);
-
-  border-radius: 9999px;
-  padding: 6px;
-  border: 1px solid #fbbf24;
-  color: #1f2937;
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-}
-
-/* Hover effect */
-.chatIcon:hover {
-  background: linear-gradient(135deg, #fcd34d, #fb923c);
-  transform: scale(1.08);
-  box-shadow: 0 6px 14px rgba(251, 146, 60, 0.3);
+  background: linear-gradient(to bottom right, #9333ea, #4f46e5) !important;
+  border-radius: 50% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
   cursor: pointer;
+  border: none;
 }
 
-@media (width < 650px) {
-  .LikedCardImageWrapper {
-    height: 100%;
+.icon-button:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+.icon-button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+.icon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Like / dislike buttons inside LikedCardImageWrapper */
+.CardActionBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 56px;
+  height: 56px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+  touch-action: manipulation;
+}
+
+.CardActionBtn--dislike {
+  left: 0;
+  border-radius: 0 50% 50% 0;
+  background: linear-gradient(135deg, #ef4444, #ec4899);
+}
+
+.CardActionBtn--like {
+  right: 0;
+  border-radius: 50% 0 0 50%;
+  background: linear-gradient(135deg, #10b981, #22c55e);
+}
+
+.LikedCardImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 21.5;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cardProfilePic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ══ Responsive ═════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .LikedYouPhotoGrid {
+    grid-template-columns: repeat(3, 1fr);
   }
+}
+
+@media (max-width: 650px) {
   .LikedyouContainer {
-    height: auto;
+    padding: 12px;
     min-height: calc(100svh - 90px);
-    margin: 5px;
-    padding-bottom: 60px;
+    padding-bottom: 80px;
   }
 
-  .LikedYouCard {
-    width: 23rem;
-    height: calc(100svh - 120px);
-    max-height: calc(100svh - 120px);
-    border-radius: 10px;
+  .LikedYouPhotoGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 
-  .LikedyouContainer.MultiReq {
-    grid-template-columns: repeat(1, 23rem);
-    justify-content: center;
+  .LikedYouPhotoTile {
+    border-radius: 12px;
+  }
+
+  .LikedCardImageWrapper {
+    aspect-ratio: 3 / 4;
   }
 }
 
-@media (width < 400px) {
-  .LikedyouContainer.MultiReq {
-    grid-template-columns: repeat(1, 21rem);
-  }
-  .LikedYouCard {
-    width: 21rem;
-  }
-}
-
-@media (width < 350px) {
-  .LikedyouContainer.MultiReq {
-    grid-template-columns: repeat(1, 18rem);
-  }
-  .LikedYouCard {
-    width: 18rem;
-  }
-}
-
-@media (width < 300px) {
-  .LikedyouContainer.MultiReq {
-    grid-template-columns: repeat(1, 17rem);
-  }
-  .LikedYouCard {
-    width: 17rem;
+@media (max-width: 400px) {
+  .LikedYouPhotoGrid {
+    gap: 8px;
   }
 }
