@@ -30,8 +30,8 @@
 
 .matchesScroll {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  flex-direction: row;
+  gap: 10px;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -306,6 +306,7 @@
 
   .matchesScroll {
     padding: 8px 5px 5px 5px;
+    gap: 3px;
   }
 
   .matchAvatar {
