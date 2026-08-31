@@ -35,6 +35,109 @@ interface CardProps {
   sheetMode?: boolean;
 }
 
+// ─── Desktop-only tabbed detail panel (Explore mode) ───────────────────────────
+// Lives outside the draggable card so it doesn't move when the card is swiped.
+// Reorganizes the same data already shown in the mobile scroll view — no new
+// data, no new API calls, just a different presentation for wide screens.
+
+type ExploreTab = "about" | "skills" | "projects" | "experience" | "interests";
+
+const exploreTabs: { key: ExploreTab; label: string }[] = [
+  { key: "about", label: "About" },
+  { key: "skills", label: "Skills" },
+  { key: "projects", label: "Projects" },
+  { key: "experience", label: "Experience" },
+  { key: "interests", label: "Interests" },
+];
+
+const ExploreTabsPanel = ({ val }: { val: any }) => {
+  const [tab, setTab] = useState<ExploreTab>("about");
+  const {
+    bio,
+    techStack,
+    projects,
+    interests,
+    experience,
+    availability,
+    lookingForTitle,
+    currentRole,
+  } = val;
+
+  return (
+    <div className="ExploreTabsPanel">
+      <div className="ExploreTabsNav">
+        {exploreTabs.map((t) => (
+          <button
+            key={t.key}
+            type="button"
+            className={`ExploreTabBtn ${tab === t.key ? "active" : ""}`}
+            onClick={() => setTab(t.key)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="ExploreTabsContent">
+        {tab === "about" && <p>{bio || "No bio added yet."}</p>}
+
+        {tab === "skills" &&
+          (techStack?.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {techStack.map((t: string, i: number) => (
+                <span key={i} className="tech-pill">
+                  {t}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p>No skills added yet.</p>
+          ))}
+
+        {tab === "projects" &&
+          (projects?.length > 0 ? (
+            <div className="space-y-3">
+              {projects.map((p: any, i: number) => (
+                <div key={p._id || i}>
+                  <p className="font-bold text-[#17213D]">
+                    {p.title || p.name}
+                  </p>
+                  {p.description && (
+                    <p className="text-[#6B7691]">{p.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No projects added yet.</p>
+          ))}
+
+        {tab === "experience" && (
+          <p>
+            {experience ?? "—"} years of experience
+            {currentRole ? ` as a ${currentRole}` : ""}.{" "}
+            {availability ? `Available ${availability}.` : ""}{" "}
+            {lookingForTitle ? `Looking for ${lookingForTitle}.` : ""}
+          </p>
+        )}
+
+        {tab === "interests" &&
+          (interests?.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {interests.map((i: string, idx: number) => (
+                <span key={idx} className="interest-pill">
+                  {i}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p>No interests added yet.</p>
+          ))}
+      </div>
+    </div>
+  );
+};
+
 // ─── Card ─────────────────────────────────────────────────────────────────────
 
 const Card = ({
@@ -62,6 +165,7 @@ const Card = ({
     lookingForDesc,
     availability,
     projects,
+    currentRole,
   } = val;
 
   const navigate = useNavigate();
@@ -220,7 +324,7 @@ const Card = ({
       {bio && (
         <div>
           <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-            <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+            <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
             My Bio
           </h3>
           <div className="card-box">
@@ -231,7 +335,7 @@ const Card = ({
 
       <div>
         <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-          <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+          <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
           About Me
         </h3>
         <div className="flex flex-wrap gap-2">
@@ -253,7 +357,7 @@ const Card = ({
       {techStack?.length > 0 && (
         <div>
           <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-            <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+            <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
             Tech Stack
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -269,7 +373,7 @@ const Card = ({
       {interests?.length > 0 && (
         <div>
           <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-            <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+            <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
             Interests
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -285,14 +389,14 @@ const Card = ({
       {projects && projects.length > 0 && (
         <div>
           <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-            <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+            <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
             Featured Projects
           </h3>
           <div className="space-y-3">
             {projects.map((project: any, index: number) => (
               <div
                 key={project._id || index}
-                className="bg-white rounded-xl p-4 border-2 border-gray-200 shadow-sm hover:border-purple-400 hover:shadow-md transition-all"
+                className="bg-white rounded-xl p-4 border-2 border-gray-200 shadow-sm hover:border-[#6D3DF5] hover:shadow-md transition-all"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
@@ -312,7 +416,7 @@ const Card = ({
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all"
+                          className="w-8 h-8 flex items-center justify-center bg-[#F0E8FF] text-[#6D3DF5] rounded-lg hover:bg-[#6D3DF5] hover:text-white transition-all"
                         >
                           <GitHubIcon sx={{ fontSize: 16 }} />
                         </a>
@@ -322,7 +426,7 @@ const Card = ({
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all"
+                          className="w-8 h-8 flex items-center justify-center bg-[#F0E8FF] text-[#6D3DF5] rounded-lg hover:bg-[#6D3DF5] hover:text-white transition-all"
                         >
                           <OpenInNewIcon sx={{ fontSize: 16 }} />
                         </a>
@@ -340,7 +444,7 @@ const Card = ({
                     {project.techUsed.map((tech: string, techIndex: number) => (
                       <span
                         key={techIndex}
-                        className="text-xs bg-indigo-50 text-indigo-700 px-2 py-1 rounded-md border border-indigo-100 font-medium"
+                        className="text-xs bg-[#F7F4FF] text-[#6D3DF5] px-2 py-1 rounded-md border border-[#F0E8FF] font-medium"
                       >
                         {tech}
                       </span>
@@ -358,7 +462,7 @@ const Card = ({
         socialLinks?.portfolio) && (
         <div>
           <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-            <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+            <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
             Social Links
           </h3>
           <div className="flex justify-center gap-4">
@@ -387,7 +491,7 @@ const Card = ({
                 href={socialLinks.portfolio}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
+                className="w-9 h-9 flex items-center justify-center bg-[#6D3DF5] text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
               >
                 <WorkIcon sx={{ fontSize: 22 }} />
               </a>
@@ -399,105 +503,179 @@ const Card = ({
   );
 
   // ═══════════════════════════════════════════════════════════════════════════
-  //  EXPLORE MODE — stacked cards, always-scrollable inner, half-circle btns
+  //  EXPLORE MODE — stacked cards, click-only Pass / Like / Connect buttons
+  //  (no swipe/drag — dismissing a card is always an explicit button tap)
   // ═══════════════════════════════════════════════════════════════════════════
   if (mode === "explore") {
     return (
-      <motion.div
-        className="ExploreCardOuter"
-        drag="x"
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
+      <div
+        className="ExploreCardStack"
         style={{
-          x,
-          opacity,
-          rotate,
           zIndex: zIndex ?? 0,
           visibility: isVisible === false ? "hidden" : "visible",
         }}
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.1}
       >
-        {likeOverlay}
-        {dislikeOverlay}
+        <div className="ExploreCardOuter">
+          {likeOverlay}
+          {dislikeOverlay}
 
-        <div className="ExploreCardInner">
-          <div className="CardImageWrapper">
-            <div className="CardImagePlaceholder" />
-            <img
-              src={profilePhoto}
-              alt={name}
-              className="cardProfilePic"
-              draggable={false}
-              style={
-                {
-                  userSelect: "none",
-                  WebkitUserSelect: "none",
-                } as React.CSSProperties
-              }
-            />
+          <div className="ExploreCardInner">
+            <div className="CardImageWrapper">
+              <div className="CardImagePlaceholder" />
+              <img
+                src={profilePhoto}
+                alt={name}
+                className="cardProfilePic"
+                draggable={false}
+                style={
+                  {
+                    userSelect: "none",
+                    WebkitUserSelect: "none",
+                  } as React.CSSProperties
+                }
+              />
 
-            <button
-              className="CardActionBtn CardActionBtn--dislike"
-              onClick={handleDislike}
-              onPointerDown={(e) => e.stopPropagation()}
-              style={{ touchAction: "manipulation" }}
-              aria-label="Dislike"
-            >
-              <ThumbDownAltIcon sx={{ fontSize: 28, color: "white" }} />
-            </button>
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
 
-            <button
-              className="CardActionBtn CardActionBtn--like"
-              onClick={handleLike}
-              onPointerDown={(e) => e.stopPropagation()}
-              style={{ touchAction: "manipulation" }}
-              aria-label="Like"
-            >
-              <ThumbUpAltIcon sx={{ fontSize: 28, color: "white" }} />
-            </button>
-
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
-
-            <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3">
-              <div className="backdrop-blur-md bg-white/10 border border-white/10 rounded-lg p-2 flex items-center gap-3">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-baseline gap-2">
-                    <h2 className="text-lg sm:text-2xl font-bold text-white truncate">
-                      {name}
-                    </h2>
-                    {age && (
-                      <span className="text-sm sm:text-xl text-white/90">
-                        {age}
-                      </span>
+              <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3">
+                <div className="backdrop-blur-md bg-white/10 border border-white/10 rounded-lg p-2 flex items-center gap-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-2">
+                      <h2 className="text-lg sm:text-2xl font-bold text-white truncate">
+                        {name}
+                      </h2>
+                      {age && (
+                        <span className="text-sm sm:text-xl text-white/90">
+                          {age}
+                        </span>
+                      )}
+                    </div>
+                    {location && (
+                      <div className="flex items-center gap-1 text-white/80">
+                        <LocationOnOutlinedIcon sx={{ fontSize: 14 }} />
+                        <span className="text-xs sm:text-sm truncate">
+                          {location}
+                        </span>
+                      </div>
                     )}
                   </div>
-                  {location && (
-                    <div className="flex items-center gap-1 text-white/80">
-                      <LocationOnOutlinedIcon sx={{ fontSize: 14 }} />
-                      <span className="text-xs sm:text-sm truncate">
-                        {location}
-                      </span>
-                    </div>
+                  {isPremium && (
+                    <button
+                      className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-[#6D3DF5] to-[#8B5CF6] rounded-full shadow-lg active:scale-95 cursor-pointer"
+                      aria-label="Chat"
+                      onClick={() => handleDirectChat(val)}
+                      style={{ touchAction: "manipulation" }}
+                    >
+                      <ChatIcon sx={{ fontSize: "25px", color: "white" }} />
+                    </button>
                   )}
                 </div>
-                {isPremium && (
-                  <button
-                    className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full shadow-lg active:scale-95 cursor-pointer"
-                    aria-label="Chat"
-                    onClick={() => handleDirectChat(val)}
-                    style={{ touchAction: "manipulation" }}
-                  >
-                    <ChatIcon sx={{ fontSize: "25px", color: "white" }} />
-                  </button>
+              </div>
+            </div>
+
+            {/* Desktop-only: name/bio panel next to the photo, inside the
+                same card so it's removed together with it on Pass/Like. */}
+            <div className="ExploreCardInfoPanel">
+              {availability && (
+                <span className="ExploreOpenBadge">⚡ Open to Work</span>
+              )}
+              <div className="flex items-baseline gap-2 mt-3">
+                <h2 className="text-2xl font-bold text-[#17213D]">{name}</h2>
+                {age && <span className="text-lg text-[#6B7691]">{age}</span>}
+              </div>
+              {location && (
+                <div className="flex items-center gap-1 text-[#6B7691] text-sm mt-1">
+                  <LocationOnOutlinedIcon sx={{ fontSize: 15 }} />
+                  {location}
+                </div>
+              )}
+              {bio && (
+                <p className="text-sm text-[#17213D] mt-4 leading-relaxed">
+                  {bio}
+                </p>
+              )}
+              <div className="flex flex-wrap gap-2 mt-4">
+                {currentRole && (
+                  <span className="ExploreTagPill ExploreTagPill--violet">
+                    {currentRole}
+                  </span>
+                )}
+                {lookingForTitle && (
+                  <span className="ExploreTagPill ExploreTagPill--blue">
+                    Open to {lookingForTitle}
+                  </span>
                 )}
               </div>
             </div>
+
+            {/* Full detail scroll — primary view on mobile; on desktop the
+                same data is shown via the side panels + tabs below instead. */}
+            <div className="lg:hidden">{detailsContent}</div>
+          </div>
+        </div>
+
+        {/* ── Pass / Like / Connect — the only way to act on a card now ─────── */}
+        <div className="ExploreActionsRow">
+          <button
+            type="button"
+            className="ExploreActionBtn ExploreActionBtn--pass"
+            onClick={handleDislike}
+          >
+            ✕ Pass
+          </button>
+          <button
+            type="button"
+            className="ExploreActionBtn ExploreActionBtn--like"
+            onClick={handleLike}
+          >
+            ❤ Like
+          </button>
+          <button
+            type="button"
+            className="ExploreActionBtn ExploreActionBtn--connect"
+            onClick={handleLike}
+          >
+            ➤ Connect
+          </button>
+        </div>
+
+        {/* ── Desktop-only: side info/skills panels ─────────────────────────── */}
+        <aside className="ExploreSidePanels">
+          <div className="ExploreInfoCard">
+            <h4>Details</h4>
+            <div className="ExploreInfoRow">
+              <span>Experience</span>
+              <span>{experience != null ? `${experience} yrs` : "—"}</span>
+            </div>
+            <div className="ExploreInfoRow">
+              <span>Availability</span>
+              <span>{availability || "—"}</span>
+            </div>
+            <div className="ExploreInfoRow">
+              <span>Looking for</span>
+              <span>{lookingForTitle || "—"}</span>
+            </div>
+            <div className="ExploreInfoRow">
+              <span>Role</span>
+              <span>{currentRole || "—"}</span>
+            </div>
           </div>
 
-          {detailsContent}
-        </div>
-      </motion.div>
+          {techStack?.length > 0 && (
+            <div className="ExploreSkillsCard">
+              <h4>Top Skills</h4>
+              <div className="ExploreSkillsGrid">
+                {techStack.slice(0, 6).map((t: string, i: number) => (
+                  <span key={i}>{t}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </aside>
+
+        {/* ── Desktop-only: tabbed detail panel ─────────────────────────────── */}
+        <ExploreTabsPanel val={val} />
+      </div>
     );
   }
 

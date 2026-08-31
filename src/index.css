@@ -1,6 +1,74 @@
 @import "tailwindcss";
 
 /* ============================================================
+   DESIGN SYSTEM — brand tokens
+   ============================================================
+   Single source of truth for the app's visual language. Consumed
+   by Tailwind utilities, plain CSS files under src/CSS, and inline
+   style={{}} objects alike via var(--token).
+   ============================================================ */
+:root {
+  /* Brand violet */
+  --brand-500: #6d3df5; /* primary buttons, links, active accents */
+  --brand-400: #8b5cf6; /* logo mark, lighter badges */
+  --brand-border: #704bff; /* active-state borders */
+
+  /* Chrome surfaces (sidebar) */
+  --sidebar-bg: #0b1736;
+  --sidebar-active-bg: #2a205f;
+  --sidebar-active-border: #704bff;
+  --sidebar-card-bg: #121f43;
+  --sidebar-card-border: #26365d;
+
+  /* Neutrals */
+  --page-bg: #f7f8fc;
+  --surface: #ffffff;
+  --border-default: #e4e7ef;
+  --ink-900: #17213d;
+  --ink-500: #6b7691;
+
+  /* Violet tints */
+  --violet-tint-50: #f7f4ff;
+  --violet-tint-100: #f0e8ff;
+  --violet-tint-200: #f5f1ff;
+  --violet-tint-300: #ede9fe;
+  --violet-tint-400: #ddd6fe;
+  --violet-frame: #f0ebff;
+
+  /* Semantic */
+  --success-500: #159a63;
+  --success-bg: #e7fff3;
+  --online-500: #20c997;
+  --info-500: #2e78c7;
+  --info-bg: #e7f4ff;
+
+  --radius-sm: 9px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+
+  --shadow-sm: 0 1px 3px rgba(23, 33, 61, 0.06);
+  --shadow-md: 0 8px 24px rgba(109, 61, 245, 0.12);
+  --shadow-lg: 0 20px 40px rgba(11, 23, 54, 0.16);
+}
+
+/* Tailwind v4 CSS-first theme: makes Inter the default font-sans
+   everywhere font-sans is already implicitly used, with no
+   per-component edits needed. */
+@theme {
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--page-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============================================================
    GLOBAL MOBILE PERFORMANCE & RENDERING FIXES
    ============================================================
 
@@ -108,4 +176,69 @@ a,
 .ExploreCard {
   -webkit-user-select: none;
   user-select: none;
+}
+
+/* ============================================================
+   CARD ENTRANCE ANIMATION — shared across the app
+   ============================================================
+   One consistent "fade + rise into place" used by every card grid/list
+   (Explore, Liked You, Matches, Profile, Developer Profile) so the product
+   reads as one motion language instead of each page inventing its own.
+
+   Usage: add class="card-enter" to a card, plus an inline
+   style={{ '--card-index': i }} where `i` is its position in the list —
+   that drives a staggered delay (capped at 8 cards deep so a long list
+   doesn't take ages to finish animating in; anything past that just
+   animates together with the 8th).
+   ============================================================ */
+@keyframes card-enter-kf {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-enter {
+  --card-index: 0;
+  animation: card-enter-kf 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(min(var(--card-index), 8) * 45ms);
+}
+
+/* Respect the OS-level "reduce motion" setting — cards should still show
+   up, just without the fly-in. */
+@media (prefers-reduced-motion: reduce) {
+  .card-enter {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   MOVING BORDER — a light that travels around a card's edge on hover
+   ============================================================
+   Shared plumbing only (the @property registration and the rotation
+   keyframes) — each card type wires up its own `::after` in its own
+   stylesheet (see .DevCard::after in Explore.css, .LikedYouCard2::after
+   in LikedYou.css) since the ring's border-radius needs to match that
+   specific card's shape. The pattern there is the classic masked-gradient
+   border trick: a conic-gradient on a ::after, masked down to just the
+   outline band (content-box mask XORed with border-box mask), with its
+   start angle rotating via --border-angle.
+
+   @property lets the browser smoothly *animate* that angle instead of
+   snapping between keyframes; without it (older browsers) the ring still
+   appears on hover, just static instead of rotating. */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes card-border-spin {
+  to {
+    --border-angle: 360deg;
+  }
 }

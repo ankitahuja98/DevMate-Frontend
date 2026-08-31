@@ -168,7 +168,7 @@ const ForgetPassword = ({
           <>
             <Box
               className="text-xs text-end font-semibold mt-1 mb-4 cursor-pointer"
-              style={{ color: "#3C4B70" }}
+              style={{ color: "#6D3DF5" }}
               onClick={() => setIsForgetPassword(false)}
             >
               Back to login

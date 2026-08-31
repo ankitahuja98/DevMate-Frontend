@@ -21,13 +21,22 @@ export interface ChatUser {
   _id: string;
   name: string;
   profilePhoto: string;
+  lastSeen?: string;
+  isOnline?: boolean;
+}
+
+export interface LastMessage {
+  _id?: string;
+  message: string;
+  createdAt?: string;
+  senderId?: string;
 }
 
 interface chatList {
   _id: string;
   chatId: string;
   isUnread: boolean;
-  lastmessage?: {};
+  lastmessage?: LastMessage;
   user: ChatUser;
 }
 

@@ -23,8 +23,8 @@ const SignIn = ({
   setIsSignIn: React.Dispatch<SetStateAction<boolean>>;
 }) => {
   const [loginformData, setloginformData] = useState({
-    email: "demo@gmail.com",
-    password: "demo",
+    email: "",
+    password: "test@123",
   });
   const [isForgetPassword, setIsForgetPassword] = useState(false);
   const [errors, setErros] = useState<logindata>({});
@@ -134,7 +134,7 @@ const SignIn = ({
               <ErrorMessage error={errors.password} />
               <Box
                 className="text-xs text-end font-semibold mt-1 cursor-pointer"
-                style={{ color: "#3C4B70" }}
+                style={{ color: "#6D3DF5" }}
                 onClick={() => setIsForgetPassword(true)}
               >
                 Forget password?
@@ -164,7 +164,7 @@ const SignIn = ({
             <span className="text-gray-500">New here? </span>
             <span
               className="font-semibold cursor-pointer underline"
-              style={{ color: "#3C4B70" }}
+              style={{ color: "#6D3DF5" }}
               onClick={() => setIsSignIn((prev) => !prev)}
             >
               Create an account

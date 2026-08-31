@@ -1,10 +1,11 @@
 .MobileTopbarContainer {
   height: 45px;
   margin-top: 2px;
-  /* border: 1px solid rgb(190, 154, 160); */
   padding: 5px 20px;
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #17213d;
   display: flex;
   align-items: center;
 }
@@ -14,12 +15,14 @@
 }
 
 .BottomBarContainer {
-  height: 60px;
+  height: 64px;
   padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: white;
+  border-top: 1px solid #e4e7ef;
+  box-shadow: 0 -8px 24px rgba(11, 23, 54, 0.06);
   z-index: 50;
 }
 .AppLogo {

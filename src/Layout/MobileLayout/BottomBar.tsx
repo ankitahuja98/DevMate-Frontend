@@ -30,16 +30,16 @@ const BottomBar = () => {
           <Link
             key={item.id}
             to={item.path}
-            className={`flex items-center`}
+            className="flex items-center justify-center transition-all duration-200"
             style={{
-              color: isActive ? "#00296b" : "grey",
-              backgroundColor: (isActive && "rgb(227 238 255 / 67%)") || "",
-              padding: (isActive && "10px") || "",
+              color: isActive ? "#6D3DF5" : "#94A3B8",
+              backgroundColor: isActive ? "#F0E8FF" : "transparent",
+              padding: 10,
               borderRadius: "50%",
             }}
           >
             <Icon
-              style={{ fontSize: item.name === "Profile" ? "35px" : "30px" }}
+              style={{ fontSize: item.name === "Profile" ? "32px" : "26px" }}
             />
           </Link>
         );

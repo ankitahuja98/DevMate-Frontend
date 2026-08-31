@@ -32,10 +32,10 @@ const RefundPolicy = lazy(() => import("./Pages/info/RefundPolicy"));
 
 // ───  Protected app pages ──────
 const Explore = lazy(() => import("./Pages/Explore"));
+const DeveloperProfile = lazy(() => import("./Pages/DeveloperProfile"));
 const Profile = lazy(() => import("./Pages/Profile"));
 const LikedYou = lazy(() => import("./Pages/LikedYou"));
 const Matches = lazy(() => import("./Pages/Matches"));
-const Chat = lazy(() => import("./Pages/Chat"));
 const Settings = lazy(() => import("./Pages/Settings"));
 
 // ─── Fallback UI ─────
@@ -102,10 +102,11 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route element={<ResponsiveLayout />}>
               <Route path="/explore" element={<Explore />} />
+              <Route path="/developer/:userId" element={<DeveloperProfile />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/likedyou" element={<LikedYou />} />
               <Route path="/matches" element={<Matches />} />
-              <Route path="/chat/:targetUserId" element={<Chat />} />
+              <Route path="/chat/:targetUserId" element={<Matches />} />
               <Route path="/setting" element={<Settings />} />
               <Route path="/premium" element={<Premium />} />
             </Route>

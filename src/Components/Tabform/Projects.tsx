@@ -116,7 +116,7 @@ const Projects = ({ userData, setUserData, errors }: userDataProps) => {
             project!
           </p>
           <button
-            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-semibold text-sm hover:from-indigo-600 hover:to-purple-700 transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#6D3DF5] text-white rounded-lg font-semibold text-sm hover:bg-[#5B2FE0] transition-all"
             onClick={handleAddProject}
           >
             <AddIcon sx={{ fontSize: 18 }} />
@@ -133,14 +133,14 @@ const Projects = ({ userData, setUserData, errors }: userDataProps) => {
                 className={`bg-gray-50 rounded-lg p-4 transition-all ${
                   hasErrors
                     ? "border-2 border-red-300 hover:border-red-400"
-                    : "border-2 border-gray-200 hover:border-indigo-300"
+                    : "border-2 border-gray-200 hover:border-[#6D3DF5]"
                 }`}
               >
                 {/* Project Header */}
                 <div className="flex justify-between items-center mb-3">
                   <h4
                     className={`text-sm font-bold ${
-                      hasErrors ? "text-red-600" : "text-indigo-600"
+                      hasErrors ? "text-red-600" : "text-[#6D3DF5]"
                     }`}
                   >
                     Project #{index + 1}
@@ -253,7 +253,7 @@ const Projects = ({ userData, setUserData, errors }: userDataProps) => {
                             size="small"
                             sx={{
                               backgroundColor: "#e0e7ff",
-                              color: "#4f46e5",
+                              color: "#5B2FE0",
                               fontWeight: 600,
                               height: "24px",
                               fontSize: "12px",
@@ -307,7 +307,7 @@ const Projects = ({ userData, setUserData, errors }: userDataProps) => {
           {/* Add Another Project Button */}
           {userData.projects.length < 5 && (
             <button
-              className="w-full py-3 border-2 border-dashed border-gray-300 rounded-lg text-indigo-600 font-semibold text-sm hover:border-indigo-400 hover:bg-indigo-50 transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 border-2 border-dashed border-gray-300 rounded-lg text-[#6D3DF5] font-semibold text-sm hover:border-[#6D3DF5] hover:bg-[#F7F4FF] transition-all flex items-center justify-center gap-2"
               onClick={handleAddProject}
             >
               <AddIcon sx={{ fontSize: 18 }} />

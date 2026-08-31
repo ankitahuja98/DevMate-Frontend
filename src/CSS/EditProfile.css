@@ -31,7 +31,7 @@
 }
 
 .step.active:not(:last-child)::before {
-  background: #6366f1;
+  background: #6D3DF5;
 }
 .step.completed:not(:last-child)::before {
   background: #10b981;
@@ -58,10 +58,10 @@
 }
 
 .step.active .step-circle {
-  background: #6366f1;
-  border-color: #6366f1;
+  background: #6D3DF5;
+  border-color: #6D3DF5;
   color: white;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 0 0 4px rgba(109, 61, 245, 0.1);
 }
 
 .step.completed .step-circle {
@@ -200,8 +200,8 @@
 
 .form-input:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: #6D3DF5;
+  box-shadow: 0 0 0 3px rgba(109, 61, 245, 0.1);
 }
 
 .form-input:hover:not(:focus) {

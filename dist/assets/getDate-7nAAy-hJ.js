@@ -1,0 +1,1 @@
+const i=o=>{if(!o)return"online";const f=new Date,r=new Date(o),a=f.getTime()-r.getTime(),t=Math.floor(a/(1e3*60)),n=Math.floor(t/60),e=Math.floor(n/24);return t<1?"Just now":t<60?`${t} min ago`:n<24?`${n} hr ago`:e===1?`${e} day ago`:e<7?`${e} days ago`:r.toLocaleDateString()};export{i as g};

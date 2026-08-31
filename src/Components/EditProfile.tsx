@@ -167,7 +167,7 @@ const EditProfile = () => {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            backgroundColor: "#6D3DF5",
             padding: "8px 16px",
           }}
         >
@@ -182,7 +182,11 @@ const EditProfile = () => {
           <div>
             {!userData.isNewUser && (
               <IconButton
-                sx={{ color: "#000", padding: "0px" }}
+                sx={{
+                  color: "#fff",
+                  padding: "0px",
+                  "&:hover": { backgroundColor: "rgba(255,255,255,0.15)" },
+                }}
                 onClick={handleClose}
               >
                 <CloseIcon />
@@ -238,10 +242,10 @@ const EditProfile = () => {
               variant="contained"
               onClick={handleNext}
               sx={{
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                backgroundColor: "#6D3DF5",
+                boxShadow: "0 8px 20px rgba(109, 61, 245, 0.3)",
                 "&:hover": {
-                  background:
-                    "linear-gradient(135deg, #5568d3 0%, #6941a5 100%)",
+                  backgroundColor: "#5B2FE0",
                 },
               }}
             >

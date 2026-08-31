@@ -141,8 +141,7 @@ const Skills = ({ userData, setUserData, errors }: userDataProps) => {
                 onDelete={() => handleRemoveTech(tech)}
                 size="small"
                 sx={{
-                  background:
-                    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                  background: "#6D3DF5",
                   color: "white",
                   fontWeight: 600,
                   height: "28px",
@@ -181,7 +180,7 @@ const Skills = ({ userData, setUserData, errors }: userDataProps) => {
                     fontSize: "13px",
                     "&:hover": {
                       backgroundColor: "#f3f4f6",
-                      borderColor: "#6366f1",
+                      borderColor: "#6D3DF5",
                       cursor: "pointer",
                     },
                   }}

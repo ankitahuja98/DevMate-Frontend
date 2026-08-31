@@ -247,7 +247,7 @@ const LikedYouUserCard = ({
         {bio && (
           <div>
             <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
               My Bio
             </h3>
             <div className="card-box">
@@ -259,7 +259,7 @@ const LikedYouUserCard = ({
         {/* ABOUT */}
         <div>
           <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-            <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+            <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
             About Me
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -284,7 +284,7 @@ const LikedYouUserCard = ({
         {techStack?.length > 0 && (
           <div>
             <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
               Tech Stack
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -301,7 +301,7 @@ const LikedYouUserCard = ({
         {interests?.length > 0 && (
           <div>
             <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
               Interests
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -318,14 +318,14 @@ const LikedYouUserCard = ({
         {projects && projects.length > 0 && (
           <div>
             <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
               Featured Projects
             </h3>
             <div className="space-y-3">
               {projects.map((project: any, index: number) => (
                 <div
                   key={project._id || index}
-                  className="bg-white rounded-xl p-4 border-2 border-gray-200 shadow-sm hover:border-purple-400 hover:shadow-md transition-all"
+                  className="bg-white rounded-xl p-4 border-2 border-gray-200 shadow-sm hover:border-[#6D3DF5] hover:shadow-md transition-all"
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
@@ -345,7 +345,7 @@ const LikedYouUserCard = ({
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all"
+                            className="w-8 h-8 flex items-center justify-center bg-[#F0E8FF] text-[#6D3DF5] rounded-lg hover:bg-[#6D3DF5] hover:text-white transition-all"
                           >
                             <GitHubIcon sx={{ fontSize: 16 }} />
                           </a>
@@ -355,7 +355,7 @@ const LikedYouUserCard = ({
                             href={project.liveUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-8 h-8 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-all"
+                            className="w-8 h-8 flex items-center justify-center bg-[#F0E8FF] text-[#6D3DF5] rounded-lg hover:bg-[#6D3DF5] hover:text-white transition-all"
                           >
                             <OpenInNewIcon sx={{ fontSize: 16 }} />
                           </a>
@@ -374,7 +374,7 @@ const LikedYouUserCard = ({
                         (tech: string, techIndex: number) => (
                           <span
                             key={techIndex}
-                            className="text-xs bg-indigo-50 text-indigo-700 px-2 py-1 rounded-md border border-indigo-100 font-medium"
+                            className="text-xs bg-[#F7F4FF] text-[#6D3DF5] px-2 py-1 rounded-md border border-[#F0E8FF] font-medium"
                           >
                             {tech}
                           </span>
@@ -392,7 +392,7 @@ const LikedYouUserCard = ({
         {socialLinks && (
           <div>
             <h3 className="font-bold text-gray-900 text-sm mb-2 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-purple-600 to-indigo-600 rounded-full"></span>
+              <span className="w-1 h-4 bg-gradient-to-b from-[#6D3DF5] to-[#8B5CF6] rounded-full"></span>
               Social Links
             </h3>
             <div className="flex justify-center gap-4">
@@ -421,7 +421,7 @@ const LikedYouUserCard = ({
                   href={socialLinks.portfolio}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
+                  className="w-9 h-9 flex items-center justify-center bg-[#6D3DF5] text-white rounded-lg hover:scale-110 transition-transform shadow-lg"
                 >
                   <WorkIcon sx={{ fontSize: 22 }} />
                 </a>

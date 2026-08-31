@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import StarIcon from "@mui/icons-material/Star";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useDispatch } from "react-redux";
 import { useAppSelector, type AppDispatch } from "../../redux/store/store";
 import { createOrder, verifyPayment } from "../../redux/actions/paymentAction";
@@ -12,6 +14,7 @@ import SEO from "../../Components/SEO";
 const Premium = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const [openFaqIndex, setOpenFaqIndex] = useState<number>(0);
 
   const { userProfileData } = useAppSelector(
     (store) => store.profile.userProfile,
@@ -146,8 +149,18 @@ const Premium = () => {
             {/* ── Pricing Cards ────────────────────────────────────────────── */}
             <div className="grid sm:grid-cols-2 gap-5 sm:gap-8 max-w-5xl mx-auto">
               {plans.map((plan, index) => (
+                // Entrance animation lives on this outer wrapper rather than
+                // the card itself — the card below has its own permanent
+                // `sm:scale-105` transform on the highlighted plan, and a
+                // shared transform-based animation would clobber that once
+                // it finishes (animation-fill-mode holds its own final
+                // transform value indefinitely).
                 <div
                   key={index}
+                  className="card-enter"
+                  style={{ "--card-index": index } as React.CSSProperties}
+                >
+                <div
                   className={`relative bg-white rounded-2xl shadow-xl p-5 sm:p-8 transition-all duration-300 hover:shadow-2xl ${
                     plan.highlighted
                       ? "border-4 border-purple-500 sm:transform sm:scale-105"
@@ -231,6 +244,7 @@ const Premium = () => {
                     )}
                   </div>
                 </div>
+                </div>
               ))}
             </div>
 
@@ -265,19 +279,45 @@ const Premium = () => {
                     q: "Is my payment information secure?",
                     a: "Absolutely! We use Razorpay, a PCI DSS compliant payment gateway. We never store your card details on our servers. All transactions are encrypted and secure.",
                   },
-                ].map((faq, i) => (
-                  <div
-                    key={i}
-                    className="bg-white rounded-xl shadow-lg p-4 sm:p-6"
-                  >
-                    <h3 className="font-semibold text-slate-900 mb-1.5 text-sm sm:text-base">
-                      {faq.q}
-                    </h3>
-                    <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                      {faq.a}
-                    </p>
-                  </div>
-                ))}
+                ].map((faq, i) => {
+                  const isOpen = openFaqIndex === i;
+                  return (
+                    <div
+                      key={i}
+                      className="bg-white rounded-xl shadow-lg overflow-hidden"
+                    >
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setOpenFaqIndex((prev) => (prev === i ? -1 : i))
+                        }
+                        aria-expanded={isOpen}
+                        className="w-full flex items-center justify-between gap-4 text-left p-3 sm:p-4 cursor-pointer"
+                      >
+                        <h3 className="font-semibold text-slate-900 text-sm sm:text-base">
+                          {faq.q}
+                        </h3>
+                        <ExpandMoreIcon
+                          className={`text-slate-500 flex-shrink-0 transition-transform duration-300 ${
+                            isOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      <div
+                        className="grid transition-[grid-template-rows] duration-300 ease-in-out"
+                        style={{
+                          gridTemplateRows: isOpen ? "1fr" : "0fr",
+                        }}
+                      >
+                        <div className="overflow-hidden">
+                          <p className="text-slate-600 text-sm sm:text-base leading-relaxed px-3 sm:px-4 pb-3 sm:pb-4">
+                            {faq.a}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

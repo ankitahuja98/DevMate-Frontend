@@ -146,7 +146,7 @@ const SignUp = ({
         <span className="text-gray-500">Already have an account? </span>
         <span
           className="font-semibold cursor-pointer underline"
-          style={{ color: "#3C4B70" }}
+          style={{ color: "#6D3DF5" }}
           onClick={() => setIsSignIn((prev) => !prev)}
         >
           Login

@@ -4,6 +4,7 @@ import profileReducer from "../slices/profileSlice";
 import userReducer from "../slices/userSlice";
 import chatReducer from "../slices/chatSlice";
 import forgetPasswordReducer from "../slices/forgetPasswordSlice";
+import notificationReducer from "../slices/notificationSlice";
 
 import { useSelector, type TypedUseSelectorHook } from "react-redux";
 
@@ -14,6 +15,7 @@ export const store = configureStore({
     user: userReducer,
     chat: chatReducer,
     forgetPassword: forgetPasswordReducer,
+    notification: notificationReducer,
   },
 });
 

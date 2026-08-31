@@ -57,8 +57,8 @@ const ToggleSwitch = ({
       onChange={onToggle}
       className="sr-only peer"
     />
-    <div className="w-11 h-6 bg-gray-400 rounded-full peer peer-checked:bg-blue-600 transition"></div>
-    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition peer-checked:translate-x-5"></div>
+    <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-[#6D3DF5] transition-colors"></div>
+    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
   </label>
 );
 
@@ -103,12 +103,12 @@ const Settings = () => {
   };
 
   const renderSection = (title: string, items: SettingItem[]) => (
-    <section className="mb-7 ">
-      <h2 className="mb-4 text-sm font-semibold tracking-wide text-gray-500 uppercase">
+    <section className="mb-8">
+      <h2 className="mb-3 text-xs font-bold tracking-wider text-[#6B7691] uppercase">
         {title}
       </h2>
 
-      <div className="rounded-xl border border-gray-200 overflow-hidden">
+      <div className="rounded-2xl border border-[#E4E7EF] bg-white overflow-hidden">
         {items.map((item, index) => (
           <button
             key={item.label}
@@ -122,13 +122,13 @@ const Settings = () => {
                 : navigate(item.path)
             }
             className={`w-full flex items-center justify-between px-6 py-4 text-left
-              hover:bg-gray-50 transition cursor-pointer
-              ${index !== items.length - 1 ? "border-b border-gray-200" : ""}
+              hover:bg-[#F7F4FF] transition-colors cursor-pointer
+              ${index !== items.length - 1 ? "border-b border-[#E4E7EF]" : ""}
             `}
           >
             <span
-              className={`text-base font-medium ${
-                item.type === "deleteAccount" ? "text-red-500" : "text-gray-800"
+              className={`text-[15px] font-medium ${
+                item.type === "deleteAccount" ? "text-red-500" : "text-[#17213D]"
               } `}
             >
               {item.label}
@@ -136,7 +136,9 @@ const Settings = () => {
             {item.label === "Full Screen" ? (
               <ToggleSwitch isOn={isFullscreen} onToggle={toggleFullscreen} />
             ) : (
-              <span className="text-gray-400 text-xl leading-none">›</span>
+              <span className="text-[#6B7691] text-xl leading-none font-light">
+                ›
+              </span>
             )}
           </button>
         ))}
@@ -145,7 +147,10 @@ const Settings = () => {
   );
 
   return (
-    <div className="max-w-5xl mx-auto px-8 py-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-8 py-8">
+      <h1 className="hidden sm:block text-[28px] font-bold text-[#17213D] mb-6 tracking-tight">
+        Settings
+      </h1>
       {renderSection("Account Settings", accountSettings)}
       {renderSection("Information & Legal", legalSettings)}
       {renderSection("Account Actions", accountActions)}

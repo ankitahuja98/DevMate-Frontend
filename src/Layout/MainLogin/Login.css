@@ -13,7 +13,7 @@
   height: 100%;
   width: 50%;
 
-  background: linear-gradient(135deg, #2b2d6e 0%, #4b3f92 40%, #6b5bbd 100%);
+  background: linear-gradient(160deg, #0b1736 0%, #2a205f 55%, #6d3df5 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 
@@ -70,24 +70,35 @@
 }
 
 .sliderBtn {
-  border: 1px solid white;
-  padding: 4px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  padding: 6px 22px;
   border-radius: 20px;
   cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.sliderBtn:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: white;
 }
 
 .signinBtn {
   width: 100%;
-  background-color: #3c4b70;
+  background-color: #6d3df5;
   color: white;
   border-radius: 10px;
   font-size: medium;
+  font-weight: 600;
   cursor: pointer;
-  padding: 10px;
+  padding: 11px;
+  box-shadow: 0 8px 20px rgba(109, 61, 245, 0.3);
+  transition: all 0.2s ease;
 }
 
 .signinBtn:hover {
-  background-color: #3c4b70e6;
+  background-color: #5b2fe0;
+  box-shadow: 0 10px 24px rgba(109, 61, 245, 0.4);
 }
 
 .googleBtn {
@@ -95,22 +106,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgb(213, 213, 213);
+  border: 1px solid #e4e7ef;
   padding: 10px;
   border-radius: 10px;
   cursor: pointer;
-}
-
-.googleBtn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgb(213, 213, 213);
-  padding: 10px;
-  border-radius: 10px;
-  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 .googleBtn:hover {
-  background-color: rgba(244, 244, 244, 0.937);
+  background-color: #f7f8fc;
+  border-color: #d1d5db;
 }

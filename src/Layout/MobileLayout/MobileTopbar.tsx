@@ -9,8 +9,8 @@ import DevMateLogo from "../../Images/devmateLogo.avif";
 const useStyle = {
   iconStyle: {
     cursor: "pointer",
-    fontSize: "25px",
-    color: "black",
+    fontSize: "24px",
+    color: "#6D3DF5",
   },
 };
 const MobileTopbar = () => {

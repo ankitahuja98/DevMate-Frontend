@@ -158,7 +158,7 @@ const VerifyEmail = ({
                   w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9
                   text-center text-base sm:text-lg
                   border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-[#3c4b70]
+                  focus:outline-none focus:ring-2 focus:ring-[#6d3df5]
                 "
                 type="text"
                 value={val}
@@ -176,7 +176,7 @@ const VerifyEmail = ({
           Didn't receive the code?{" "}
           <button
             type="button"
-            className={`hover:underline ${isResendActive ? "text-[#3c4b70] cursor-pointer font-medium" : "text-gray-400 cursor-wait"} `}
+            className={`hover:underline ${isResendActive ? "text-[#6d3df5] cursor-pointer font-medium" : "text-gray-400 cursor-wait"} `}
             onClick={handleResend}
             disabled={!isResendActive}
           >

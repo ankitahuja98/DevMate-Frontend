@@ -1,26 +1,60 @@
 import "../CSS/Matches.css";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAppSelector, type AppDispatch } from "../redux/store/store";
-import LikedYouUserCard from "../Components/LikedYouUserCard";
+import ConversationPanel from "../Components/ConversationPanel";
+import TooltipWrapper from "../utils/TooltipWrapper";
 import SearchIcon from "@mui/icons-material/Search";
+import TuneIcon from "@mui/icons-material/Tune";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import CloseIcon from "@mui/icons-material/Close";
 import type { userData } from "../types/userData";
 import { getAllMatches } from "../redux/actions/userAction";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getChatList } from "../redux/actions/chatAction";
 import LoadingThreeDotsPulse from "../Components/Loader";
-import getDate from "../utils/getDate";
 import MatchesShimmer from "../Components/MatchesShimmer";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import SEO from "../Components/SEO";
 
+const formatListTimestamp = (dateStr?: string) => {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);
+  const now = new Date();
+  const yesterday = new Date(now);
+  yesterday.setDate(now.getDate() - 1);
+
+  if (date.toDateString() === now.toDateString()) {
+    return date.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+  if (date.toDateString() === yesterday.toDateString()) return "Yesterday";
+  return date.toLocaleDateString([], { month: "short", day: "numeric" });
+};
+
 const Matches = () => {
-  const [selectedMatch, setSelectedMatch] = useState<userData | null>(null);
-  const [searchChats, setSearchChats] = useState("");
-  const dispatch = useDispatch<AppDispatch>();
+  const { targetUserId } = useParams();
+  const { state } = useLocation();
   const navigate = useNavigate();
+
+  const [searchChats, setSearchChats] = useState("");
+  const [isConnectionsModalOpen, setIsConnectionsModalOpen] = useState(false);
+  const [sortUnreadFirst, setSortUnreadFirst] = useState(false);
+  const [canScrollConnectionsLeft, setCanScrollConnectionsLeft] = useState(false);
+  const [canScrollConnectionsRight, setCanScrollConnectionsRight] = useState(false);
+  const connectionsScrollRef = useRef<HTMLDivElement | null>(null);
+
+  const dispatch = useDispatch<AppDispatch>();
+
   const matches = useAppSelector((store) => store.user.matchesData?.data) || [];
   const { matchesDataIsloading } = useAppSelector((store) => store.user) || [];
+  const isPremium = useAppSelector(
+    (store) => store.profile.userProfile.userProfileData?.isPremium ?? false,
+  );
 
   const { ChatList, isChatlistLoading } =
     useAppSelector((store) => store.chat) || [];
@@ -28,26 +62,79 @@ const Matches = () => {
   useEffect(() => {
     dispatch(getAllMatches());
     dispatch(getChatList());
-  }, []);
+  }, [dispatch]);
+
+  // Keeps the left/right fade arrows in sync with how far the strip has
+  // been scrolled — hidden once there's nothing more to reveal that way.
+  const updateConnectionsScrollState = () => {
+    const el = connectionsScrollRef.current;
+    if (!el) return;
+    setCanScrollConnectionsLeft(el.scrollLeft > 4);
+    setCanScrollConnectionsRight(
+      el.scrollLeft + el.clientWidth < el.scrollWidth - 4,
+    );
+  };
+
+  useEffect(() => {
+    updateConnectionsScrollState();
+    window.addEventListener("resize", updateConnectionsScrollState);
+    return () =>
+      window.removeEventListener("resize", updateConnectionsScrollState);
+  }, [matches.length]);
+
+  const scrollConnections = (direction: "left" | "right") => {
+    const el = connectionsScrollRef.current;
+    if (!el) return;
+    const amount = el.clientWidth * 0.7;
+    el.scrollBy({
+      left: direction === "left" ? -amount : amount,
+      behavior: "smooth",
+    });
+  };
+
+  // A plain mouse wheel only has vertical delta — redirect it to horizontal
+  // scroll so the strip is usable without a trackpad or click-drag.
+  const handleConnectionsWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    const el = connectionsScrollRef.current;
+    if (!el || el.scrollWidth <= el.clientWidth) return;
+    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+    e.preventDefault();
+    el.scrollLeft += e.deltaY;
+  };
 
   const filteredChatList = useMemo(() => {
     if (!ChatList) return [];
     const search = searchChats.toLowerCase().trim();
 
-    if (!search) return ChatList;
+    let list = ChatList;
+    if (search) {
+      list = list.filter((val: any) =>
+        (val.user?.name?.toLowerCase() || "").includes(search),
+      );
+    }
+    if (sortUnreadFirst) {
+      list = [...list].sort(
+        (a: any, b: any) => Number(b.isUnread) - Number(a.isUnread),
+      );
+    }
+    return list;
+  }, [searchChats, ChatList, sortUnreadFirst]);
 
-    return ChatList.filter((val) => {
-      const name = val.user?.name?.toLowerCase() || "";
-      return name.includes(search);
-    });
-  }, [searchChats, ChatList]);
+  // location.state carries the full profile only when navigation happened
+  // in-app (Explore/DeveloperProfile/Card/Matches list). A hard refresh on
+  // /chat/:targetUserId loses it — fall back to the lighter chat-list entry
+  // so the header still renders instead of crashing.
+  const stateDetails = (state as any)?.targetUserDetails;
+  const chatListEntry = ChatList?.find(
+    (val: any) => val.user._id === targetUserId,
+  );
+  const receiverDetails = stateDetails || chatListEntry?.user || null;
+  const hasFullProfile = Boolean(stateDetails);
 
-  const handleMatchClick = (match: userData) => {
-    setSelectedMatch(match);
-  };
-
-  const handleCloseCard = () => {
-    setSelectedMatch(null);
+  // Same profile experience as Explore/Liked You — a full page, not the
+  // swipeable match-card overlay, since a connection is already matched.
+  const handleViewProfile = (user: userData) => {
+    navigate(`/developer/${user._id}`, { state: { user } });
   };
 
   const handleChatClick = (targetUserDetails: any) => {
@@ -56,69 +143,141 @@ const Matches = () => {
     });
   };
 
+  // Message shortcut on a connection row — stop the click from also
+  // triggering the row's "view profile" navigation underneath it.
+  const handleMessageConnection = (
+    e: React.MouseEvent,
+    targetUserDetails: any,
+  ) => {
+    e.stopPropagation();
+    if (!isPremium) return;
+    setIsConnectionsModalOpen(false);
+    handleChatClick(targetUserDetails);
+  };
+
+  const handleBackToList = () => navigate("/matches");
+
   return (
     <>
       <SEO
-        title="Your Matches - Devmate"
-        description="View your developer matches and start collaborating."
+        title={
+          receiverDetails
+            ? `Chat with ${receiverDetails.name} - Devmate`
+            : "Chats - Devmate"
+        }
+        description="Chat with your matches and build developer connections."
       />
 
-      <div className="chatPageContainer">
-        <div className="w-full h-full flex flex-col">
-          {/* Matches Section */}
-          <div className="matchesSection">
-            <div className="matchesSectionHeader">
-              <h3 className="matchesTitle">Connections</h3>
+      <div className="chatWorkspace">
+        {/* ── Left panel: connections + conversation list ───────── */}
+        <div
+          className={`chatListPanel ${targetUserId ? "chatListPanel--hiddenOnMobile" : ""}`}
+        >
+          <div className="connectionsSection">
+            <div className="connectionsSectionHeader">
+              <h3 className="connectionsTitle">Connections</h3>
+              {matches.length > 4 && (
+                <button
+                  type="button"
+                  className="viewAllLink"
+                  onClick={() => setIsConnectionsModalOpen(true)}
+                >
+                  View all
+                </button>
+              )}
             </div>
-            <div className="matchesScroll">
-              {matchesDataIsloading ? (
-                <MatchesShimmer />
-              ) : matches.length !== 0 ? (
-                matches.map((match: any) => (
-                  <div
-                    key={match._id}
-                    className="matchItem"
-                    onClick={() => handleMatchClick(match)}
-                  >
-                    <div>
-                      <div className="matchAvatarWrapper">
+            <div className="connectionsScrollWrap">
+              {canScrollConnectionsLeft && (
+                <button
+                  type="button"
+                  className="connectionsScrollBtn connectionsScrollBtn--left"
+                  aria-label="Scroll connections left"
+                  onClick={() => scrollConnections("left")}
+                >
+                  <ChevronLeftIcon sx={{ fontSize: 18 }} />
+                </button>
+              )}
+
+              <div
+                className="connectionsScroll"
+                ref={connectionsScrollRef}
+                onScroll={updateConnectionsScrollState}
+                onWheel={handleConnectionsWheel}
+              >
+                {matchesDataIsloading ? (
+                  <MatchesShimmer />
+                ) : matches.length !== 0 ? (
+                  matches.map((match: any, index: number) => (
+                    <div
+                      key={match._id}
+                      className="connectionItem card-enter"
+                      style={{ "--card-index": index } as React.CSSProperties}
+                      onClick={() => handleViewProfile(match)}
+                    >
+                      <div className="connectionAvatarWrapper">
                         <img
                           src={match.profilePhoto}
                           alt={match.name}
-                          className="matchAvatar"
+                          className="connectionAvatar"
                         />
                       </div>
-                      <p className="matchName">{match.name.split(" ")[0]}</p>
+                      <p className="connectionName">
+                        {match.name.split(" ")[0]}
+                      </p>
                     </div>
+                  ))
+                ) : (
+                  <div className="flex flex-col px-3 py-1">
+                    <h3 className="text-sm font-semibold text-white">
+                      No connections yet
+                    </h3>
+                    <p className="text-xs mt-0.5 text-white/75">
+                      Explore developers to find new connections.
+                    </p>
                   </div>
-                ))
-              ) : (
-                <div className="flex flex-col px-3">
-                  <h3 className="text-lg font-semibold text-slate-900">
-                    No Matches yet
-                  </h3>
-                  <p className="text-smmt-1 mb-3 text-slate-900">
-                    Explore developers to find new matches and start connecting.
-                  </p>
-                </div>
+                )}
+              </div>
+
+              {canScrollConnectionsRight && (
+                <button
+                  type="button"
+                  className="connectionsScrollBtn connectionsScrollBtn--right"
+                  aria-label="Scroll connections right"
+                  onClick={() => scrollConnections("right")}
+                >
+                  <ChevronRightIcon sx={{ fontSize: 18 }} />
+                </button>
               )}
             </div>
           </div>
 
-          {/* Chats Section */}
-          <div className="chatsSection">
-            <div className="chatsSectionHeader">
-              <h3 className="chatsTitle">Messages</h3>
-              <div className="searchConvo">
-                <SearchIcon
-                  sx={{ fontSize: "20px", marginRight: "3px", color: "grey" }}
-                />
-                <input
-                  className="searchConvoInput"
-                  type="text"
-                  placeholder="Search Chats"
-                  onChange={(e) => setSearchChats(e.target.value)}
-                />
+          <div className="messagesSection">
+            <div className="messagesSectionHeader">
+              <h3 className="messagesTitle">Messages</h3>
+              <div className="messagesHeaderActions">
+                <div className="searchConvo">
+                  <SearchIcon sx={{ fontSize: 18, color: "#6b7691" }} />
+                  <input
+                    className="searchConvoInput"
+                    type="text"
+                    placeholder="Search messages"
+                    value={searchChats}
+                    onChange={(e) => setSearchChats(e.target.value)}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className={`sortToggleBtn ${sortUnreadFirst ? "sortToggleBtn--active" : ""}`}
+                  aria-label="Sort conversations"
+                  title={
+                    sortUnreadFirst
+                      ? "Showing unread first"
+                      : "Sort: unread first"
+                  }
+                  onClick={() => setSortUnreadFirst((prev) => !prev)}
+                >
+                  <TuneIcon sx={{ fontSize: 18 }} />
+                </button>
               </div>
             </div>
 
@@ -130,48 +289,40 @@ const Matches = () => {
               ) : filteredChatList?.length !== 0 ? (
                 filteredChatList?.map((val: any) => {
                   const { user, lastmessage, isUnread } = val;
+                  const isActive = user._id === targetUserId;
                   return (
-                    <>
-                      <div
-                        key={user._id}
-                        className="chatItem"
-                        onClick={() => handleChatClick(user)}
-                      >
-                        <div className="chatAvatarWrapper">
-                          <img
-                            src={user.profilePhoto}
-                            alt={user.name}
-                            className="chatAvatar"
-                          />
+                    <div
+                      key={user._id}
+                      className={`chatItem ${isActive ? "chatItem--active" : ""}`}
+                      onClick={() => handleChatClick(user)}
+                    >
+                      <div className="chatAvatarWrapper">
+                        <img
+                          src={user.profilePhoto}
+                          alt={user.name}
+                          className="chatAvatar"
+                        />
+                        {user.isOnline && (
+                          <span className="chatAvatarOnlineDot" />
+                        )}
+                      </div>
+                      <div className="chatContent">
+                        <div className="chatHeader">
+                          <h3 className="chatUserName">{user.name}</h3>
+                          <span className="chatTimestamp">
+                            {formatListTimestamp(lastmessage?.createdAt)}
+                          </span>
                         </div>
-                        <div className="chatContent">
-                          <div className="chatHeader">
-                            <div>
-                              <h3 className="chatUserName">{user.name}</h3>
-                              <p
-                                className={`text-sm ${isUnread ? "text-gray-800 font-semibold" : "text-gray-600"}`}
-                              >
-                                {isUnread && (
-                                  <FiberManualRecordIcon
-                                    sx={{
-                                      fontSize: "10px",
-                                      color: "#6C6ACE",
-                                      marginRight: "5px",
-                                    }}
-                                  />
-                                )}
-                                {lastmessage.message}
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-slate-500">
-                                {getDate(user.lastSeen)}
-                              </p>
-                            </div>
-                          </div>
+                        <div className="chatFooter">
+                          <p
+                            className={`chatLastMessage ${isUnread ? "chatUnreadText" : ""}`}
+                          >
+                            {lastmessage?.message}
+                          </p>
+                          {isUnread && <span className="chatUnreadDot" />}
                         </div>
                       </div>
-                    </>
+                    </div>
                   );
                 })
               ) : (
@@ -185,7 +336,7 @@ const Matches = () => {
                   </p>
                   <button
                     onClick={() => navigate("/explore")}
-                    className="mt-4 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600 transition cursor-pointer"
+                    className="mt-4 rounded-lg bg-[#6D3DF5] px-4 py-2 text-sm font-medium text-white hover:bg-[#5B2FE0] transition cursor-pointer"
                   >
                     Explore Developers
                   </button>
@@ -195,23 +346,108 @@ const Matches = () => {
           </div>
         </div>
 
-        {/* User Card Overlay using your existing LikedYouUserCard component */}
-        {selectedMatch && (
-          <div className="chatCardOverlay" onClick={handleCloseCard}>
-            <div
-              className="chatCardContainer"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button className="chatCardCloseButton" onClick={handleCloseCard}>
-                ✕
-              </button>
-              <div className="chatCardWrapper">
-                <LikedYouUserCard val={selectedMatch} isMatched={true} />
+        {/* ── Right panel: active conversation ───────────────────── */}
+        <div
+          className={`conversationPanelWrapper ${!targetUserId ? "conversationPanelWrapper--hiddenOnMobile" : ""}`}
+        >
+          {targetUserId ? (
+            <ConversationPanel
+              key={targetUserId}
+              targetUserId={targetUserId}
+              receiverDetails={receiverDetails}
+              hasFullProfile={hasFullProfile}
+              onBack={handleBackToList}
+              onOpenProfile={() => handleViewProfile(receiverDetails)}
+              onConversationDeleted={handleBackToList}
+            />
+          ) : (
+            <div className="conversationEmpty">
+              <div className="conversationEmptyIcon">
+                <ChatBubbleOutlineIcon sx={{ fontSize: 30 }} />
               </div>
+              <h3 className="conversationEmptyTitle">
+                Select a conversation
+              </h3>
+              <p className="conversationEmptySub">
+                Choose a message from the list to start collaborating.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* "View all" connections dialog — full list, click through to a profile preview */}
+      {isConnectionsModalOpen && (
+        <div
+          className="connectionsModalOverlay"
+          onClick={() => setIsConnectionsModalOpen(false)}
+        >
+          <div
+            className="connectionsModal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="connectionsModalHeader">
+              <h3 className="connectionsModalTitle">
+                All connections
+                <span className="connectionsModalCount">
+                  {matches.length}
+                </span>
+              </h3>
+              <button
+                type="button"
+                className="connectionsModalClose"
+                aria-label="Close"
+                onClick={() => setIsConnectionsModalOpen(false)}
+              >
+                <CloseIcon sx={{ fontSize: 18 }} />
+              </button>
+            </div>
+            <div className="connectionsModalGrid">
+              {matches.map((match: any, index: number) => (
+                <div
+                  key={match._id}
+                  className="connectionModalItem card-enter"
+                  style={{ "--card-index": index } as React.CSSProperties}
+                  onClick={() => {
+                    setIsConnectionsModalOpen(false);
+                    handleViewProfile(match);
+                  }}
+                >
+                  <img
+                    src={match.profilePhoto}
+                    alt={match.name}
+                    className="connectionModalAvatar"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="connectionModalName">{match.name}</p>
+                    {match.currentRole && (
+                      <p className="connectionModalRole">
+                        {match.currentRole}
+                      </p>
+                    )}
+                  </div>
+                  <TooltipWrapper
+                    title={
+                      isPremium ? "" : "Upgrade to Premium to message"
+                    }
+                    arrow
+                  >
+                    <button
+                      type="button"
+                      className="connectionModalMessageBtn"
+                      aria-label={`Message ${match.name}`}
+                      disabled={!isPremium}
+                      onClick={(e) => handleMessageConnection(e, match)}
+                    >
+                      <ChatBubbleOutlineIcon sx={{ fontSize: 18 }} />
+                    </button>
+                  </TooltipWrapper>
+                </div>
+              ))}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };
