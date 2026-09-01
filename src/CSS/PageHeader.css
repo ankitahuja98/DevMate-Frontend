@@ -1,0 +1,69 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAGE HEADER — shared "TopRow" treatment
+   ═══════════════════════════════════════════════════════════════════════════
+   The rounded/gradient title+description box originally built for
+   Explore / Liked You (which keep their own heading classes) —
+   factored out here so every other in-app page (Settings, Go Premium,
+   Chats, …) gets the identical header instead of each hand-rolling its
+   own. Explore/LikedYou keep their own copies as-is (already tuned,
+   no need to touch working pages to adopt this).
+   ═══════════════════════════════════════════════════════════════════ */
+.PageHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0 0 26px;
+  padding: 10px 20px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #f6f3ff 0%, #eef1ff 100%);
+  border: 1px solid #ece6fb;
+}
+
+/* Mobile only. At/above 650px ResponsiveLayout swaps in the desktop
+   chrome and Topbar renders every page's heading on its own row, inline
+   with the notification/chat/avatar icons (see topbarPageHeadings in
+   Topbar.tsx) — so this would be a duplicate. */
+@media (min-width: 650px) {
+  .PageHeaderRow {
+    display: none;
+  }
+}
+
+.PageHeaderTitle {
+  font-size: 22px;
+  font-weight: 800;
+  color: #17213d;
+  letter-spacing: -0.01em;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Same treatment as every other page heading (see .topbarPageHeading p in
+   Topbar.css, .ExplorePageHeader p, .LikedYouSubtitle) — this one had
+   drifted to an italic 11px from an earlier iteration. */
+.PageHeaderSubtitle {
+  font-size: 12.5px;
+  color: #6b7691;
+  margin: 2px 0 0;
+}
+
+.PageHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .PageHeaderRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 16px;
+  }
+  .PageHeaderActions {
+    width: 100%;
+  }
+}

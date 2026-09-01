@@ -4,10 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getAllRequests } from "../redux/actions/userAction";
+import { removeRequest } from "../redux/slices/userSlice";
 import { reviewConnectionReq } from "../redux/actions/connectionAction";
 import LoadingThreeDotsPulse from "../Components/Loader";
-import { Button } from "@mui/material";
-import AllReqSwipe from "../Images/AllReqSwipe.avif";
 import SEO from "../Components/SEO";
 import { toast } from "react-toastify";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
@@ -20,6 +19,8 @@ import FolderOpenOutlinedIcon from "@mui/icons-material/FolderOpenOutlined";
 import CodeIcon from "@mui/icons-material/Code";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import CheckIcon from "@mui/icons-material/Check";
+import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
+import RestartAltRoundedIcon from "@mui/icons-material/RestartAltRounded";
 import {
   experienceLabel,
   isRecentlyActive,
@@ -27,7 +28,17 @@ import {
 } from "../utils/developerCardHelpers";
 import getDate from "../utils/getDate";
 import { useSearch } from "../context/SearchContext";
+import { useFullscreen } from "../context/FullscreenContext";
 import SearchEmptyState from "../Components/SearchEmptyState";
+import SearchToolbar from "../Components/SearchToolbar";
+import EmptyState from "../Components/EmptyState";
+import DevCardMenu from "../Components/DevCardMenu";
+
+const sortOptions = [
+  { value: "recent", label: "Most Recent" },
+  { value: "oldest", label: "Oldest First" },
+  { value: "name", label: "Name (A-Z)" },
+];
 
 interface Request {
   _id: string;
@@ -38,11 +49,13 @@ interface Request {
 const LikedYou = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const { editorRef } = useFullscreen();
 
   const {
     query,
     setQuery,
     filters,
+    setFilter,
     clearFilters: clearAdvancedFilters,
     setScope,
     setRoleOptions,
@@ -82,6 +95,26 @@ const LikedYou = () => {
       .then(() => {
         setConnectedIds((prev) => new Set(prev).add(request._id));
         toast.success(`You're now connected with ${request.fromUserId.name}!`);
+      })
+      .catch((err: any) => {
+        toast.error(err?.message || "Something went wrong");
+      })
+      .finally(() => setConnectingId(null));
+  };
+
+  // "Not interested" — the other half of the review endpoint that Connect
+  // uses. Rejecting drops the request, so the card goes away rather than
+  // sticking around like an accepted one does.
+  const handleNotInterested = (request: Request) => {
+    if (connectedIds.has(request._id) || connectingId === request._id) return;
+    setConnectingId(request._id);
+    dispatch(
+      reviewConnectionReq({ status: "rejected", requestId: request._id }),
+    )
+      .unwrap()
+      .then(() => {
+        toast.success(`Dismissed ${request.fromUserId.name}'s request`);
+        dispatch(removeRequest(request._id));
       })
       .catch((err: any) => {
         toast.error(err?.message || "Something went wrong");
@@ -215,24 +248,21 @@ const LikedYou = () => {
   if (AllRequests.length === 0) {
     return (
       <div className="LikedyouContainer">
-        <div className="flex justify-center items-center flex-col gap-4 pt-10">
-          <img
-            className="w-10/12 md:w-6/12 h-auto"
-            src={AllReqSwipe}
-            alt="All done"
-          />
-          <Button
-            variant="contained"
-            onClick={handleRefresh}
-            sx={{
-              backgroundColor: "#6D3DF5",
-              boxShadow: "0 8px 20px rgba(109, 61, 245, 0.3)",
-              "&:hover": { backgroundColor: "#5B2FE0" },
-            }}
-          >
-            Refresh
-          </Button>
-        </div>
+        <EmptyState
+          icon={<FavoriteBorderRoundedIcon sx={{ fontSize: 30 }} />}
+          title="No likes yet"
+          description="When a developer is interested in connecting with you, their request lands here. Browse Explore and send a few of your own to get things moving."
+          action={{
+            label: "Explore Developers",
+            onClick: () => navigate("/explore"),
+            icon: <PeopleAltOutlinedIcon sx={{ fontSize: 17 }} />,
+          }}
+          secondaryAction={{
+            label: "Refresh",
+            onClick: handleRefresh,
+            icon: <RestartAltRoundedIcon sx={{ fontSize: 17 }} />,
+          }}
+        />
       </div>
     );
   }
@@ -245,33 +275,45 @@ const LikedYou = () => {
       />
 
       <div className="LikedyouContainer">
-        {/* ── Header ───────────────────────────────────────────────────────── */}
-        <div className="LikedYouTopRow">
-          <div>
-            <h1 className="LikedYouTitle">People who liked you</h1>
-          </div>
-
-          <div className="LikedYouTopActions">
-            {hasActiveSearch && (
-              <button
-                type="button"
-                className="LikedYouFilterBtn"
-                onClick={clearSearch}
-              >
-                Clear filters
-              </button>
-            )}
-            <select
-              className="LikedYouSortSelect"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-            >
-              <option value="recent">Sort: Most Recent</option>
-              <option value="oldest">Sort: Oldest First</option>
-              <option value="name">Sort: Name (A-Z)</option>
-            </select>
-          </div>
+        {/* ── Heading — page body below 650px only; above that the desktop
+            Topbar renders it on its own row (see topbarPageHeadings in
+            Topbar.tsx), same as Explore. ─────────────────────────────── */}
+        <div className="LikedYouPageHeader">
+          <h1 className="LikedYouTitle">People who liked you</h1>
+          <p className="LikedYouSubtitle">
+            Developers interested in connecting with you
+          </p>
         </div>
+
+        {/* ── Search + Filters + Sort toolbar (shared with Explore) ─────── */}
+        <SearchToolbar
+          idPrefix="likedYouAdvSearch"
+          placeholder="Search people who liked you..."
+          query={query}
+          onQueryChange={setQuery}
+          roleOptions={roleOptions}
+          skillOptions={skillOptions}
+          filters={filters}
+          setFilter={setFilter}
+          clearFilters={clearAdvancedFilters}
+          hasActiveFilters={hasActiveFilters}
+          sortOptions={sortOptions}
+          sortBy={sortBy}
+          onSortChange={(v) => setSortBy(v as typeof sortBy)}
+          container={editorRef?.current || undefined}
+        />
+
+        {hasActiveSearch && (
+          <div className="LikedYouClearRow">
+            <button
+              type="button"
+              className="LikedYouClearFilters"
+              onClick={clearSearch}
+            >
+              Clear filters
+            </button>
+          </div>
+        )}
 
         {/* ── Stats ────────────────────────────────────────────────────────── */}
         <div className="LikedYouStats">
@@ -349,7 +391,16 @@ const LikedYou = () => {
                 onClick={() => handleViewProfile(request)}
               >
                 <div className="LikedYouCard2Top">
-                  {isNew && <span className="LikedYouNewBadge">NEW</span>}
+                  {/* NEW badge and the "⋯" menu share one corner slot so
+                      they can't overlap when both are showing. */}
+                  <div className="LikedYouCard2Corner">
+                    {isNew && <span className="LikedYouNewBadge">NEW</span>}
+                    <DevCardMenu
+                      onNotInterested={() => handleNotInterested(request)}
+                      disabled={isConnecting || isConnected}
+                      container={editorRef?.current || undefined}
+                    />
+                  </div>
 
                   <div className="LikedYouCard2Header">
                     <div className="LikedYouCard2AvatarWrap">

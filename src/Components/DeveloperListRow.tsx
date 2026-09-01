@@ -10,32 +10,29 @@ import {
   availabilityLabel,
   isRecentlyActive,
 } from "../utils/developerCardHelpers";
-import DevCardMenu from "./DevCardMenu";
 
-interface DeveloperCardProps {
+interface DeveloperListRowProps {
   user: userData;
   onViewProfile: (user: userData) => void;
   onConnect: (user: userData) => void;
-  onNotInterested?: (user: userData) => void;
   isConnecting?: boolean;
   isConnected?: boolean;
-  // Position in the list — drives the staggered entrance animation (see
-  // .card-enter in index.css). Optional so the component still works
-  // wherever it's used without a known position.
   index?: number;
-  menuContainer?: HTMLElement;
 }
 
-const DeveloperCard = ({
+// The compact horizontal row used in Explore's "list" view — same data,
+// same actions as DeveloperCard, just laid out as one row instead of a
+// vertical tile (toggled via the grid/list switch above the results). No
+// "⋯" hide menu here (unlike DeveloperCard) — the row is too short for it
+// to sit anywhere that doesn't collide with the action buttons.
+const DeveloperListRow = ({
   user,
   onViewProfile,
   onConnect,
-  onNotInterested,
   isConnecting,
   isConnected,
   index = 0,
-  menuContainer,
-}: DeveloperCardProps) => {
+}: DeveloperListRowProps) => {
   const {
     name,
     profilePhoto,
@@ -53,39 +50,32 @@ const DeveloperCard = ({
 
   return (
     <div
-      className="DevCard card-enter"
+      className="DevListRow card-enter"
       style={{ "--card-index": index } as React.CSSProperties}
     >
-      <div className="DevCardHeader">
-        <div className="DevCardAvatarWrap">
-          <img src={profilePhoto} alt={name} className="DevCardAvatar" />
-          {isRecentlyActive(lastSeen) && <span className="DevCardOnlineDot" />}
+      <div className="DevListAvatarWrap">
+        <img src={profilePhoto} alt={name} className="DevListAvatar" />
+        {isRecentlyActive(lastSeen) && <span className="DevListOnlineDot" />}
+      </div>
+
+      <div className="DevListIdentity min-w-0">
+        <div className="flex items-center gap-1">
+          <p className="DevListName">{name}</p>
+          {isVerified && <VerifiedIcon sx={{ fontSize: 15, color: "#6D3DF5" }} />}
         </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1">
-            <p className="DevCardName">{name}</p>
-            {isVerified && (
-              <VerifiedIcon sx={{ fontSize: 16, color: "#6D3DF5" }} />
-            )}
-          </div>
-          {currentRole && <p className="DevCardRole">{currentRole}</p>}
+        <div className="DevListMeta">
+          {currentRole && <span>{currentRole}</span>}
           {location && (
-            <div className="DevCardLocation">
-              <LocationOnOutlinedIcon sx={{ fontSize: 14 }} />
-              <span>{location}</span>
-            </div>
+            <span>
+              <LocationOnOutlinedIcon sx={{ fontSize: 13 }} />
+              {location}
+            </span>
           )}
         </div>
-        {onNotInterested && (
-          <DevCardMenu
-            onNotInterested={() => onNotInterested(user)}
-            container={menuContainer}
-          />
-        )}
       </div>
 
       {visibleSkills.length > 0 && (
-        <div className="DevCardSkills">
+        <div className="DevListSkills">
           {visibleSkills.map((s, i) => (
             <span key={i} className="DevCardSkillPill">
               {s}
@@ -99,7 +89,7 @@ const DeveloperCard = ({
         </div>
       )}
 
-      <div className="DevCardStats">
+      <div className="DevListStats">
         <span>
           <CalendarTodayOutlinedIcon sx={{ fontSize: 13 }} />
           {experienceLabel(experience)}
@@ -112,7 +102,7 @@ const DeveloperCard = ({
         )}
       </div>
 
-      <div className="DevCardActions">
+      <div className="DevListActions">
         <button
           type="button"
           className="DevCardBtn DevCardBtn--ghost"
@@ -141,4 +131,4 @@ const DeveloperCard = ({
   );
 };
 
-export default DeveloperCard;
+export default DeveloperListRow;

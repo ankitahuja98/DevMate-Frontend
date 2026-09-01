@@ -6,85 +6,84 @@
    rather than a consume-and-discard one).
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* Padding/max-width kept in lockstep with .ExplorePage (see Explore.css) —
+   same page-level rhythm on both pages, so content lines up with the
+   topbar search bar above identically on either one. */
 .LikedyouContainer {
   min-height: calc(100dvh - 70px);
-  padding: 10px 28px 10px;
-  max-width: 1200px;
+  padding: 10px 32px 10px;
+  max-width: 1400px;
   margin: 0 auto;
   overflow-y: auto;
 }
 
-/* ── Header row ───────────────────────────────────────────────────────────── */
-.LikedYouTopRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 16px;
+/* ── Heading ──────────────────────────────────────────────────────────────
+   Same treatment as Explore: plain (no card/gradient), and only rendered
+   in the page body below 650px — at/above that the desktop Topbar shows
+   it on its own row (see topbarPageHeadings in Topbar.tsx). */
+.LikedYouPageHeader {
+  margin: 0 0 20px;
+}
+@media (min-width: 650px) {
+  .LikedYouPageHeader {
+    display: none;
+  }
+  /* Topbar's own padding provides the breathing room the heading used to. */
+  .LikedyouContainer {
+    padding-top: 8px;
+  }
 }
 
 .LikedYouTitle {
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 800;
   color: #17213d;
   letter-spacing: -0.01em;
   margin: 0;
+  line-height: 1.2;
 }
 
-.LikedYouTopActions {
+.LikedYouSubtitle {
+  font-size: 12.5px;
+  color: #6b7691;
+  margin: 2px 0 0;
+}
+
+/* "Clear filters", shown under the toolbar only while something's on. */
+.LikedYouClearRow {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  margin: -6px 0 14px;
 }
-
-.LikedYouFilterBtn {
+.LikedYouClearFilters {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #fff;
-  border: 1px solid #e4e7ef;
-  color: #17213d;
+  background: transparent;
+  color: #6d3df5;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 12px;
   font-size: 13px;
   font-weight: 650;
-  padding: 10px 14px;
-  border-radius: 10px;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.15s ease;
+  transition: background 0.15s ease;
 }
-.LikedYouFilterBtn:hover {
-  border-color: #6d3df5;
-  color: #6d3df5;
+.LikedYouClearFilters:hover {
   background: #f7f4ff;
 }
 
-.LikedYouSortSelect {
-  appearance: none;
-  background: #fff
-    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7691' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")
-    no-repeat right 10px center;
-  background-size: 18px;
-  border: 1px solid #e4e7ef;
-  border-radius: 10px;
-  padding: 10px 32px 10px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #17213d;
-  cursor: pointer;
-  transition: border-color 0.15s ease;
-}
-.LikedYouSortSelect:hover,
-.LikedYouSortSelect:focus {
-  border-color: #6d3df5;
-  outline: none;
-}
+/* Search / Filters / Sort are the shared <SearchToolbar> component now —
+   see SearchToolbar.css. */
 
 /* ── Stats ────────────────────────────────────────────────────────────────── */
 .LikedYouStats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  margin: 22px 0 26px;
+  /* The toolbar above already carries its own bottom margin —
+     just a bottom margin here, no extra top gap stacking on top of it. */
+  margin: 0 0 26px;
 }
 
 .LikedYouStatCard {
@@ -163,7 +162,7 @@
    viewport widths, same approach as .ExploreGrid. */
 .LikedYouGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
@@ -245,10 +244,19 @@
   padding: 16px 18px;
 }
 
-.LikedYouNewBadge {
+/* Holds the NEW badge and the "⋯" menu together in the card's top-right,
+   so they sit side by side instead of stacking on top of each other. */
+.LikedYouCard2Corner {
   position: absolute;
-  top: 14px;
-  right: 16px;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 1;
+}
+
+.LikedYouNewBadge {
   background: #6d3df5;
   color: #fff;
   font-size: 10px;
@@ -256,6 +264,16 @@
   letter-spacing: 0.04em;
   padding: 4px 9px;
   border-radius: 999px;
+}
+
+/* Same treatment as the Explore card's menu button (.DevCardMenuBtn), but
+   scoped here since this card's own CSS file owns its chrome. */
+.LikedYouCard2Corner .DevCardMenuBtn {
+  color: #9aa1b5 !important;
+}
+.LikedYouCard2Corner .DevCardMenuBtn:hover {
+  color: #6d3df5 !important;
+  background: #ede4ff !important;
 }
 
 .LikedYouCard2Header {
@@ -441,20 +459,21 @@
 }
 
 @media (max-width: 768px) {
+  /* Matches .ExplorePage's mobile padding exactly. */
   .LikedyouContainer {
-    padding: 16px 14px 90px;
+    padding: 20px 16px 90px;
   }
-  .LikedYouTopActions {
-    width: 100%;
+  .LikedYouTitle {
+    font-size: 24px;
   }
-  .LikedYouFilterBtn,
-  .LikedYouSortSelect {
-    flex: 1;
+  /* (The toolbar's own mobile rules live in SearchToolbar.css.) */
+}
+
+/* Mobile — one card per row. Matches the width ResponsiveLayout.tsx
+   switches over to MobileLayout at, so this lines up with when the app
+   is actually rendering the mobile chrome (no sidebar squeezing the grid). */
+@media (max-width: 650px) {
+  .LikedYouGrid {
+    grid-template-columns: 1fr;
   }
-  /* No forced grid-template-columns here anymore — auto-fit (see
-     .LikedYouGrid above) already drops to 1 column once the container
-     can't fit a 300px card twice, which happens naturally well before
-     this breakpoint on a real phone. Forcing it here would instead have
-     stopped a ~700-768px tablet from getting 2 columns even when it has
-     room for them. */
 }

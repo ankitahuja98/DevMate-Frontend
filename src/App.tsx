@@ -19,6 +19,9 @@ const ResponsiveLayout = lazy(
   () => import("./Layout/ResponsiveLayout/ResponsiveLayout"),
 );
 
+// TEMPORARY debug-only route — remove before finishing.
+const DebugSeed = lazy(() => import("./Pages/__DebugSeed"));
+
 // ───  Public informational pages ─────
 const Home = lazy(() => import("./Pages/Home"));
 const About = lazy(() => import("./Pages/info/About"));
@@ -82,6 +85,8 @@ function App() {
     <FullscreenProvider>
       <Suspense fallback={<PageLoader />}>
         <Routes>
+          {/* TEMPORARY debug route — remove before finishing */}
+          <Route path="/__debug-seed" element={<DebugSeed />} />
           {/* ── Public: Auth ─── */}
           <Route path="/login" element={<GoogleAuthWrapper />} />
 

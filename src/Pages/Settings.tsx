@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useFullscreen } from "../context/FullscreenContext";
 import { deleteProfile } from "../redux/actions/profileAction";
 import { toast } from "react-toastify";
+import PageHeader from "../Components/PageHeader";
 
 type SettingItem = {
   label: string;
@@ -147,10 +148,11 @@ const Settings = () => {
   );
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-8 py-8">
-      <h1 className="hidden sm:block text-[28px] font-bold text-[#17213D] mb-6 tracking-tight">
-        Settings
-      </h1>
+    <div className="max-w-5xl mx-auto px-4 sm:px-8 pt-2.5 pb-8">
+      <PageHeader
+        title="Settings"
+        description="Manage your account, preferences, and app experience"
+      />
       {renderSection("Account Settings", accountSettings)}
       {renderSection("Information & Legal", legalSettings)}
       {renderSection("Account Actions", accountActions)}

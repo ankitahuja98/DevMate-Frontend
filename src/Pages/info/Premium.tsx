@@ -10,6 +10,7 @@ import { createOrder, verifyPayment } from "../../redux/actions/paymentAction";
 import { fetchUserProfile } from "../../redux/actions/profileAction";
 import { toast } from "react-toastify";
 import SEO from "../../Components/SEO";
+import PageHeader from "../../Components/PageHeader";
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -22,6 +23,13 @@ const Premium = () => {
   const isPremium = useAppSelector(
     (store) => store.profile.userProfile.userProfileData?.isPremium ?? false,
   );
+
+  // This component backs both the public marketing route (/pricing) and
+  // the in-app one (/premium, reached from Settings/Sidebar) — a logged-in
+  // user gets the compact app-consistent header + no marketing chrome
+  // (hero copy, the "Start Free Today" login CTA, the site Footer) instead
+  // of the full landing-page treatment a visitor sees.
+  const isAppContext = Boolean(userProfileData);
 
   const plans = [
     {
@@ -128,23 +136,54 @@ const Premium = () => {
         title="Devmate Premium Plans"
         description="Upgrade to Devmate Premium and unlock advanced matching and networking features."
       />
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50">
+      <div
+        className={
+          isAppContext
+            ? "min-h-screen"
+            : "min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50"
+        }
+        style={isAppContext ? { background: "var(--page-bg, #f7f8fc)" } : undefined}
+      >
         {/* Content */}
-        <div className="pt-6 pb-16 px-4 sm:px-6 lg:px-8">
+        {/* The highlighted plan is `sm:scale-105`, so it renders ~15px
+            taller than its layout box in each direction (more as the card
+            grows — it's a percentage), and its "featured" badge sits
+            another 16px above that (-top-4). In the app layout the page
+            scrolls inside a bounded container that clips anything past its
+            top edge, so the padding here has to clear both, with room to
+            spare for a longer feature list, or the card's top border gets
+            sliced off. */}
+        <div
+          className={
+            isAppContext
+              ? "pt-10 pb-16 px-4 sm:px-8"
+              : "pt-6 pb-16 px-4 sm:px-6 lg:px-8"
+          }
+        >
           <div className="max-w-7xl mx-auto">
-            {/* ── Header ──────────────────────────────────────────────────── */}
-            <div className="text-center mb-8 sm:mb-12">
-              <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-3">
-                Choose Your{" "}
-                <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-                  Plan
-                </span>
-              </h1>
-              <p className="text-sm sm:text-base md:text-xl text-slate-600 max-w-2xl mx-auto">
-                Start for free and upgrade when you're ready to unlock the full
-                power of Devmate
-              </p>
-            </div>
+            {/* ── Header ────────────────────────────────────────────────────
+                App context gets the same compact PageHeader every other
+                in-app page uses; the public route keeps its marketing
+                hero. */}
+            {isAppContext ? (
+              <PageHeader
+                title="Go Premium"
+                description="Unlock advanced matching and unlimited connections"
+              />
+            ) : (
+              <div className="text-center mb-8 sm:mb-12">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-3">
+                  Choose Your{" "}
+                  <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                    Plan
+                  </span>
+                </h1>
+                <p className="text-sm sm:text-base md:text-xl text-slate-600 max-w-2xl mx-auto">
+                  Start for free and upgrade when you're ready to unlock the
+                  full power of Devmate
+                </p>
+              </div>
+            )}
 
             {/* ── Pricing Cards ────────────────────────────────────────────── */}
             <div className="grid sm:grid-cols-2 gap-5 sm:gap-8 max-w-5xl mx-auto">
@@ -322,25 +361,30 @@ const Premium = () => {
             </div>
 
             {/* ── CTA Section ──────────────────────────────────────────────── */}
-            <div className="mt-14 sm:mt-20 bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 rounded-2xl sm:rounded-3xl shadow-2xl p-7 sm:p-12 text-center">
-              <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
-                Ready to Find Your Dev Partner?
-              </h2>
-              <p className="text-sm sm:text-lg md:text-xl text-purple-100 mb-6 sm:mb-8 max-w-2xl mx-auto">
-                Join thousands of developers already connecting and
-                collaborating on Devmate
-              </p>
-              <button
-                onClick={() => navigate("/login")}
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-purple-600 font-semibold rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer text-sm sm:text-base"
-              >
-                Start Free Today
-              </button>
-            </div>
+            {/* Only for visitors — a logged-in user browsing this from
+                Settings/Sidebar is already a member; "Start Free Today" /
+                login doesn't apply to them. */}
+            {!isAppContext && (
+              <div className="mt-14 sm:mt-20 bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 rounded-2xl sm:rounded-3xl shadow-2xl p-7 sm:p-12 text-center">
+                <h2 className="text-xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
+                  Ready to Find Your Dev Partner?
+                </h2>
+                <p className="text-sm sm:text-lg md:text-xl text-purple-100 mb-6 sm:mb-8 max-w-2xl mx-auto">
+                  Join thousands of developers already connecting and
+                  collaborating on Devmate
+                </p>
+                <button
+                  onClick={() => navigate("/login")}
+                  className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-purple-600 font-semibold rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer text-sm sm:text-base"
+                >
+                  Start Free Today
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
-        <Footer />
+        {!isAppContext && <Footer />}
       </div>
     </>
   );

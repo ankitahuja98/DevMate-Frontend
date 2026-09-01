@@ -1,0 +1,92 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   EMPTY STATE — shared "nothing here yet" block
+   ═══════════════════════════════════════════════════════════════════════════
+   Soft icon badge + heading + subtext + optional CTAs. The app's empty
+   states all speak this language (see also .conversationEmpty in
+   Matches.css); SearchEmptyState is a thin wrapper over this.
+   ═══════════════════════════════════════════════════════════════════ */
+.EmptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 72px 20px;
+}
+
+.EmptyStateIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  color: var(--brand-500, #6d3df5);
+  background: linear-gradient(
+    135deg,
+    var(--violet-tint-100, #f0e8ff) 0%,
+    var(--violet-tint-300, #ede9fe) 100%
+  );
+}
+
+.EmptyStateTitle {
+  margin: 20px 0 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink-900, #17213d);
+}
+
+.EmptyStateText {
+  margin: 6px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-500, #6b7691);
+  max-width: 340px;
+  line-height: 1.55;
+}
+
+.EmptyStateActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.EmptyStateBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: none;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.EmptyStateBtn--solid {
+  background: var(--brand-500, #6d3df5);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(109, 61, 245, 0.28);
+}
+.EmptyStateBtn--solid:hover {
+  background: #5b2fe0;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(109, 61, 245, 0.36);
+}
+
+.EmptyStateBtn--ghost {
+  background: #fff;
+  color: var(--ink-900, #17213d);
+  border: 1px solid var(--border-default, #e4e7ef);
+}
+.EmptyStateBtn--ghost:hover {
+  border-color: var(--brand-500, #6d3df5);
+  color: var(--brand-500, #6d3df5);
+}

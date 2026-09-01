@@ -168,7 +168,12 @@ const Matches = () => {
         description="Chat with your matches and build developer connections."
       />
 
-      <div className="chatWorkspace">
+      {/* No in-page heading here: the desktop Topbar carries it (see
+          topbarPageHeadings in Topbar.tsx) and on mobile MobileTopbar
+          already shows "Chats" — a chat workspace has no height to spare
+          for a third copy. */}
+      <div className="ChatsPage">
+        <div className="chatWorkspace">
         {/* ── Left panel: connections + conversation list ───────── */}
         <div
           className={`chatListPanel ${targetUserId ? "chatListPanel--hiddenOnMobile" : ""}`}
@@ -373,6 +378,7 @@ const Matches = () => {
               </p>
             </div>
           )}
+        </div>
         </div>
       </div>
 

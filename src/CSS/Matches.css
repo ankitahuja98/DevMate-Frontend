@@ -1,4 +1,18 @@
 /* ============================================================
+   PAGE WRAPPER — the shared PageHeader ("Chats" + description, same
+   treatment as Explore/Liked You) sits above the workspace on tablet/
+   desktop. flex:1 + min-height:0 on .chatWorkspace (instead of a fixed
+   height calc()) means it always fills whatever's left under the header,
+   regardless of the header's actual rendered height.
+   ============================================================ */
+.ChatsPage {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 0;
+}
+
+/* ============================================================
    CHAT WORKSPACE — two-column messaging layout
    Renders for both /matches (list only) and /chat/:targetUserId
    (list + active conversation), sharing one continuous white
@@ -7,8 +21,9 @@
 
 .chatWorkspace {
   display: flex;
-  height: calc(100% - 20px);
-  margin: 10px;
+  flex: 1;
+  min-height: 0;
+  margin: 0 0 10px;
   overflow: hidden;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-default);
@@ -1118,11 +1133,20 @@
 }
 
 /* Mobile — single-panel experience: list OR conversation, never both.
-   Matches the breakpoint MobileLayout switches in at. */
+   Matches the breakpoint MobileLayout switches in at. Also drops the
+   PageHeader entirely: a native chat app doesn't spend a phone screen's
+   limited height on a title above the message list — same reasoning
+   BottomBar/MobileTopbar already apply everywhere else on mobile. */
 @media (max-width: 649px) {
+  .ChatsPage {
+    padding: 0;
+  }
   .chatWorkspace {
-    height: calc(100% - 64px); /* reserve space for the fixed BottomBar */
-    margin: 0;
+    flex: 1;
+    /* BottomBar is fixed (removed from flow, see BottomBar.tsx), so
+       nothing else reserves room for it — this margin is what keeps it
+       from covering the bottom of the chat. */
+    margin: 0 0 64px;
     border-radius: 0;
     border: none;
     box-shadow: none;

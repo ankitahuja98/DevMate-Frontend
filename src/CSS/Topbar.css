@@ -16,205 +16,37 @@
   transform: scale(1.05);
 }
 
-/* ── Topbar search — real, page-scoped search + advanced-filters panel ───── */
-.topbarSearchWrap {
-  position: relative;
-  width: 100%;
-  max-width: 540px;
-}
-
-.topbarSearch {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  height: 54px;
-  padding: 0 10px 0 18px;
-  background: #ffffff;
-  border: 1px solid var(--border-default, #e4e7ef);
-  border-radius: var(--radius-md, 14px);
-  box-shadow: var(--shadow-sm, 0 1px 3px rgba(23, 33, 61, 0.06));
-  transition: border-color 0.15s ease;
-}
-
-.topbarSearch:focus-within {
-  border-color: var(--brand-500, #6d3df5);
-}
-
-.topbarSearchInput {
-  flex: 1;
+/* ── Page heading rendered inline on the topbar row ──────────────────────────
+   Matches the sizing the heading had when it lived in the page body, so
+   moving it up here doesn't change how it reads. */
+.topbarPageHeading {
   min-width: 0;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 15px;
+}
+
+.topbarPageHeading h1 {
+  font-size: 30px;
+  font-weight: 800;
   color: var(--ink-900, #17213d);
+  letter-spacing: -0.01em;
+  margin: 0;
+  line-height: 1.2;
 }
 
-.topbarSearchInput::placeholder {
-  color: var(--ink-500, #6b7691);
-}
-
-.topbarSearchInput:disabled {
-  cursor: not-allowed;
-}
-
-/* Advanced-search toggle ("Tune" icon) inside the search bar */
-.topbarSearchClear {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border: none;
-  border-radius: 50%;
-  background: transparent;
-  color: var(--ink-500, #6b7691);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.topbarSearchClear:hover {
-  background: #f0f2f8;
-  color: var(--ink-900, #17213d);
-}
-
-.topbarAdvancedToggle {
-  position: relative;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border: none;
-  border-radius: 9px;
-  background: transparent;
-  color: var(--ink-500, #6b7691);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.topbarAdvancedToggle:hover {
-  background: #f0f2f8;
-  color: var(--ink-900, #17213d);
-}
-
-.topbarAdvancedToggle.active {
-  background: var(--violet-tint-100, #f3eeff);
-  color: var(--brand-500, #6d3df5);
-}
-
-.topbarAdvancedDot {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #ef4444;
-  border: 1.5px solid #fff;
-}
-
-/* Advanced-search dropdown panel */
-.topbarAdvancedPanel {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  right: 0;
-  z-index: 30;
-  background: #ffffff;
-  border: 1px solid var(--border-default, #e4e7ef);
-  border-radius: var(--radius-md, 14px);
-  box-shadow: 0 16px 40px rgba(23, 33, 61, 0.14);
-  padding: 16px;
-}
-
-.topbarAdvancedPanelHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--ink-900, #17213d);
-}
-
-.topbarAdvancedPanelHeader button {
-  border: none;
-  background: transparent;
-  color: var(--brand-500, #6d3df5);
+.topbarPageHeading p {
   font-size: 12.5px;
-  font-weight: 650;
-  cursor: pointer;
-  padding: 0;
-}
-
-.topbarAdvancedPanelHeader button:hover {
-  text-decoration: underline;
-}
-
-.topbarAdvancedGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.topbarAdvancedGrid label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 650;
   color: var(--ink-500, #6b7691);
+  margin: 2px 0 0;
 }
 
-.topbarAdvancedGrid select {
-  appearance: none;
-  background: #f7f8fc
-    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7691' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")
-    no-repeat right 10px center;
-  background-size: 16px;
-  border: 1px solid var(--border-default, #e4e7ef);
-  border-radius: 9px;
-  padding: 9px 30px 9px 10px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-900, #17213d);
-  cursor: pointer;
-  outline: none;
-}
-
-.topbarAdvancedGrid select:focus {
-  border-color: var(--brand-500, #6d3df5);
-}
-
-@media (max-width: 480px) {
-  .topbarAdvancedGrid {
-    grid-template-columns: 1fr;
+@media (max-width: 900px) {
+  .topbarPageHeading h1 {
+    font-size: 24px;
+  }
+  .topbarPageHeading p {
+    font-size: 12px;
   }
 }
 
-/* ── Tablet band ──────────────────────────────────────────────────────────
-   Topbar.css only ever renders inside MainLayout (desktop chrome) — below
-   650px MobileLayout takes over with its own MobileTopbar entirely. So
-   this is specifically for the ~650–1024px tablet range, where the
-   sidebar can still be manually re-opened to its full 264px and would
-   otherwise leave the search bar's 540px max-width fighting the icon
-   cluster for space. */
-@media (max-width: 1024px) {
-  .topbarSearchWrap {
-    max-width: 380px;
-  }
-}
-
-@media (max-width: 860px) {
-  .topbarSearchWrap {
-    max-width: 260px;
-  }
-  .topbarSearch {
-    height: 46px;
-    padding: 0 8px 0 14px;
-  }
-}
+/* The search box that used to live here moved into the pages
+   themselves (the shared <SearchToolbar> — see SearchToolbar.css), so
+   this topbar is just the page heading plus the icon cluster now. */

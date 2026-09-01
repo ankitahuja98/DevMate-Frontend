@@ -1,0 +1,1 @@
+import{j as e}from"./index-DkUMdCi9.js";const i=({title:r,description:a,actions:s,className:d})=>e.jsxs("div",{className:`PageHeaderRow ${d||""}`,children:[e.jsxs("div",{children:[e.jsx("h1",{className:"PageHeaderTitle",children:r}),a&&e.jsx("p",{className:"PageHeaderSubtitle",children:a})]}),s&&e.jsx("div",{className:"PageHeaderActions",children:s})]});export{i as P};

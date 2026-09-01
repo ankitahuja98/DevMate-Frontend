@@ -1,0 +1,150 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEARCH TOOLBAR — shared in-page search + Filters + Sort row
+   ═══════════════════════════════════════════════════════════════════════════
+   Used by Explore and Liked You. No card around these — the controls sit
+   directly on the page background, so each one carries its own surface.
+   ═══════════════════════════════════════════════════════════════════ */
+.SearchToolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 5px;
+}
+
+.SearchToolbarBox {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* White (not the page's own #f7f8fc) so the field still reads as an
+     input with no card behind it. */
+  background: #fff;
+  border: 1px solid var(--border-default, #e4e7ef);
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition: border-color 0.15s ease;
+}
+.SearchToolbarBox:focus-within {
+  border-color: var(--brand-500, #6d3df5);
+}
+
+.SearchToolbarInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14.5px;
+  color: var(--ink-900, #17213d);
+}
+.SearchToolbarInput::placeholder {
+  color: #9aa1b5;
+}
+
+.SearchToolbarClear {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-500, #6b7691);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.SearchToolbarClear:hover {
+  background: var(--border-default, #e4e7ef);
+  color: var(--ink-900, #17213d);
+}
+
+.SearchToolbarFiltersWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.SearchToolbarFiltersBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f7f4ff;
+  color: var(--brand-500, #6d3df5);
+  border: 1px solid #e6e1fa;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.SearchToolbarFiltersBtn:hover,
+.SearchToolbarFiltersBtn.active {
+  background: #ede4ff;
+  border-color: var(--brand-500, #6d3df5);
+}
+.SearchToolbarFiltersDot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 1.5px solid #f7f4ff;
+}
+
+.SearchToolbarSortBtn {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  background: #fff;
+  border: 1px solid var(--border-default, #e4e7ef);
+  border-radius: 12px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.SearchToolbarSortBtn:hover {
+  border-color: var(--brand-500, #6d3df5);
+}
+.SearchToolbarSortLabel {
+  font-size: 11px;
+  color: #9aa1b5;
+  font-weight: 600;
+}
+.SearchToolbarSortValue {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-900, #17213d);
+}
+
+/* Search takes its own full-width row, Filters/Sort share the one below
+   it, instead of everything squeezing into a single row. */
+@media (max-width: 768px) {
+  .SearchToolbar {
+    flex-wrap: wrap;
+  }
+  .SearchToolbarBox {
+    flex-basis: 100%;
+  }
+  .SearchToolbarFiltersWrap {
+    flex: 1;
+  }
+  .SearchToolbarFiltersBtn {
+    width: 100%;
+    justify-content: center;
+  }
+  .SearchToolbarSortBtn {
+    flex: 1;
+    align-items: center;
+  }
+}

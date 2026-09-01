@@ -11,7 +11,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 10px 32px 10px;
+  padding: 24px 32px 10px;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -28,127 +28,134 @@
   overflow-x: hidden;
 }
 
-.ExploreTopRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin: 0 0 26px;
-  padding: 16px 20px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #f6f3ff 0%, #eef1ff 100%);
-  border: 1px solid #ece6fb;
-}
-
+/* ── Heading — plain, no card/gradient treatment ─────────────────────────── */
+/* Only rendered in the page body below 650px. At/above that width
+   ResponsiveLayout swaps in the desktop chrome, and Topbar renders this
+   same heading on its own row (inline with the notification/chat/avatar
+   icons) — see topbarPageHeadings in Topbar.tsx. Hiding it here rather
+   than in Explore.tsx keeps it a pure layout concern and avoids a second
+   width listener in JS. */
 .ExplorePageHeader {
-  display: flex;
-  align-items: center;
+  margin: 0 0 20px;
 }
-
+@media (min-width: 650px) {
+  .ExplorePageHeader {
+    display: none;
+  }
+  /* Topbar's own padding provides the breathing room the heading used
+     to — don't stack another 24px on top of it. */
+  .ExplorePage {
+    padding-top: 8px;
+  }
+}
 .ExplorePageHeader h1 {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 800;
   color: #17213d;
   letter-spacing: -0.01em;
   margin: 0;
+  line-height: 1.2;
 }
 .ExplorePageHeader p {
-  font-size: 13px;
+  font-size: 12.5px;
   color: #6b7691;
-  margin: 3px 0 0;
+  margin: 2px 0 0;
 }
 
-/* ── Filter bar ───────────────────────────────────────────────────────────── */
-.ExploreFilterBar {
+/* The search + Filters + Sort row is the shared <SearchToolbar>
+   component now (also used by Liked You) — see SearchToolbar.css. */
+/* ── Category pills + view toggle, one row ───────────────────────────────── */
+.ExploreFilterRow {
   display: flex;
-  flex-wrap: nowrap;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  margin: 0 0 14px;
+}
+
+.ExploreCategoryBar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 8px;
   overflow-x: auto;
-  padding-bottom: 2px;
+  padding: 4px 0;
   scrollbar-width: thin;
 }
-
-.ExploreFilterItem {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
+.ExploreCategoryPill {
   flex-shrink: 0;
-}
-
-.ExploreFilterIcon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
   display: flex;
-  pointer-events: none;
-  color: #6d3df5;
-}
-.ExploreFilterItem--role .ExploreFilterIcon {
-  color: #6d3df5;
-}
-.ExploreFilterItem--skills .ExploreFilterIcon {
-  color: #6d3df5;
-}
-.ExploreFilterItem--experience .ExploreFilterIcon {
-  color: #159a63;
-}
-.ExploreFilterItem--availability .ExploreFilterIcon {
-  color: #6d3df5;
-}
-.ExploreFilterItem--sort .ExploreFilterIcon {
-  color: #33394a;
-}
-
-.ExploreFilterSelect {
-  appearance: none;
-  background: #fff
-    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7691' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")
-    no-repeat right 10px center;
-  background-size: 18px;
-  border: 1px solid #e6e1fa;
-  border-radius: 999px;
-  padding: 10px 32px 10px 34px;
-  font-size: 13px;
-  font-weight: 600;
+  align-items: center;
+  gap: 4px;
+  background: #fff;
   color: #17213d;
-  cursor: pointer;
-  max-width: 180px;
-  flex-shrink: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: border-color 0.15s ease;
-}
-.ExploreFilterSelect:hover,
-.ExploreFilterSelect:focus {
-  border-color: #6d3df5;
-  outline: none;
-}
-
-.ExploreFilterItem--sort {
-  margin-left: auto;
-}
-
-.ExploreClearFilters {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #f7f4ff;
-  color: #6d3df5;
-  border: none;
+  border: 1px solid var(--border-default, #e4e7ef);
   border-radius: 999px;
-  padding: 10px 14px;
+  padding: 9px 16px;
   font-size: 13px;
   font-weight: 650;
   cursor: pointer;
   white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.ExploreCategoryPill:hover {
+  border-color: #6d3df5;
+  color: #6d3df5;
+}
+.ExploreCategoryPill.active {
+  background: #f7f4ff;
+  border-color: #6d3df5;
+  color: #6d3df5;
+}
+
+.ExploreClearFilters {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: #6d3df5;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  white-space: nowrap;
   transition: background 0.15s ease;
 }
 .ExploreClearFilters:hover {
-  background: #ede4ff;
+  background: #f7f4ff;
+}
+
+/* Grid/list toggle — sits at the right end of the filter row above. */
+.ExploreViewToggle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: #f0f2f8;
+  border-radius: 10px;
+  padding: 3px;
+}
+.ExploreViewToggle button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 28px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #6b7691;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.ExploreViewToggle button.active {
+  background: #fff;
+  color: #6d3df5;
+  box-shadow: 0 1px 3px rgba(23, 33, 61, 0.12);
 }
 
 /* ── Grid ─────────────────────────────────────────────────────────────────── */
@@ -160,6 +167,15 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
+}
+
+/* One row per virtualized "row" in list view (each holds exactly one
+   developer — see effectiveColumnCount in Explore.tsx) — this wrapper
+   exists so the row's own margin-bottom (the virtualizer's row gap) has
+   somewhere to live without disturbing the row itself. */
+.ExploreList {
+  display: flex;
+  flex-direction: column;
 }
 
 .ExploreInfiniteLoading {
@@ -239,6 +255,22 @@
   display: flex;
   gap: 12px;
   align-items: flex-start;
+}
+
+/* MUI IconButton's own padding pushes it noticeably off the card's edge —
+   pull it back flush so the "⋯" reads as part of the card chrome.
+   Scoped to .DevCardHeader on purpose: .DevCardMenuBtn is a global class
+   and this file stays loaded after navigating away, so an unscoped
+   negative margin would yank Liked You's copy of the button out of its
+   own corner (see .LikedYouCard2Corner). */
+.DevCardHeader .DevCardMenuBtn {
+  flex-shrink: 0;
+  margin: -8px -8px 0 0 !important;
+  color: #9aa1b5 !important;
+}
+.DevCardHeader .DevCardMenuBtn:hover {
+  color: #6d3df5 !important;
+  background: #f7f4ff !important;
 }
 
 .DevCardAvatarWrap {
@@ -368,6 +400,120 @@
   cursor: not-allowed;
 }
 
+/* ── Developer list row (list view) ──────────────────────────────────────── */
+.DevListRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #fff;
+  border: 1px solid #e4e7ef;
+  border-radius: 14px;
+  padding: 14px 18px;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+.DevListRow:hover {
+  box-shadow: 0 8px 20px rgba(109, 61, 245, 0.1);
+  border-color: #ddd6fe;
+}
+.DevListRow:hover .DevListName {
+  color: #6d3df5;
+}
+.DevListRow:hover .DevListAvatar {
+  border-color: #6d3df5;
+}
+
+.DevListAvatarWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.DevListAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f0e8ff;
+  display: block;
+  background: #e5e7eb;
+  transition: border-color 0.2s ease;
+}
+.DevListOnlineDot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid #fff;
+}
+
+.DevListIdentity {
+  flex: 0 1 220px;
+}
+.DevListName {
+  font-weight: 700;
+  font-size: 14.5px;
+  color: #17213d;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+.DevListMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px 10px;
+  font-size: 12.5px;
+  color: #6b7691;
+  margin-top: 3px;
+}
+.DevListMeta span {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.DevListSkills {
+  flex: 1 1 180px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.DevListStats {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #6b7691;
+}
+.DevListStats span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.DevListActions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 8px;
+}
+.DevListActions .DevCardBtn {
+  flex: none;
+  padding: 9px 14px;
+  white-space: nowrap;
+}
+
 /* ── Shared content pill/box styles ──────────────────────────────────────── */
 .CardTag {
   padding: 6px 12px;
@@ -422,34 +568,51 @@
   .ExplorePage {
     padding: 20px 16px 90px;
   }
-  .ExploreTopRow {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 14px 16px;
+  .ExplorePageHeader h1 {
+    font-size: 24px;
   }
-  .ExploreFilterBar {
-    width: 100%;
-  }
-  .ExploreFilterBar {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 4px;
+
+  /* (The toolbar's own mobile rules live in SearchToolbar.css.) */
+
+  .ExploreCategoryBar {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
-  .ExploreFilterBar::-webkit-scrollbar {
+  .ExploreCategoryBar::-webkit-scrollbar {
     display: none;
   }
-  .ExploreFilterSelect {
-    flex-shrink: 0;
-  }
-  .ExploreFilterItem--sort {
-    margin-left: 0;
-  }
+
   .ExploreGrid {
     grid-template-columns: 1fr;
   }
+
+  /* List rows: too much to keep in one line on a phone — wrap the
+     skills/stats/actions onto their own lines under the identity row. */
+  .DevListRow {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+  .DevListIdentity {
+    flex: 1 1 auto;
+  }
+  .DevListSkills {
+    flex-basis: 100%;
+    order: 3;
+  }
+  .DevListStats {
+    flex-direction: row;
+    flex-basis: 100%;
+    gap: 14px;
+    order: 4;
+  }
+  .DevListActions {
+    flex-basis: 100%;
+    order: 5;
+  }
+  .DevListActions .DevCardBtn {
+    flex: 1;
+  }
+
   .DevModalHeader {
     flex-direction: column;
     text-align: center;

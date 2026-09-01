@@ -29,6 +29,15 @@ const userSlice = createSlice({
         );
       }
     },
+    // Drops a request from the Liked You list once it's been accepted or
+    // rejected, so the card goes away without refetching the whole list.
+    removeRequest(state, action) {
+      if (state.requestData?.data) {
+        state.requestData.data = state.requestData.data.filter(
+          (request: any) => request._id.toString() !== action.payload,
+        );
+      }
+    },
     // Resets the entire feed (used by the Refresh button)
     resetUsers(state) {
       state.userData = null;
@@ -93,5 +102,5 @@ const userSlice = createSlice({
     });
   },
 });
-export const { removeUser, resetUsers } = userSlice.actions;
+export const { removeUser, removeRequest, resetUsers } = userSlice.actions;
 export default userSlice.reducer;

@@ -1,0 +1,75 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ADVANCED FILTERS PANEL — shared Role/Skill/Experience/Availability grid
+   ═══════════════════════════════════════════════════════════════════════════
+   Used by both Topbar (Liked You's search) and Explore's own "Filters"
+   button — dropped below whatever trigger opens it, so the trigger's own
+   wrapper needs `position: relative`.
+   ═══════════════════════════════════════════════════════════════════ */
+.AdvancedFiltersPanel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 30;
+  min-width: 420px;
+  background: #ffffff;
+  border: 1px solid var(--border-default, #e4e7ef);
+  border-radius: var(--radius-md, 14px);
+  box-shadow: 0 16px 40px rgba(23, 33, 61, 0.14);
+  padding: 16px;
+}
+
+/* Topbar's search wrap wants the panel to stretch to match its own width
+   exactly, same as before this was factored out. */
+.AdvancedFiltersPanel--full {
+  right: 0;
+  min-width: 0;
+}
+
+/* For triggers sitting near the right edge (Explore's "Filters" button) —
+   hang the panel leftward off the trigger's right edge instead, or it
+   runs off the side of the page. */
+.AdvancedFiltersPanel--right {
+  left: auto;
+  right: 0;
+}
+
+.AdvancedFiltersPanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-900, #17213d);
+}
+
+.AdvancedFiltersPanelHeader button {
+  border: none;
+  background: transparent;
+  color: var(--brand-500, #6d3df5);
+  font-size: 12.5px;
+  font-weight: 650;
+  cursor: pointer;
+  padding: 0;
+}
+
+.AdvancedFiltersPanelHeader button:hover {
+  text-decoration: underline;
+}
+
+.AdvancedFiltersGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 480px) {
+  .AdvancedFiltersPanel {
+    min-width: 0;
+    left: 0;
+    right: 0;
+  }
+  .AdvancedFiltersGrid {
+    grid-template-columns: 1fr;
+  }
+}
