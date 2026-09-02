@@ -1,26 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { Star, ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { Avatar, Reveal } from "./LandingPrimitives";
 
-type MockProfile = {
-  id: number;
-  name: string;
-  role: string;
-  initial: string;
-  gradient: string;
-  cardGradient: string;
-  skills: {
-    label: string;
-    bg: string;
-    text: string;
-  }[];
-};
-
-const mockProfiles: MockProfile[] = [
+/* The three profiles in the hero preview. Content is fixed, not
+   fetched — this is a static illustration of the Explore surface,
+   so it must render instantly and identically for every visitor.
+   Each profile carries its own gradient pair so the stack reads as
+   three distinct people rather than one repeated swatch. */
+const previewProfiles = [
   {
-    id: 1,
     name: "Alex Chen",
     role: "Full-Stack Developer",
-    initial: "A",
     gradient: "from-purple-500 to-indigo-500",
     cardGradient: "from-purple-50 to-indigo-50",
     skills: [
@@ -29,10 +19,8 @@ const mockProfiles: MockProfile[] = [
     ],
   },
   {
-    id: 2,
     name: "Sarah Kim",
     role: "UI/UX Designer",
-    initial: "S",
     gradient: "from-blue-500 to-cyan-500",
     cardGradient: "from-blue-50 to-cyan-50",
     skills: [
@@ -41,10 +29,8 @@ const mockProfiles: MockProfile[] = [
     ],
   },
   {
-    id: 3,
     name: "Marcus Liu",
     role: "Backend Engineer",
-    initial: "M",
     gradient: "from-indigo-500 to-purple-500",
     cardGradient: "from-indigo-50 to-purple-50",
     skills: [
@@ -54,125 +40,158 @@ const mockProfiles: MockProfile[] = [
   },
 ];
 
+const trustAvatars = ["Priya S", "Alex Chen", "Rohan V", "Sarah Kim", "Dev M"];
+
 const HeroSection = () => {
   const navigate = useNavigate();
 
+  const scrollTo = (id: string) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
   return (
-    <section className="relative pt-7 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-300/20 rounded-full blur-3xl animate-pulse"></div>
-        <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-300/20 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: "1s" }}
-        ></div>
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 animate-fade-in">
-            <div className="inline-flex items-center space-x-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium">
-              <Star size={18} />
-              <span>Where Developers Meet & Build Together</span>
-            </div>
-
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-slate-900 leading-tight">
-              Find Your
-              <span className="block bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 bg-clip-text text-transparent">
-                Perfect Dev Partner
+    <section className="relative overflow-hidden pt-14 pb-20 lg:pt-20 lg:pb-28">
+      {/* The ambient grid + blobs that used to live here now belong to the
+          page shell (PublicRoutesLayout), so one continuous grid runs from
+          y=0 down through the fold. The section stays transparent — no tint,
+          no backdrop blur — so the grid reads exactly as crisply here as it
+          does behind the resting header. */}
+      <div className="lp-container relative z-10">
+        <div className="grid lg:grid-cols-[1.02fr_1fr] gap-14 lg:gap-12 items-center">
+          {/* ── Left: the promise ───────────────────────────── */}
+          <div>
+            <Reveal immediate>
+              <span className="lp-eyebrow">
+                <Sparkles size={15} strokeWidth={2.4} />
+                Where Developers Meet &amp; Build Together
               </span>
-            </h1>
+            </Reveal>
 
-            <p className="text-xl text-slate-600 leading-relaxed">
-              Connect with talented developers, exchange ideas, and discover
-              exciting collaboration opportunities. Your next coding adventure
-              starts here.
-            </p>
+            <Reveal immediate delay={80}>
+              <h1 className="lp-display mt-6 text-[color:var(--lp-ink)]">
+                Find Your Perfect
+                <br />
+                <span className="lp-gradient-text">Dev Partner</span>
+              </h1>
+            </Reveal>
 
-            <div className="flex flex-wrap gap-4">
-              <button
-                onClick={() => navigate("/login")}
-                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold rounded-xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center space-x-2 cursor-pointer"
-              >
-                <span>Start Matching</span>
-                <ArrowRight size={20} />
-              </button>
-              <button
-                onClick={() =>
-                  document
-                    .getElementById("features")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="px-8 py-4 bg-white text-slate-700 font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border-2 border-slate-200 cursor-pointer"
-              >
-                Learn More
-              </button>
-            </div>
+            <Reveal immediate delay={160}>
+              <p className="lp-lead mt-6 max-w-[520px]">
+                Connect with talented developers, share ideas, and discover
+                exciting collaboration opportunities. Your next coding adventure
+                starts here.
+              </p>
+            </Reveal>
 
-            <div className="flex items-center space-x-8 pt-4">
-              <div>
-                <div className="text-3xl font-bold text-slate-900">10K+</div>
-                <div className="text-sm text-slate-600">Active Developers</div>
+            <Reveal immediate delay={240}>
+              <div className="flex flex-wrap gap-3 mt-9">
+                <button
+                  onClick={() => navigate("/login")}
+                  className="lp-btn lp-btn-primary group"
+                >
+                  Start Matching
+                  <ArrowRight
+                    size={18}
+                    className="transition-transform duration-200 group-hover:translate-x-1"
+                  />
+                </button>
+                <button
+                  onClick={() => scrollTo("how-it-works")}
+                  className="lp-btn lp-btn-secondary"
+                >
+                  Learn More
+                </button>
               </div>
-              <div className="h-12 w-px bg-slate-300"></div>
-              <div>
-                <div className="text-3xl font-bold text-slate-900">5K+</div>
-                <div className="text-sm text-slate-600">Successful Matches</div>
+            </Reveal>
+
+            {/* ── Trust strip ───────────────────────────────── */}
+            <Reveal immediate delay={320}>
+              <div className="mt-12">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--lp-ink-faint)]">
+                  Trusted by developers worldwide
+                </p>
+                <div className="flex items-center gap-3.5 mt-3.5">
+                  <div className="flex -space-x-2.5">
+                    {trustAvatars.map((name) => (
+                      <Avatar key={name} name={name} size={36} ring />
+                    ))}
+                    <span
+                      className="grid place-items-center h-9 px-2.5 rounded-full text-[11px] font-bold text-white"
+                      style={{
+                        background: "var(--lp-grad)",
+                        boxShadow: "0 0 0 2.5px #fff",
+                      }}
+                    >
+                      +10K
+                    </span>
+                  </div>
+                  <p className="text-sm text-[color:var(--lp-ink-soft)]">
+                    <span className="font-bold text-[color:var(--lp-ink)]">
+                      10,000+ developers
+                    </span>{" "}
+                    already connected
+                  </p>
+                </div>
               </div>
-              <div className="h-12 w-px bg-slate-300"></div>
-              <div>
-                <div className="text-3xl font-bold text-slate-900">500+</div>
-                <div className="text-sm text-slate-600">Projects Built</div>
-              </div>
-            </div>
+            </Reveal>
           </div>
 
-          {/* Illustration */}
-          <div className="relative lg:h-[600px] animate-float mt-10">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-blue-400/20 rounded-3xl transform rotate-6"></div>
-            <div className="relative bg-white rounded-3xl shadow-2xl p-8 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
-              <div className="space-y-6">
-                {mockProfiles.map((profile) => (
-                  <div
-                    key={profile.id}
-                    className={`flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r ${profile.cardGradient}`}
-                  >
+          {/* ── Right: the product, shown not described ─────── */}
+          {/* The original tilted-stack illustration: a rotated gradient
+              plate behind a white card that straightens on hover. */}
+          <Reveal immediate delay={200} className="mt-10 lg:mt-0">
+            {/* The float lives on its own wrapper: Reveal already animates
+                `transform` on its element, so sharing one would cancel the
+                other out. */}
+            <div className="relative lp-float-slow">
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-blue-400/20 rounded-3xl transform rotate-6"
+              />
+
+              <div className="relative bg-white rounded-3xl shadow-2xl p-8 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                <div className="space-y-6">
+                  {previewProfiles.map((profile) => (
                     <div
-                      className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold bg-gradient-to-br ${profile.gradient}`}
+                      key={profile.name}
+                      className={`flex items-center space-x-4 p-4 rounded-xl bg-gradient-to-r ${profile.cardGradient}`}
                     >
-                      {profile.initial}
-                    </div>
+                      <div
+                        className={`w-16 h-16 shrink-0 rounded-full flex items-center justify-center text-white text-2xl font-bold bg-gradient-to-br ${profile.gradient}`}
+                      >
+                        {profile.name.charAt(0)}
+                      </div>
 
-                    <div className="flex-1">
-                      <div className="font-semibold text-slate-900">
-                        {profile.name}
-                      </div>
-                      <div className="text-sm text-slate-600">
-                        {profile.role}
-                      </div>
-                      <div className="flex space-x-2 mt-2">
-                        {profile.skills.map((skill) => (
-                          <span
-                            key={skill.label}
-                            className={`px-2 py-1 text-xs rounded-full ${skill.bg} ${skill.text}`}
-                          >
-                            {skill.label}
-                          </span>
-                        ))}
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-slate-900">
+                          {profile.name}
+                        </div>
+                        <div className="text-sm text-slate-600">
+                          {profile.role}
+                        </div>
+                        <div className="flex space-x-2 mt-2">
+                          {profile.skills.map((skill) => (
+                            <span
+                              key={skill.label}
+                              className={`px-2 py-1 text-xs rounded-full ${skill.bg} ${skill.text}`}
+                            >
+                              {skill.label}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 text-center">
+                  <div className="inline-flex items-center space-x-2 text-purple-600 font-medium">
+                    <span className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                    <span>1,247 developers online now</span>
                   </div>
-                ))}
-              </div>
-
-              <div className="mt-8 text-center">
-                <div className="inline-flex items-center space-x-2 text-purple-600 font-medium">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span>1,247 developers online now</span>
                 </div>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

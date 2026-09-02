@@ -46,40 +46,67 @@
 /* ── Connections strip ─── */
 .connectionsSection {
   flex-shrink: 0;
-  background: linear-gradient(135deg, var(--brand-500) 0%, var(--brand-400) 100%);
-  padding: 14px 16px 12px;
+  background: linear-gradient(158deg, var(--violet-tint-50) 0%, #efe9ff 100%);
+  border-bottom: 1px solid #e9e2fb;
+  padding: 14px 16px;
 }
 
 .connectionsSectionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.connectionsTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
 }
 
 .connectionsTitle {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--ink-900);
   margin: 0;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
+}
+
+.connectionsCountChip {
+  background: #ffffff;
+  border: 1px solid #e4ddfa;
+  color: var(--brand-500);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
 }
 
 .viewAllLink {
-  background: rgba(255, 255, 255, 0.16);
-  border: none;
-  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #ffffff;
+  border: 1px solid #e4ddfa;
+  color: var(--brand-500);
   font-size: 12px;
   font-weight: 600;
-  padding: 5px 11px;
+  padding: 5px 10px;
   border-radius: 999px;
   cursor: pointer;
-  transition: background 0.15s;
   white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(109, 61, 245, 0.06);
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .viewAllLink:hover {
-  background: rgba(255, 255, 255, 0.28);
+  background: var(--violet-tint-100);
+  border-color: var(--brand-500);
+  box-shadow: 0 2px 6px rgba(109, 61, 245, 0.14);
 }
 
 .connectionsScrollWrap {
@@ -107,12 +134,12 @@
   position: absolute;
   top: 0;
   bottom: 2px;
-  width: 30px;
+  width: 32px;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: #ffffff;
+  color: var(--brand-500);
   z-index: 2;
 }
 
@@ -121,8 +148,8 @@
   justify-content: flex-start;
   background: linear-gradient(
     90deg,
-    var(--brand-500) 30%,
-    rgba(109, 61, 245, 0) 100%
+    #f4efff 40%,
+    rgba(244, 239, 255, 0) 100%
   );
 }
 
@@ -131,78 +158,141 @@
   justify-content: flex-end;
   background: linear-gradient(
     270deg,
-    var(--brand-400) 30%,
-    rgba(139, 92, 246, 0) 100%
+    #efe9ff 40%,
+    rgba(239, 233, 255, 0) 100%
   );
 }
 
 .connectionsScrollBtn svg {
-  background: rgba(255, 255, 255, 0.24);
+  background: #ffffff;
+  border: 1px solid #e4ddfa;
   border-radius: 50%;
-  padding: 4px;
+  padding: 3px;
   box-sizing: content-box;
-  transition: background 0.15s;
+  box-shadow: 0 2px 6px rgba(23, 33, 61, 0.1);
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .connectionsScrollBtn:hover svg {
-  background: rgba(255, 255, 255, 0.4);
+  background: var(--violet-tint-100);
+  border-color: var(--brand-500);
 }
 
 .connectionItem {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  min-width: 56px;
+  gap: 7px;
+  min-width: 54px;
   cursor: pointer;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .connectionItem:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 }
 
 .connectionAvatarWrapper {
-  width: 52px;
-  height: 52px;
+  position: relative;
+  width: 50px;
+  height: 50px;
 }
 
 .connectionAvatar {
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.7);
+  border: 2px solid #ffffff;
   object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(23, 33, 61, 0.08);
   display: block;
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .connectionItem:hover .connectionAvatar {
-  border-color: #ffffff;
   box-shadow:
-    0 6px 16px rgba(0, 0, 0, 0.25),
-    0 0 0 4px rgba(255, 255, 255, 0.3);
+    0 6px 14px rgba(109, 61, 245, 0.22),
+    0 0 0 3px var(--violet-tint-300);
+}
+
+.connectionOnlineDot {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--online-500);
+  border: 2px solid #ffffff;
+}
+
+/* Trailing "+N More" chip — opens the same dialog as "View all" */
+.connectionMoreAvatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px dashed #c9b8f7;
+  color: var(--brand-500);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.connectionItem:hover .connectionMoreAvatar {
+  border-color: var(--brand-500);
+  background: var(--violet-tint-100);
 }
 
 .connectionName {
-  color: #ffffff;
-  font-size: 12px;
+  color: var(--ink-900);
+  font-size: 11.5px;
   font-weight: 600;
   margin: 0;
-  max-width: 60px;
+  max-width: 58px;
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  opacity: 0.85;
-  transition: opacity 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .connectionItem:hover .connectionName {
-  opacity: 1;
+  color: var(--brand-500);
+}
+
+.connectionName--muted {
+  color: var(--ink-500);
+}
+
+.connectionsEmpty {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 2px;
+}
+
+.connectionsEmptyTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin: 0;
+}
+
+.connectionsEmptySub {
+  font-size: 12px;
+  color: var(--ink-500);
+  margin: 0;
 }
 
 /* ── Messages list ─── */
@@ -223,11 +313,29 @@
   border-bottom: 1px solid var(--border-default);
 }
 
+.messagesTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .messagesTitle {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--ink-900);
   margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.messagesUnreadPill {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--brand-500);
+  background: var(--violet-tint-100);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
 .messagesHeaderActions {
@@ -243,8 +351,8 @@
   align-items: center;
   gap: 6px;
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-sm);
-  padding: 7px 10px;
+  border-radius: 10px;
+  padding: 8px 10px;
   background: var(--page-bg);
   transition:
     border-color 0.15s,
@@ -274,12 +382,12 @@
 
 .sortToggleBtn {
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   border: 1px solid var(--border-default);
   background: #ffffff;
   color: var(--ink-500);
@@ -317,7 +425,7 @@
   position: relative;
   display: flex;
   gap: 12px;
-  padding: 12px 16px;
+  padding: 13px 16px;
   border-bottom: 1px solid #f3f4f6;
   cursor: pointer;
   transition:
@@ -357,10 +465,25 @@
 
 .chatItem--active:hover {
   background: var(--violet-tint-200);
+  transform: none;
 }
 
-.chatItem:hover .chatUserName {
+.chatItem:hover .chatUserName,
+.chatItem--active .chatUserName {
   color: var(--brand-500);
+}
+
+.chatItem--active .chatTimestamp {
+  color: var(--brand-500);
+  font-weight: 600;
+}
+
+.chatItem--active .chatAvatar {
+  box-shadow: 0 0 0 3px #ffffff;
+}
+
+.chatItem--active .chatAvatarOnlineDot {
+  border-color: var(--violet-tint-200);
 }
 
 .chatAvatarWrapper {
@@ -369,8 +492,8 @@
 }
 
 .chatAvatar {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   object-fit: cover;
   display: block;
@@ -385,11 +508,12 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--online-500);
   border: 2px solid #ffffff;
+  transition: border-color 0.2s ease;
 }
 
 .chatContent {
@@ -447,9 +571,11 @@
   font-weight: 600;
 }
 
+/* The API reports unread as a boolean, not a count — so this is a
+   presence badge, not a number. */
 .chatUnreadDot {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: var(--brand-500);
   flex-shrink: 0;
@@ -513,7 +639,9 @@
 /* ── Conversation header ─── */
 .conversationHeader {
   flex-shrink: 0;
-  padding: 14px 18px;
+  background: var(--surface);
+  z-index: 1;
+  padding: 13px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -528,22 +656,30 @@
   min-width: 0;
 }
 
-.mobileBackBtn {
+/* Mobile only. On desktop the conversation list is always visible
+   beside the thread, so there is nothing to go "back" to; on a phone
+   the layout is single-panel and this is the only way back to the
+   list (see the 649px block below). */
+.conversationBackBtn {
   display: none;
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   align-items: center;
   justify-content: center;
   border: none;
-  background: transparent;
+  background: var(--page-bg);
   color: var(--ink-500);
   border-radius: 50%;
   cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
-.mobileBackBtn:hover {
-  background: var(--page-bg);
+.conversationBackBtn:hover {
+  background: var(--violet-tint-100);
+  color: var(--brand-500);
 }
 
 .conversationAvatarWrapper {
@@ -618,13 +754,13 @@
 .conversationHeaderActions {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
 .conversationIconBtn {
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   border: none;
   background: transparent;
@@ -693,15 +829,60 @@
   background: #fff1f2;
 }
 
-/* ── Conversation body ─── */
+/* ── Conversation canvas ───
+   Wraps the message list and the composer so both sit on one calm
+   near-white lavender ground, letting the composer read as a card
+   floating above it rather than a bar bolted to the bottom. The
+   texture lives here (not on .conversationBody) so it stays put
+   while messages scroll. */
+.conversationCanvas {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #fbfaff;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='700' viewBox='0 0 800 700'%3E%3Cg stroke='%236d3df5' stroke-opacity='0.055' fill='none' stroke-width='1.1'%3E%3Cpath d='M-40 150 C 160 60, 320 250, 520 160 S 800 60, 900 130'/%3E%3Cpath d='M-40 195 C 160 105, 320 295, 520 205 S 800 105, 900 175'/%3E%3Cpath d='M-40 240 C 160 150, 320 340, 520 250 S 800 150, 900 220'/%3E%3Cpath d='M-40 480 C 180 400, 340 590, 540 500 S 820 400, 900 470'/%3E%3Cpath d='M-40 525 C 180 445, 340 635, 540 545 S 820 445, 900 515'/%3E%3C/g%3E%3Cg stroke='%236d3df5' stroke-opacity='0.07' fill='none' stroke-width='1.1'%3E%3Ccircle cx='660' cy='118' r='42'/%3E%3Ccircle cx='660' cy='118' r='66'/%3E%3Crect x='72' y='520' width='70' height='70' rx='18' transform='rotate(-16 107 555)'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(
+      620px 420px at 12% 4%,
+      rgba(139, 92, 246, 0.1),
+      rgba(139, 92, 246, 0) 70%
+    ),
+    radial-gradient(
+      660px 460px at 88% 94%,
+      rgba(109, 61, 245, 0.07),
+      rgba(109, 61, 245, 0) 70%
+    );
+  background-repeat: no-repeat;
+  background-size:
+    100% 700px,
+    auto,
+    auto;
+  background-position:
+    center top,
+    center,
+    center;
+}
+
 .conversationBody {
   flex: 1;
   min-height: 0;
-  padding: 18px 20px 8px;
+  padding: 18px 26px 4px;
   overflow-y: auto;
-  background: var(--page-bg);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+/* Anchors a short conversation to the bottom of the canvas instead of
+   leaving it stranded at the top. The auto margin collapses to zero
+   once the thread is long enough to scroll, so it never fights
+   overflow the way justify-content: flex-end would. */
+.conversationBody::before {
+  content: "";
+  margin-top: auto;
 }
 
 .conversationBody::-webkit-scrollbar {
@@ -739,34 +920,35 @@
   font-size: 11.5px;
   font-weight: 600;
   color: var(--ink-500);
-  background: #eef0f7;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #eae6f7;
   padding: 5px 14px;
   border-radius: 999px;
+  box-shadow: 0 1px 2px rgba(23, 33, 61, 0.04);
 }
 
 .bubbleRow {
   display: flex;
-  margin-bottom: 10px;
+  flex-direction: column;
+  margin-bottom: 12px;
+  animation: bubbleIn 0.16s ease-out;
 }
 
 .bubbleRow--me {
-  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .bubbleRow--other {
-  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .chatBubble {
   display: inline-flex;
-  flex-direction: column;
-  gap: 3px;
-  max-width: 66%;
-  padding: 10px 14px;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  max-width: 62%;
+  padding: 9px 14px;
+  font-size: 14px;
+  line-height: 1.45;
   word-break: break-word;
-  animation: bubbleIn 0.16s ease-out;
 }
 
 @keyframes bubbleIn {
@@ -781,20 +963,19 @@
 }
 
 .chatBubble--me {
-  background: linear-gradient(135deg, var(--violet-tint-300) 0%, var(--violet-tint-400) 100%);
+  background: var(--violet-tint-300);
   color: var(--ink-900);
-  border-radius: 16px 16px 4px 16px;
-  box-shadow: var(--shadow-sm);
-  align-items: flex-end;
+  border: 1px solid #ded5fc;
+  border-radius: 16px 16px 5px 16px;
+  box-shadow: 0 1px 3px rgba(109, 61, 245, 0.08);
 }
 
 .chatBubble--other {
   background: #ffffff;
   color: var(--ink-900);
-  border-radius: 16px 16px 16px 4px;
-  border: 1px solid var(--border-default);
-  box-shadow: var(--shadow-sm);
-  align-items: flex-start;
+  border: 1px solid #e9ebf3;
+  border-radius: 16px 16px 16px 5px;
+  box-shadow: 0 1px 3px rgba(23, 33, 61, 0.06);
 }
 
 .chatBubbleText {
@@ -802,26 +983,45 @@
 }
 
 .chatBubbleTime {
+  margin-top: 4px;
+  padding: 0 6px;
   font-size: 10.5px;
+  line-height: 1.2;
   color: var(--ink-500);
-  opacity: 0.8;
 }
 
-/* ── Composer ─── */
+/* ── Composer ───
+   The form itself is the floating card; the input inside it is bare,
+   so the whole card takes the focus ring as one field. */
 .composer {
   flex-shrink: 0;
-  padding: 14px 18px;
+  margin: 12px 26px 18px;
+  padding: 5px 5px 5px 16px;
   display: flex;
-  gap: 6px;
+  gap: 8px;
   align-items: center;
   background: #ffffff;
-  border-top: 1px solid var(--border-default);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  box-shadow:
+    0 6px 20px rgba(23, 33, 61, 0.07),
+    0 1px 3px rgba(23, 33, 61, 0.05);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.composer:focus-within {
+  border-color: var(--brand-500);
+  box-shadow:
+    0 6px 20px rgba(109, 61, 245, 0.12),
+    0 0 0 3px rgba(109, 61, 245, 0.1);
 }
 
 .composerIconBtn {
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: none;
   background: transparent;
@@ -845,20 +1045,6 @@
   min-width: 0;
   display: flex;
   align-items: center;
-  background: var(--page-bg);
-  border-radius: 999px;
-  border: 1.5px solid transparent;
-  padding: 0 16px;
-  transition:
-    border-color 0.2s,
-    background 0.2s,
-    box-shadow 0.2s;
-}
-
-.composerInputWrapper:focus-within {
-  border-color: var(--brand-500);
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(109, 61, 245, 0.1);
 }
 
 .composerInput {
@@ -866,9 +1052,9 @@
   min-width: 0;
   border: none;
   background: transparent;
-  padding: 13px 0;
+  padding: 7px 0;
   outline: none;
-  font-size: 0.92rem;
+  font-size: 14px;
   color: var(--ink-900);
 }
 
@@ -878,31 +1064,32 @@
 
 .composerSendBtn {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--brand-500);
+  background: linear-gradient(135deg, var(--brand-500) 0%, var(--brand-400) 100%);
   color: #ffffff;
   transition:
     transform 0.15s,
     box-shadow 0.15s,
     background 0.15s;
-  box-shadow: 0 4px 14px rgba(109, 61, 245, 0.35);
+  box-shadow: 0 6px 16px rgba(109, 61, 245, 0.35);
 }
 
 .composerSendBtn:hover:not(:disabled) {
-  background: #5b2fe0;
+  background: linear-gradient(135deg, #5b2fe0 0%, #7c4df0 100%);
   transform: scale(1.06);
   box-shadow: 0 6px 18px rgba(109, 61, 245, 0.45);
 }
 
 .composerSendBtn:disabled {
   background: #e2e8f0;
+  background-image: none;
   color: #94a3b8;
   box-shadow: none;
   cursor: not-allowed;
@@ -1171,16 +1358,17 @@
     display: none;
   }
 
-  .mobileBackBtn {
+  .conversationBackBtn {
     display: flex;
   }
 
   .connectionsSection {
-    padding: 12px 12px 10px;
+    padding: 12px;
   }
 
   .connectionAvatarWrapper,
-  .connectionAvatar {
+  .connectionAvatar,
+  .connectionMoreAvatar {
     width: 46px;
     height: 46px;
   }
@@ -1203,7 +1391,7 @@
   }
 
   .conversationBody {
-    padding: 14px 14px 6px;
+    padding: 14px 14px 4px;
   }
 
   .chatBubble {
@@ -1211,6 +1399,7 @@
   }
 
   .composer {
-    padding: 10px 12px;
+    margin: 8px 12px 12px;
+    padding: 5px 5px 5px 14px;
   }
 }

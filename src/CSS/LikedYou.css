@@ -15,6 +15,12 @@
   max-width: 1400px;
   margin: 0 auto;
   overflow-y: auto;
+  /* Scrolls, but without a visible scrollbar — matches .ExploreScrollArea. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.LikedyouContainer::-webkit-scrollbar {
+  display: none;
 }
 
 /* ── Heading ──────────────────────────────────────────────────────────────

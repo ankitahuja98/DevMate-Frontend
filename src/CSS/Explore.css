@@ -26,6 +26,13 @@
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  /* Scrolls, but without a visible scrollbar — the cards run to the edge
+     of the area and a track alongside them just adds noise. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.ExploreScrollArea::-webkit-scrollbar {
+  display: none;
 }
 
 /* ── Heading — plain, no card/gradient treatment ─────────────────────────── */
@@ -410,12 +417,16 @@
   border: 1px solid #e4e7ef;
   border-radius: 14px;
   padding: 14px 18px;
+  /* Same hover treatment as .DevCard — a row is just a card in a
+     different shape, so switching views shouldn't change how it reacts. */
   transition:
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease;
 }
 .DevListRow:hover {
-  box-shadow: 0 8px 20px rgba(109, 61, 245, 0.1);
+  box-shadow: 0 16px 36px rgba(109, 61, 245, 0.16);
+  transform: translateY(-4px);
   border-color: #ddd6fe;
 }
 .DevListRow:hover .DevListName {
@@ -423,6 +434,44 @@
 }
 .DevListRow:hover .DevListAvatar {
   border-color: #6d3df5;
+}
+.DevListRow:hover .DevCardSkillPill:not(.DevCardSkillPill--more) {
+  background: #ede4ff;
+}
+
+/* Moving border — the same sweeping arc as .DevCard::after, masked to the
+   outline band. See the @property/@keyframes registration in index.css. */
+.DevListRow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 0deg,
+    transparent 260deg,
+    #8b5cf6 300deg,
+    #6d3df5 330deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.DevListRow:hover::after {
+  opacity: 1;
+  animation: card-border-spin 2.5s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .DevListRow:hover::after {
+    animation: none;
+  }
 }
 
 .DevListAvatarWrap {

@@ -13,7 +13,9 @@
 
 .SearchToolbarBox {
   flex: 1;
-  min-width: 0;
+  /* Was min-width:0, which let the box collapse to just its icon (~30px)
+     whenever a sibling claimed the row. The input needs a usable floor. */
+  min-width: 160px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -22,7 +24,7 @@
   background: #fff;
   border: 1px solid var(--border-default, #e4e7ef);
   border-radius: 12px;
-  padding: 12px 14px;
+  padding: 9px 14px;
   transition: border-color 0.15s ease;
 }
 .SearchToolbarBox:focus-within {
@@ -74,7 +76,7 @@
   color: var(--brand-500, #6d3df5);
   border: 1px solid #e6e1fa;
   border-radius: 12px;
-  padding: 12px 18px;
+  padding: 10px 18px;
   font-size: 14px;
   font-weight: 650;
   cursor: pointer;
@@ -88,7 +90,7 @@
 }
 .SearchToolbarFiltersDot {
   position: absolute;
-  top: 8px;
+  top: 6px;
   right: 8px;
   width: 7px;
   height: 7px;
@@ -97,34 +99,24 @@
   border: 1.5px solid #f7f4ff;
 }
 
-.SearchToolbarSortBtn {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  background: #fff;
-  border: 1px solid var(--border-default, #e4e7ef);
-  border-radius: 12px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: border-color 0.15s ease;
-}
-.SearchToolbarSortBtn:hover {
-  border-color: var(--brand-500, #6d3df5);
-}
-.SearchToolbarSortLabel {
-  font-size: 11px;
-  color: #9aa1b5;
-  font-weight: 600;
-}
-.SearchToolbarSortValue {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--ink-900, #17213d);
+/* The Sort control is an MUI <Select> — this only sizes/places it in the
+   row; its look lives in sortSelectSx (SearchToolbar.tsx) so it can reach
+   MUI's internal classes. */
+/* Scoped under .SearchToolbar on purpose. MUI's own `.MuiFormControl-root`
+   sets `min-width: 0` at the same (0,1,0) specificity as a bare
+   `.SearchToolbarSortControl`, and emotion injects it after this
+   stylesheet — so a single-class rule here silently loses. Two classes
+   (0,2,0) wins regardless of injection order. */
+.SearchToolbar .SearchToolbarSortControl {
+  /* Fixed basis, never grows: the search box is the control that should
+     absorb the leftover width on a wide screen, not the sort dropdown.
+     (MUI's `fullWidth` prop would override this with width:100% — hence
+     it is deliberately not set in SearchToolbar.tsx.) */
+  flex: 0 0 auto;
+  /* Fits the longest label in either page ("Most Experienced" on Explore,
+     "Name (A-Z)" on Liked You) so the row never reflows as the value
+     changes, without taking more of the row than it needs. */
+  width: 184px;
 }
 
 /* Search takes its own full-width row, Filters/Sort share the one below
@@ -143,8 +135,28 @@
     width: 100%;
     justify-content: center;
   }
-  .SearchToolbarSortBtn {
-    flex: 1;
-    align-items: center;
+  .SearchToolbar .SearchToolbarSortControl {
+    /* Shares the second row with Filters, but never below the width the
+       longest label needs — "Filters" is a short word and can give up the
+       difference, whereas a clipped "Most Experienced" is unreadable. */
+    flex: 1 1 0;
+    width: auto;
+    min-width: 176px;
+  }
+}
+
+/* Small mobile (320–374px) — same two-row shape, just less padding so
+   both controls keep comfortable tap targets without crowding. */
+@media (max-width: 374px) {
+  .SearchToolbar {
+    gap: 8px;
+  }
+  .SearchToolbarBox {
+    padding: 9px 12px;
+    gap: 8px;
+  }
+  .SearchToolbarFiltersBtn {
+    padding: 10px 12px;
+    gap: 6px;
   }
 }

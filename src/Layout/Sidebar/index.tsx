@@ -201,6 +201,15 @@ const Navigation = ({
   </ul>
 );
 
+// /chat/:targetUserId renders the same page as /matches, so the Chats
+// item has to stay lit while a conversation is open — an exact-path
+// match alone leaves the whole sidebar unhighlighted there. Topbar.tsx
+// resolves its heading the same way.
+const isMenuItemActive = (currentPath: string, path: string) =>
+  path === "/matches"
+    ? currentPath === path || currentPath.startsWith("/chat/")
+    : currentPath === path;
+
 const MenuItem = ({
   name,
   path,
@@ -218,7 +227,7 @@ const MenuItem = ({
   editorRef?: RefObject<HTMLDivElement | null>;
   badge?: number;
 }) => {
-  const isActive = currentPath === path;
+  const isActive = isMenuItemActive(currentPath, path);
   const listItem: React.CSSProperties = {
     display: "flex",
     alignItems: "center",

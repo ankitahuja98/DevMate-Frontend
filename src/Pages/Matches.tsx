@@ -102,6 +102,20 @@ const Matches = () => {
     el.scrollLeft += e.deltaY;
   };
 
+  // The strip shows a window of connections and folds the rest into a
+  // trailing "+N More" chip, so the count is never invented.
+  const CONNECTIONS_STRIP_LIMIT = 8;
+  const visibleConnections = matches.slice(0, CONNECTIONS_STRIP_LIMIT);
+  const hiddenConnectionsCount = Math.max(
+    0,
+    matches.length - CONNECTIONS_STRIP_LIMIT,
+  );
+
+  const unreadCount = useMemo(
+    () => ChatList?.filter((c: any) => c.isUnread).length || 0,
+    [ChatList],
+  );
+
   const filteredChatList = useMemo(() => {
     if (!ChatList) return [];
     const search = searchChats.toLowerCase().trim();
@@ -180,7 +194,14 @@ const Matches = () => {
         >
           <div className="connectionsSection">
             <div className="connectionsSectionHeader">
-              <h3 className="connectionsTitle">Connections</h3>
+              <div className="connectionsTitleGroup">
+                <h3 className="connectionsTitle">Connections</h3>
+                {matches.length > 0 && (
+                  <span className="connectionsCountChip">
+                    {matches.length}
+                  </span>
+                )}
+              </div>
               {matches.length > 4 && (
                 <button
                   type="button"
@@ -188,6 +209,7 @@ const Matches = () => {
                   onClick={() => setIsConnectionsModalOpen(true)}
                 >
                   View all
+                  <ChevronRightIcon sx={{ fontSize: 14 }} />
                 </button>
               )}
             </div>
@@ -212,31 +234,52 @@ const Matches = () => {
                 {matchesDataIsloading ? (
                   <MatchesShimmer />
                 ) : matches.length !== 0 ? (
-                  matches.map((match: any, index: number) => (
-                    <div
-                      key={match._id}
-                      className="connectionItem card-enter"
-                      style={{ "--card-index": index } as React.CSSProperties}
-                      onClick={() => handleViewProfile(match)}
-                    >
-                      <div className="connectionAvatarWrapper">
-                        <img
-                          src={match.profilePhoto}
-                          alt={match.name}
-                          className="connectionAvatar"
-                        />
+                  <>
+                    {visibleConnections.map((match: any, index: number) => (
+                      <div
+                        key={match._id}
+                        className="connectionItem card-enter"
+                        style={{ "--card-index": index } as React.CSSProperties}
+                        onClick={() => handleViewProfile(match)}
+                      >
+                        <div className="connectionAvatarWrapper">
+                          <img
+                            src={match.profilePhoto}
+                            alt={match.name}
+                            className="connectionAvatar"
+                          />
+                          {match.isOnline && (
+                            <span className="connectionOnlineDot" />
+                          )}
+                        </div>
+                        <p className="connectionName">
+                          {match.name.split(" ")[0]}
+                        </p>
                       </div>
-                      <p className="connectionName">
-                        {match.name.split(" ")[0]}
-                      </p>
-                    </div>
-                  ))
+                    ))}
+
+                    {/* Trailing chip for the remainder — same dialog as
+                        "View all", reachable without scrolling the strip. */}
+                    {hiddenConnectionsCount > 0 && (
+                      <div
+                        className="connectionItem"
+                        onClick={() => setIsConnectionsModalOpen(true)}
+                      >
+                        <div className="connectionMoreAvatar">
+                          +{hiddenConnectionsCount}
+                        </div>
+                        <p className="connectionName connectionName--muted">
+                          More
+                        </p>
+                      </div>
+                    )}
+                  </>
                 ) : (
-                  <div className="flex flex-col px-3 py-1">
-                    <h3 className="text-sm font-semibold text-white">
+                  <div className="connectionsEmpty">
+                    <h3 className="connectionsEmptyTitle">
                       No connections yet
                     </h3>
-                    <p className="text-xs mt-0.5 text-white/75">
+                    <p className="connectionsEmptySub">
                       Explore developers to find new connections.
                     </p>
                   </div>
@@ -258,7 +301,14 @@ const Matches = () => {
 
           <div className="messagesSection">
             <div className="messagesSectionHeader">
-              <h3 className="messagesTitle">Messages</h3>
+              <div className="messagesTitleRow">
+                <h3 className="messagesTitle">Messages</h3>
+                {unreadCount > 0 && (
+                  <span className="messagesUnreadPill">
+                    {unreadCount} unread
+                  </span>
+                )}
+              </div>
               <div className="messagesHeaderActions">
                 <div className="searchConvo">
                   <SearchIcon sx={{ fontSize: 18, color: "#6b7691" }} />

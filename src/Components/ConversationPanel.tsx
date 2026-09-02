@@ -1,11 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
-import VideocamOutlinedIcon from "@mui/icons-material/VideocamOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import SentimentSatisfiedAltOutlinedIcon from "@mui/icons-material/SentimentSatisfiedAltOutlined";
 import { useDispatch } from "react-redux";
 import { creasteSocketConnetion } from "../utils/socket";
@@ -58,10 +54,8 @@ const Bubble = ({ message, isMe }: { message: Message; isMe: boolean }) => (
       aria-label={`${isMe ? "You" : ""} said: ${message.message}`}
     >
       <span className="chatBubbleText">{message.message}</span>
-      <span className="chatBubbleTime">
-        {formatBubbleTime(message.createdAt)}
-      </span>
     </div>
+    <span className="chatBubbleTime">{formatBubbleTime(message.createdAt)}</span>
   </div>
 );
 
@@ -94,7 +88,6 @@ const ConversationPanel = ({
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const emojiRef = useRef<HTMLDivElement | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const socketRef = useRef<any>(null);
   const hasMarkedReadRef = useRef(false);
 
@@ -262,15 +255,6 @@ const ConversationPanel = ({
     onConversationDeleted();
   };
 
-  const handleAttachClick = () => fileInputRef.current?.click();
-
-  const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    e.target.value = "";
-    if (!file) return;
-    toast.info("Attachments are coming soon to DevMate chat.");
-  };
-
   const handleEmojiPick = (emoji: string) => {
     setInput((prev) => prev + emoji);
     setIsEmojiOpen(false);
@@ -294,7 +278,7 @@ const ConversationPanel = ({
         <div className="conversationHeaderLeft">
           <button
             type="button"
-            className="mobileBackBtn"
+            className="conversationBackBtn"
             onClick={onBack}
             aria-label="Back to conversations"
           >
@@ -327,23 +311,6 @@ const ConversationPanel = ({
         </div>
 
         <div className="conversationHeaderActions">
-          <button
-            type="button"
-            className="conversationIconBtn"
-            aria-label="Start voice call"
-            onClick={() => toast.info("Voice calling is coming soon.")}
-          >
-            <CallOutlinedIcon sx={{ fontSize: 20 }} />
-          </button>
-          <button
-            type="button"
-            className="conversationIconBtn"
-            aria-label="Start video call"
-            onClick={() => toast.info("Video calling is coming soon.")}
-          >
-            <VideocamOutlinedIcon sx={{ fontSize: 20 }} />
-          </button>
-
           <div className="chatMenuWrapper">
             <button
               type="button"
@@ -376,6 +343,7 @@ const ConversationPanel = ({
         </div>
       </header>
 
+      <div className="conversationCanvas">
       <main ref={scrollRef} className="UserChatContent conversationBody">
         {isChatLoading && pageno === 1 ? (
           <div className="h-full flex justify-center items-center">
@@ -424,21 +392,6 @@ const ConversationPanel = ({
       </main>
 
       <form onSubmit={handleSubmit} className="composer">
-        <button
-          type="button"
-          className="composerIconBtn"
-          aria-label="Add attachment"
-          onClick={handleAttachClick}
-        >
-          <AttachFileOutlinedIcon sx={{ fontSize: 20 }} />
-        </button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          className="hidden"
-          onChange={handleFileSelected}
-        />
-
         <div className="composerInputWrapper">
           <input
             value={input}
@@ -487,6 +440,7 @@ const ConversationPanel = ({
           <SendIcon sx={{ fontSize: 19 }} />
         </button>
       </form>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,350 @@
+/* ============================================================
+   DEVMATE LANDING — design system
+   ============================================================
+   Everything the public marketing page needs, in one place:
+   tokens, the shared section rhythm, the decorative primitives
+   (blobs, dot grids, floating chips) and the motion language.
+
+   Tokens are scoped to `.lp` rather than :root so the marketing
+   look never leaks into the authenticated app, which has its own
+   palette in index.css.
+   ============================================================ */
+
+/* Tokens are available to `.lp` (the whole marketing shell) and to
+   `.lp-tokens`, for pieces like the footer that also render inside the
+   authenticated app shell and need the palette without the marketing
+   page background. */
+.lp,
+.lp-tokens {
+  /* Brand */
+  --lp-violet-600: #6d3df5;
+  --lp-violet-400: #9a7bff;
+
+  --lp-grad: linear-gradient(120deg, #6d3df5 0%, #7c4dff 45%, #4f7cfa 100%);
+
+  /* Ink */
+  --lp-ink: #10182c;
+  --lp-ink-soft: #566080;
+  --lp-ink-faint: #8b93a8;
+
+  /* Surfaces */
+  --lp-bg: #fbfaff;
+  --lp-surface: #ffffff;
+  --lp-tint: #f5f2ff;
+  --lp-border: #e8e6f5;
+  --lp-border-strong: #ddd8f2;
+
+  /* Card radius. Larger surfaces step up to 24 / 28px inline; nothing
+     on the page goes below 12. */
+  --lp-r-lg: 20px;
+
+  /* Elevation — soft, low-contrast, violet-tinted */
+  --lp-shadow-xs: 0 1px 2px rgba(16, 24, 44, 0.04);
+  --lp-shadow-sm: 0 2px 8px rgba(16, 24, 44, 0.05);
+  --lp-shadow-md: 0 12px 28px -12px rgba(41, 26, 92, 0.16);
+  --lp-shadow-lg: 0 28px 60px -24px rgba(41, 26, 92, 0.28);
+  --lp-shadow-brand: 0 14px 30px -10px rgba(109, 61, 245, 0.45);
+}
+
+.lp {
+  background: var(--lp-bg);
+  color: var(--lp-ink);
+}
+
+/* Pages carry `.lp` too, so on the public routes a page's `main.lp`
+   nests inside the layout's `div.lp`. That inner fill has to stay
+   transparent: the layout wraps the outlet in a `relative z-10` box, so
+   an opaque background there paints above the z-0 hero backdrop and
+   slices the grid off at the page's top edge. The outer shell already
+   paints --lp-bg, and the tokens still cascade. */
+.lp .lp {
+  background: none;
+}
+
+/* ── Layout rhythm ───────────────────────────────────────────
+   One container width and one vertical rhythm for every section,
+   so nothing has to re-derive its own padding. */
+.lp-container {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+@media (max-width: 640px) {
+  .lp-container {
+    padding-inline: 20px;
+  }
+}
+
+.lp-section {
+  padding-block: 96px;
+}
+
+@media (max-width: 900px) {
+  .lp-section {
+    padding-block: 72px;
+  }
+}
+
+@media (max-width: 640px) {
+  .lp-section {
+    padding-block: 56px;
+  }
+}
+
+/* ── Type ────────────────────────────────────────────────────
+   Fluid so the hero never wraps awkwardly between breakpoints. */
+.lp-display {
+  font-size: clamp(2.5rem, 1.4rem + 3.6vw, 4.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+
+.lp-h2 {
+  font-size: clamp(1.875rem, 1.2rem + 2vw, 2.75rem);
+  line-height: 1.14;
+  letter-spacing: -0.028em;
+  font-weight: 800;
+}
+
+.lp-lead {
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.7;
+  color: var(--lp-ink-soft);
+}
+
+/* The one place gradient text is allowed: a single emphasised
+   phrase per heading. Anything more and it stops being emphasis. */
+.lp-gradient-text {
+  background: var(--lp-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Primitives ──────────────────────────────────────────────── */
+.lp-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 10px;
+  border-radius: 999px;
+  background: var(--lp-tint);
+  border: 1px solid var(--lp-border-strong);
+  color: var(--lp-violet-600);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.lp-card {
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-r-lg);
+  box-shadow: var(--lp-shadow-sm);
+}
+
+/* Buttons — two weights only, so CTA hierarchy stays unambiguous. */
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding-inline: 24px;
+  border-radius: 14px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.lp-btn-primary {
+  background: var(--lp-grad);
+  color: #fff;
+  box-shadow: var(--lp-shadow-brand);
+}
+
+.lp-btn-secondary {
+  background: var(--lp-surface);
+  color: var(--lp-ink);
+  border-color: var(--lp-border-strong);
+  box-shadow: var(--lp-shadow-xs);
+}
+
+.lp-btn-ghost-light {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.lp-btn-white {
+  background: #fff;
+  color: var(--lp-violet-600);
+  box-shadow: 0 12px 26px -12px rgba(9, 12, 30, 0.5);
+}
+
+@media (hover: hover) {
+  .lp-btn:hover {
+    transform: translateY(-2px);
+  }
+  .lp-btn-primary:hover {
+    box-shadow: 0 18px 36px -10px rgba(109, 61, 245, 0.55);
+  }
+  .lp-btn-secondary:hover {
+    border-color: var(--lp-violet-400);
+    box-shadow: var(--lp-shadow-sm);
+  }
+  .lp-btn-ghost-light:hover {
+    background: rgba(255, 255, 255, 0.24);
+  }
+}
+
+.lp-btn:focus-visible,
+.lp-focus:focus-visible {
+  outline: 2px solid var(--lp-violet-600);
+  outline-offset: 3px;
+}
+
+/* Light-on-gradient focus ring stays visible against the CTA banner. */
+.lp-on-dark:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* ── Decoration ──────────────────────────────────────────────
+   Deliberately quiet: blurred blobs sit far below content and dot
+   grids are pure CSS, so no image weight and no z-index fights. */
+.lp-blob {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(72px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lp-dots {
+  background-image: radial-gradient(currentColor 1.4px, transparent 1.4px);
+  background-size: 14px 14px;
+  pointer-events: none;
+}
+
+/* The grid runs at full strength from y=0 — behind the resting header —
+   straight down through the hero, then dissolves over the last third of
+   its box so there's no hard edge where the next section starts. A
+   top-anchored radial mask would fade it out within a few hundred pixels,
+   which is why the fade is vertical and late rather than a spotlight. */
+.lp-grid-lines {
+  background-image:
+    linear-gradient(to right, rgba(109, 61, 245, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(109, 61, 245, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 64%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to bottom, #000 0%, #000 64%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ── Motion ──────────────────────────────────────────────────
+   Three cues total: a scroll reveal, a slow float for the hero's
+   floating chips, and the online-status pulse. Nothing loops in a
+   way that competes with reading. */
+@keyframes lp-reveal-kf {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.lp-reveal {
+  opacity: 0;
+}
+
+.lp-reveal.is-visible {
+  animation: lp-reveal-kf 0.62s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--lp-delay, 0ms);
+}
+
+@keyframes lp-float-kf {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.lp-float {
+  animation: lp-float-kf 7s ease-in-out infinite;
+  animation-delay: var(--lp-delay, 0ms);
+}
+
+/* The hero card drifts on its own, slower and further than the small
+   chips do — a big surface moving at chip speed reads as jitter. */
+@keyframes lp-float-slow-kf {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+.lp-float-slow {
+  animation: lp-float-slow-kf 9s ease-in-out infinite;
+}
+
+@keyframes lp-ping-kf {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.lp-ping::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: currentColor;
+  animation: lp-ping-kf 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-reveal,
+  .lp-reveal.is-visible {
+    opacity: 1;
+    animation: none;
+  }
+  .lp-float,
+  .lp-float-slow,
+  .lp-ping::after {
+    animation: none;
+  }
+  .lp-btn:hover {
+    transform: none;
+  }
+}

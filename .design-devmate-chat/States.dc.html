@@ -1,0 +1,244 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #FFFFFF;
+    }
+    * { box-sizing: border-box; }
+    a { color: #6D3DF5; text-decoration: none; }
+    a:hover { color: #5A2FD8; }
+    p, h1, h2, h3 { margin: 0; }
+  </style>
+</helmet>
+
+<div style="width: 920px; min-height: 1024px; background: #FFFFFF; padding: 36px 40px 44px; display: flex; flex-direction: column; gap: 30px;">
+
+  <!-- Title -->
+  <div style="display: flex; flex-direction: column; gap: 6px;">
+    <h1 style="font-size: 24px; font-weight: 800; color: #17213D; letter-spacing: -0.02em;">Interaction states</h1>
+    <p style="font-size: 13.5px; color: #6B7691; line-height: 1.5; max-width: 620px;">The hover, active and focus behaviour the main screen implies but cannot show at rest. Values match the tokens in <span style="font-weight: 600; color: #17213D;">src/index.css</span>.</p>
+  </div>
+
+  <!-- Palette -->
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <h2 style="font-size: 12px; font-weight: 700; color: #6B7691; letter-spacing: 0.07em; text-transform: uppercase;">Palette</h2>
+    <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px;">
+      <div style="display: flex; flex-direction: column; gap: 7px;"><div style="height: 52px; border-radius: 12px; background: #0B1736;"></div><p style="font-size: 11px; font-weight: 700; color: #17213D;">Navy</p><p style="font-size: 10.5px; color: #6B7691; font-variant-numeric: tabular-nums;">#0B1736</p></div>
+      <div style="display: flex; flex-direction: column; gap: 7px;"><div style="height: 52px; border-radius: 12px; background: #17213D;"></div><p style="font-size: 11px; font-weight: 700; color: #17213D;">Ink 900</p><p style="font-size: 10.5px; color: #6B7691; font-variant-numeric: tabular-nums;">#17213D</p></div>
+      <div style="display: flex; flex-direction: column; gap: 7px;"><div style="height: 52px; border-radius: 12px; background: #6D3DF5;"></div><p style="font-size: 11px; font-weight: 700; color: #17213D;">Brand 500</p><p style="font-size: 10.5px; color: #6B7691; font-variant-numeric: tabular-nums;">#6D3DF5</p></div>
+      <div style="display: flex; flex-direction: column; gap: 7px;"><div style="height: 52px; border-radius: 12px; background: #8B5CF6;"></div><p style="font-size: 11px; font-weight: 700; color: #17213D;">Brand 400</p><p style="font-size: 10.5px; color: #6B7691; font-variant-numeric: tabular-nums;">#8B5CF6</p></div>
+      <div style="display: flex; flex-direction: column; gap: 7px;"><div style="height: 52px; border-radius: 12px; background: #EDE9FE;"></div><p style="font-size: 11px; font-weight: 700; color: #17213D;">Tint 300</p><p style="font-size: 10.5px; color: #6B7691; font-variant-numeric: tabular-nums;">#EDE9FE</p></div>
+      <div style="display: flex; flex-direction: column; gap: 7px;"><div style="height: 52px; border-radius: 12px; background: #F7F8FC; border: 1px solid #E4E7EF;"></div><p style="font-size: 11px; font-weight: 700; color: #17213D;">Page</p><p style="font-size: 10.5px; color: #6B7691; font-variant-numeric: tabular-nums;">#F7F8FC</p></div>
+      <div style="display: flex; flex-direction: column; gap: 7px;"><div style="height: 52px; border-radius: 12px; background: #20C997;"></div><p style="font-size: 11px; font-weight: 700; color: #17213D;">Online</p><p style="font-size: 10.5px; color: #6B7691; font-variant-numeric: tabular-nums;">#20C997</p></div>
+    </div>
+  </div>
+
+  <!-- Sidebar nav states -->
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <h2 style="font-size: 12px; font-weight: 700; color: #6B7691; letter-spacing: 0.07em; text-transform: uppercase;">Sidebar navigation</h2>
+    <div style="background: #0B1736; border-radius: 16px; padding: 18px 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;">
+
+      <div style="display: flex; flex-direction: column; gap: 9px;">
+        <div style="display: flex; align-items: center; padding: 13px 16px; border-radius: 999px; background: transparent; color: #FFFFFF;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 12px;"><path d="M12 3l2.4 5.3 5.6.6-4.2 3.9 1.2 5.7L12 15.6 6.99 18.5l1.2-5.7L4 8.9l5.6-.6z"/></svg>
+          <span style="font-size: 14px; font-weight: 600;">Discover</span>
+        </div>
+        <p style="font-size: 11px; color: #7B88AB; text-align: center; font-weight: 500;">Default &middot; transparent</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 9px;">
+        <div style="display: flex; align-items: center; padding: 13px 16px; border-radius: 999px; background: rgba(255,255,255,0.06); color: #FFFFFF;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 12px;"><path d="M12 3l2.4 5.3 5.6.6-4.2 3.9 1.2 5.7L12 15.6 6.99 18.5l1.2-5.7L4 8.9l5.6-.6z"/></svg>
+          <span style="font-size: 14px; font-weight: 600;">Discover</span>
+        </div>
+        <p style="font-size: 11px; color: #7B88AB; text-align: center; font-weight: 500;">Hover &middot; white 6%</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 9px;">
+        <div style="display: flex; align-items: center; padding: 13px 16px; border-radius: 999px; background: linear-gradient(135deg, #6D3DF5 0%, #8B5CF6 100%); box-shadow: 0 6px 16px rgba(109, 61, 245, 0.35); color: #FFFFFF;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 12px;"><path d="M20 2H4a2 2 0 00-2 2v11a2 2 0 002 2h3v4.2a.6.6 0 00.98.46L12.9 17H20a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
+          <span style="font-size: 14px; font-weight: 700;">Chats</span>
+          <span style="margin-left: auto; background: rgba(255,255,255,0.24); color: #FFFFFF; font-size: 11px; font-weight: 800; border-radius: 999px; min-width: 20px; height: 20px; padding: 0 6px; display: inline-flex; align-items: center; justify-content: center;">3</span>
+        </div>
+        <p style="font-size: 11px; color: #A78BFA; text-align: center; font-weight: 600;">Active &middot; gradient + glow</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conversation row states -->
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <h2 style="font-size: 12px; font-weight: 700; color: #6B7691; letter-spacing: 0.07em; text-transform: uppercase;">Conversation row</h2>
+    <div style="border: 1px solid #E4E7EF; border-radius: 16px; overflow: hidden;">
+
+      <div style="position: relative; display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: #FFFFFF; border-bottom: 1px solid #F3F4F6;">
+        <div style="width: 46px; height: 46px; border-radius: 50%; background: #DBEAFE; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><span style="color: #2E78C7; font-size: 16px; font-weight: 700;">RV</span></div>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;">
+          <p style="font-size: 14.5px; font-weight: 700; color: #17213D; letter-spacing: -0.01em;">Rahul Verma</p>
+          <p style="font-size: 13px; color: #6B7691;">Let me know when you are free.</p>
+        </div>
+        <span style="font-size: 11px; color: #94A3B8; font-weight: 600; flex-shrink: 0;">Default &middot; read</span>
+      </div>
+
+      <div style="position: relative; display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: #F7F4FF; border-bottom: 1px solid #F3F4F6; transform: translateX(2px);">
+        <span style="position: absolute; left: -2px; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: #6D3DF5;"></span>
+        <div style="width: 46px; height: 46px; border-radius: 50%; background: #DCFCE7; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 0 0 3px #F0E8FF;"><span style="color: #159A63; font-size: 16px; font-weight: 700;">NP</span></div>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;">
+          <p style="font-size: 14.5px; font-weight: 700; color: #6D3DF5; letter-spacing: -0.01em;">Neha Patil</p>
+          <p style="font-size: 13px; color: #6B7691;">Can we schedule a quick call?</p>
+        </div>
+        <span style="font-size: 11px; color: #6D3DF5; font-weight: 600; flex-shrink: 0;">Hover &middot; accent slides in</span>
+      </div>
+
+      <div style="position: relative; display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: #FFFFFF; border-bottom: 1px solid #F3F4F6;">
+        <div style="position: relative; flex-shrink: 0;">
+          <div style="width: 46px; height: 46px; border-radius: 50%; background: #FEF3C7; display: flex; align-items: center; justify-content: center;"><span style="color: #B45309; font-size: 16px; font-weight: 700;">DT</span></div>
+          <span style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; border-radius: 50%; background: #20C997; border: 2px solid #FFFFFF;"></span>
+        </div>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;">
+          <p style="font-size: 14.5px; font-weight: 700; color: #17213D; letter-spacing: -0.01em;">Design Team</p>
+          <p style="font-size: 13px; color: #17213D; font-weight: 600;">Riya: Shared the new mockups</p>
+        </div>
+        <span style="min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: #6D3DF5; color: #FFFFFF; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">5</span>
+        <span style="font-size: 11px; color: #94A3B8; font-weight: 600; flex-shrink: 0;">Unread</span>
+      </div>
+
+      <div style="position: relative; display: flex; align-items: center; gap: 12px; padding: 13px 16px; background: #F5F1FF;">
+        <span style="position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: #6D3DF5;"></span>
+        <div style="position: relative; flex-shrink: 0;">
+          <div style="width: 46px; height: 46px; border-radius: 50%; background: #EDE9FE; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 3px #FFFFFF;"><span style="color: #6D3DF5; font-size: 16px; font-weight: 700;">AA</span></div>
+          <span style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; border-radius: 50%; background: #20C997; border: 2px solid #F5F1FF;"></span>
+        </div>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;">
+          <p style="font-size: 14.5px; font-weight: 700; color: #6D3DF5; letter-spacing: -0.01em;">Ankit Ahuja</p>
+          <p style="font-size: 13px; color: #17213D; font-weight: 600;">Talk soon!</p>
+        </div>
+        <span style="min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: #6D3DF5; color: #FFFFFF; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">2</span>
+        <span style="font-size: 11px; color: #6D3DF5; font-weight: 700; flex-shrink: 0;">Selected</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls + inputs -->
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px;">
+
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <h2 style="font-size: 12px; font-weight: 700; color: #6B7691; letter-spacing: 0.07em; text-transform: uppercase;">Icon buttons &amp; tooltip</h2>
+      <div style="border: 1px solid #E4E7EF; border-radius: 16px; padding: 22px 18px 18px; display: flex; align-items: flex-start; gap: 26px; background: #FFFFFF;">
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 9px;">
+          <div style="width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #6B7691;">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg>
+          </div>
+          <p style="font-size: 11px; color: #6B7691; font-weight: 500;">Default</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 9px;">
+          <div style="position: relative; display: flex; flex-direction: column; align-items: center;">
+            <div style="background: #17213D; color: #FFFFFF; font-size: 11px; font-weight: 600; padding: 5px 9px; border-radius: 7px; white-space: nowrap; margin-bottom: 6px;">More options</div>
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: #F7F8FC; color: #17213D; display: flex; align-items: center; justify-content: center;">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg>
+            </div>
+          </div>
+          <p style="font-size: 11px; color: #6B7691; font-weight: 500;">Hover + tooltip</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 9px;">
+          <div style="width: 38px; height: 38px; border-radius: 50%; background: #F0E8FF; color: #6D3DF5; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 3px rgba(109, 61, 245, 0.18);">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg>
+          </div>
+          <p style="font-size: 11px; color: #6B7691; font-weight: 500;">Focus ring</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 9px;">
+          <div style="width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #6D3DF5 0%, #8B5CF6 100%); box-shadow: 0 6px 16px rgba(109, 61, 245, 0.35); display: flex; align-items: center; justify-content: center;">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2.5L11 13"/><path d="M21.5 2.5l-6.8 19-3.7-8.5L2.5 9.3z"/></svg>
+          </div>
+          <p style="font-size: 11px; color: #6B7691; font-weight: 500;">Send</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <h2 style="font-size: 12px; font-weight: 700; color: #6B7691; letter-spacing: 0.07em; text-transform: uppercase;">Inputs</h2>
+      <div style="border: 1px solid #E4E7EF; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px; background: #FFFFFF;">
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <div style="display: flex; align-items: center; gap: 8px; border: 1px solid #E4E7EF; border-radius: 10px; padding: 9px 11px; background: #F7F8FC;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.1" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <span style="font-size: 13px; color: #94A3B8;">Search messages</span>
+          </div>
+          <p style="font-size: 11px; color: #6B7691; font-weight: 500;">Rest</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <div style="display: flex; align-items: center; gap: 8px; border: 1px solid #6D3DF5; border-radius: 10px; padding: 9px 11px; background: #FFFFFF; box-shadow: 0 0 0 3px rgba(109, 61, 245, 0.10);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6D3DF5" stroke-width="2.1" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <span style="font-size: 13px; color: #17213D;">react native</span>
+            <span style="width: 1.5px; height: 15px; background: #6D3DF5; margin-left: -2px;"></span>
+          </div>
+          <p style="font-size: 11px; color: #6D3DF5; font-weight: 600;">Focus &middot; 3px brand ring at 10%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bubbles + receipts -->
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    <h2 style="font-size: 12px; font-weight: 700; color: #6B7691; letter-spacing: 0.07em; text-transform: uppercase;">Bubbles &amp; delivery receipts</h2>
+    <div style="border: 1px solid #E4E7EF; border-radius: 16px; padding: 20px 22px; background: #FBFAFF; display: flex; flex-direction: column; gap: 16px;">
+
+      <div style="display: flex; align-items: flex-start; gap: 16px;">
+        <div style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+          <div style="padding: 9px 14px; background: #FFFFFF; border: 1px solid #E9EBF3; border-radius: 16px 16px 16px 5px; box-shadow: 0 1px 3px rgba(23, 33, 61, 0.06); font-size: 14px; line-height: 1.45; color: #17213D;">Are we still on for tomorrow&rsquo;s call?</div>
+          <span style="margin-top: 4px; padding: 0 6px; font-size: 10.5px; color: #6B7691;">10:31 AM</span>
+        </div>
+        <p style="font-size: 12px; color: #6B7691; line-height: 1.5; padding-top: 8px;">Incoming &mdash; white, 1px <span style="font-weight: 600; color: #17213D;">#E9EBF3</span> border, 16px radius with a 5px tail corner, timestamp below the chip.</p>
+      </div>
+
+      <div style="display: flex; align-items: flex-start; gap: 16px;">
+        <div style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+          <div style="padding: 9px 14px; background: #EDE9FE; border: 1px solid #DED5FC; border-radius: 16px 16px 5px 16px; box-shadow: 0 1px 3px rgba(109, 61, 245, 0.08); font-size: 14px; line-height: 1.45; color: #17213D;">Yes, 11 AM works perfect for me.</div>
+          <span style="margin-top: 4px; padding: 0 6px; font-size: 10.5px; color: #6B7691; display: flex; align-items: center; gap: 4px;">10:32 AM
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6D3DF5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 13l4 4 7-8"/><path d="M11 15l1.5 2 7-8"/></svg>
+          </span>
+        </div>
+        <p style="font-size: 12px; color: #6B7691; line-height: 1.5; padding-top: 8px;">Outgoing &mdash; lavender <span style="font-weight: 600; color: #17213D;">#EDE9FE</span> on navy text, mirrored tail, receipt beside the timestamp.</p>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 24px; padding-top: 4px; border-top: 1px solid #EAE6F7;">
+        <div style="display: flex; align-items: center; gap: 7px; padding-top: 14px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/></svg>
+          <span style="font-size: 12px; color: #6B7691; font-weight: 500;">Sending</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 7px; padding-top: 14px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l4.5 4.5L20 6"/></svg>
+          <span style="font-size: 12px; color: #6B7691; font-weight: 500;">Sent</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 7px; padding-top: 14px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 13l4 4 7-8"/><path d="M11 15l1.5 2 7-8"/></svg>
+          <span style="font-size: 12px; color: #6B7691; font-weight: 500;">Delivered</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 7px; padding-top: 14px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6D3DF5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 13l4 4 7-8"/><path d="M11 15l1.5 2 7-8"/></svg>
+          <span style="font-size: 12px; color: #6D3DF5; font-weight: 600;">Read</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":920,"height":1024}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

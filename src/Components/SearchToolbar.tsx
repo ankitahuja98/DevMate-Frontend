@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { Menu, MenuItem } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  type SelectChangeEvent,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import TuneIcon from "@mui/icons-material/Tune";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AdvancedFiltersPanel from "./AdvancedFiltersPanel";
 import type { AdvancedFilters } from "../context/SearchContext";
 import "../CSS/SearchToolbar.css";
@@ -12,6 +17,36 @@ export interface SortOption {
   value: string;
   label: string;
 }
+
+// The Sort select is an outlined MUI Select like the ones in
+// AdvancedFiltersPanel, but sized to sit flush with the search box and
+// Filters button beside it (~40px) rather than MUI's default.
+const sortSelectSx = {
+  "& .MuiInputLabel-root": { fontSize: 14, color: "#6b7691" },
+  "& .MuiInputLabel-root:not(.MuiInputLabel-shrink)": {
+    transform: "translate(14px, 9px) scale(1)",
+  },
+  "& .MuiInputLabel-root.Mui-focused": { color: "var(--brand-500, #6d3df5)" },
+  "& .MuiSelect-select": {
+    padding: "9px 14px",
+    fontSize: 14,
+    fontWeight: 650,
+    color: "var(--ink-900, #17213d)",
+  },
+  "& .MuiOutlinedInput-root": {
+    background: "#fff",
+    borderRadius: "12px",
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "var(--border-default, #e4e7ef)",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "var(--brand-500, #6d3df5)",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "var(--brand-500, #6d3df5)",
+    },
+  },
+};
 
 interface SearchToolbarProps {
   query: string;
@@ -56,7 +91,6 @@ const SearchToolbar = ({
   idPrefix,
 }: SearchToolbarProps) => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [sortMenuAnchor, setSortMenuAnchor] = useState<null | HTMLElement>(null);
   const filtersWrapRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -90,9 +124,6 @@ const SearchToolbar = ({
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, []);
-
-  const currentSortLabel =
-    sortOptions.find((o) => o.value === sortBy)?.label || sortOptions[0]?.label;
 
   return (
     <div className="SearchToolbar">
@@ -148,38 +179,29 @@ const SearchToolbar = ({
         )}
       </div>
 
-      <button
-        type="button"
-        className="SearchToolbarSortBtn"
-        onClick={(e) => setSortMenuAnchor(e.currentTarget)}
+      <FormControl
+        className="SearchToolbarSortControl"
+        size="small"
+        sx={sortSelectSx}
       >
-        <span className="SearchToolbarSortLabel">Sort by</span>
-        <span className="SearchToolbarSortValue">
-          {currentSortLabel}
-          <ExpandMoreIcon sx={{ fontSize: 18 }} />
-        </span>
-      </button>
-      <Menu
-        anchorEl={sortMenuAnchor}
-        open={!!sortMenuAnchor}
-        onClose={() => setSortMenuAnchor(null)}
-        container={container}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        {sortOptions.map((opt) => (
-          <MenuItem
-            key={opt.value}
-            selected={sortBy === opt.value}
-            onClick={() => {
-              onSortChange(opt.value);
-              setSortMenuAnchor(null);
-            }}
-          >
-            {opt.label}
-          </MenuItem>
-        ))}
-      </Menu>
+        <InputLabel id={`${idPrefix}SortLabel`}>Sort by</InputLabel>
+        <Select
+          labelId={`${idPrefix}SortLabel`}
+          id={`${idPrefix}Sort`}
+          label="Sort by"
+          value={sortBy}
+          onChange={(e: SelectChangeEvent<string>) =>
+            onSortChange(e.target.value)
+          }
+          MenuProps={{ container }}
+        >
+          {sortOptions.map((opt) => (
+            <MenuItem key={opt.value} value={opt.value}>
+              {opt.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </div>
   );
 };

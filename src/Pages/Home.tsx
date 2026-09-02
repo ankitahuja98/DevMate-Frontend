@@ -1,11 +1,19 @@
 import { lazy, Suspense } from "react";
 import SEO from "../Components/SEO";
+import "../CSS/Landing.css";
 
-// HeroSection loads eagerly — it's above the fold (critical for first render)
+// Above the fold — must paint on first render, so no lazy boundary.
 import HeroSection from "./HomeSections/HeroSection";
+import StatsSection from "./HomeSections/StatsSection";
 
-// Below-the-fold sections are lazy loaded — reduces initial bundle size
+// Below the fold — split out to keep the initial bundle small.
 const FeatureSection = lazy(() => import("./HomeSections/FeatureSection"));
+const HowItWorksSection = lazy(
+  () => import("./HomeSections/HowItWorksSection"),
+);
+const TestimonialsSection = lazy(
+  () => import("./HomeSections/TestimonialsSection"),
+);
 const CTASection = lazy(() => import("./HomeSections/CTASection"));
 const Footer = lazy(() => import("./Footer"));
 
@@ -59,78 +67,44 @@ const homeSchemas = [
   },
 ];
 
-const HomePage = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50">
-      <SEO
-        title="Devmate — Find Your Perfect Developer Partner in India"
-        description="Devmate is India's developer matching platform. Connect with skilled developers, find coding partners, collaborate on projects, and build amazing products together."
-        canonical="https://devmate.co.in/"
-        schemas={homeSchemas}
-      />
+/* Reserves roughly the height a section will occupy so lazy chunks
+   swapping in don't shove the page around mid-scroll. */
+const SectionFallback = ({ height = 520 }: { height?: number }) => (
+  <div style={{ minHeight: height }} aria-hidden="true" />
+);
 
-      {/* Hero Section — eagerly loaded (above the fold) */}
-      <HeroSection />
+const HomePage = () => (
+  <main className="lp">
+    <SEO
+      title="Devmate — Find Your Perfect Developer Partner in India"
+      description="Devmate is India's developer matching platform. Connect with skilled developers, find coding partners, collaborate on projects, and build amazing products together."
+      canonical="https://devmate.co.in/"
+      schemas={homeSchemas}
+    />
 
-      {/* Below-the-fold sections — lazy loaded with Suspense fallback */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <FeatureSection />
-      </Suspense>
+    <HeroSection />
+    <StatsSection />
 
-      <Suspense fallback={<SectionSkeleton />}>
-        <CTASection />
-      </Suspense>
+    <Suspense fallback={<SectionFallback />}>
+      <FeatureSection />
+    </Suspense>
 
-      <Suspense fallback={null}>
-        <Footer />
-      </Suspense>
+    <Suspense fallback={<SectionFallback height={460} />}>
+      <HowItWorksSection />
+    </Suspense>
 
-      <style>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+    <Suspense fallback={<SectionFallback height={460} />}>
+      <TestimonialsSection />
+    </Suspense>
 
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
-        }
+    <Suspense fallback={<SectionFallback height={380} />}>
+      <CTASection />
+    </Suspense>
 
-        .animate-fade-in {
-          animation: fade-in 1s ease-out;
-        }
-
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-      `}</style>
-    </div>
-  );
-};
-
-// Lightweight placeholder shown while lazy sections load
-const SectionSkeleton = () => (
-  <div className="py-20 px-4 sm:px-6 lg:px-8">
-    <div className="max-w-7xl mx-auto animate-pulse space-y-6">
-      <div className="h-8 bg-slate-200 rounded-full w-1/3 mx-auto"></div>
-      <div className="h-4 bg-slate-100 rounded-full w-2/3 mx-auto"></div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="h-48 bg-slate-100 rounded-2xl"></div>
-        ))}
-      </div>
-    </div>
-  </div>
+    <Suspense fallback={<SectionFallback height={420} />}>
+      <Footer />
+    </Suspense>
+  </main>
 );
 
 export default HomePage;
