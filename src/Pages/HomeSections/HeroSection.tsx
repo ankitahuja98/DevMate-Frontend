@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Avatar, Reveal } from "./LandingPrimitives";
 
 /* The three profiles in the hero preview. Content is fixed, not
@@ -60,14 +60,7 @@ const HeroSection = () => {
           {/* ── Left: the promise ───────────────────────────── */}
           <div>
             <Reveal immediate>
-              <span className="lp-eyebrow">
-                <Sparkles size={15} strokeWidth={2.4} />
-                Where Developers Meet &amp; Build Together
-              </span>
-            </Reveal>
-
-            <Reveal immediate delay={80}>
-              <h1 className="lp-display mt-6 text-[color:var(--lp-ink)]">
+              <h1 className="lp-display text-[color:var(--lp-ink)]">
                 Find Your Perfect
                 <br />
                 <span className="lp-gradient-text">Dev Partner</span>

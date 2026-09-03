@@ -124,6 +124,36 @@
   color: transparent;
 }
 
+/* ── Glossy (macOS-style) sheen ──────────────────────────────
+   A soft specular cap across the top of a rounded surface — the same
+   cue macOS uses on Dock icons and Aqua buttons: light hits from
+   directly above and falls off by the midline. Layered purely as a
+   second `background-image`, so it only ever adds to whatever
+   background-color (a plain Tailwind `bg-[...]` utility, most of the
+   time) the element already carries, and never touches its
+   `box-shadow` — safe to combine with any icon badge regardless of
+   what else is already styling it. */
+.lp-glossy {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(255, 255, 255, 0.65) 2px,
+    rgba(255, 255, 255, 0.24) 46%,
+    rgba(255, 255, 255, 0) 62%
+  );
+}
+
+/* For a surface that's already white (the sheen above would be
+   invisible against it), shade downward instead of lightening up. */
+.lp-glossy--on-light {
+  background-image: linear-gradient(
+    to bottom,
+    #fff 0%,
+    #fff 42%,
+    var(--lp-tint) 100%
+  );
+}
+
 /* ── Primitives ──────────────────────────────────────────────── */
 .lp-eyebrow {
   display: inline-flex;
@@ -167,29 +197,64 @@
     border-color 0.18s ease;
 }
 
+/* Every button gets a macOS-style glass cap: a bright hairline at the
+   very top, fading to nothing by the midline, layered as a second
+   background-image over the button's own fill so it never has to
+   fight that fill for the `background` shorthand. The two on light
+   surfaces (secondary, white) shade toward `--lp-tint` at the foot
+   instead of lightening up, since a white-on-white highlight would be
+   invisible. */
 .lp-btn-primary {
-  background: var(--lp-grad);
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.4) 2px,
+      rgba(255, 255, 255, 0.12) 44%,
+      rgba(255, 255, 255, 0) 62%
+    ),
+    var(--lp-grad);
   color: #fff;
-  box-shadow: var(--lp-shadow-brand);
+  box-shadow:
+    var(--lp-shadow-brand),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 
 .lp-btn-secondary {
-  background: var(--lp-surface);
+  background-color: var(--lp-surface);
+  background-image: linear-gradient(
+    to bottom,
+    #fff 0%,
+    #fff 46%,
+    var(--lp-tint) 100%
+  );
   color: var(--lp-ink);
   border-color: var(--lp-border-strong);
-  box-shadow: var(--lp-shadow-xs);
+  box-shadow:
+    var(--lp-shadow-xs),
+    inset 0 1px 0 #fff;
 }
 
 .lp-btn-ghost-light {
-  background: rgba(255, 255, 255, 0.14);
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.34) 0%,
+    rgba(255, 255, 255, 0.34) 2px,
+    rgba(255, 255, 255, 0.1) 46%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
   color: #fff;
   border-color: rgba(255, 255, 255, 0.38);
 }
 
 .lp-btn-white {
-  background: #fff;
+  background-image: linear-gradient(to bottom, #fff 0%, #fff 55%, #f3f0ff 100%);
   color: var(--lp-violet-600);
-  box-shadow: 0 12px 26px -12px rgba(9, 12, 30, 0.5);
+  box-shadow:
+    0 12px 26px -12px rgba(9, 12, 30, 0.5),
+    inset 0 1px 0 #fff,
+    inset 0 -1px 0 rgba(109, 61, 245, 0.14);
 }
 
 @media (hover: hover) {
@@ -197,14 +262,25 @@
     transform: translateY(-2px);
   }
   .lp-btn-primary:hover {
-    box-shadow: 0 18px 36px -10px rgba(109, 61, 245, 0.55);
+    box-shadow:
+      0 18px 36px -10px rgba(109, 61, 245, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   }
   .lp-btn-secondary:hover {
     border-color: var(--lp-violet-400);
-    box-shadow: var(--lp-shadow-sm);
+    box-shadow:
+      var(--lp-shadow-sm),
+      inset 0 1px 0 #fff;
   }
   .lp-btn-ghost-light:hover {
-    background: rgba(255, 255, 255, 0.24);
+    background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.44) 0%,
+      rgba(255, 255, 255, 0.44) 2px,
+      rgba(255, 255, 255, 0.18) 46%,
+      rgba(255, 255, 255, 0.08) 100%
+    );
   }
 }
 
@@ -333,11 +409,399 @@
   animation: lp-ping-kf 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
+/* ── Testimonial marquee ─────────────────────────────────────
+   One continuous right-to-left track. The card list is rendered
+   twice and the track travels exactly -50%, so the second copy is
+   sitting where the first started at the moment the animation
+   loops — the seam is invisible and there is no JS involved.
+
+   Every item is the same width *including* its trailing margin,
+   which is why the spacing uses margin-inline-end rather than a
+   flex `gap`: a gap is not part of the last item, so -50% would
+   drift by half a gap on every lap. */
+.lp-marquee {
+  position: relative;
+  overflow: hidden;
+  /* Room for the cards' hover lift and shadow, which would
+     otherwise be clipped by the overflow above. */
+  padding-block: 14px;
+}
+
+.lp-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: lp-marquee-kf var(--lp-marquee-duration, 52s) linear infinite;
+  will-change: transform;
+}
+
+/* Hovering anywhere over the strip holds it still, so the card you
+   reached for stays under the cursor while you read it. */
+.lp-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes lp-marquee-kf {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* The soft edges. A masked backdrop-filter means cards genuinely
+   blur as they enter and leave — the strip defocuses whatever
+   passes beneath it — rather than just fading out behind a
+   gradient, and the veil on top dissolves them into the page. */
+.lp-marquee-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: clamp(44px, 10%, 140px);
+  pointer-events: none;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.lp-marquee-edge--left {
+  left: 0;
+  background: linear-gradient(to right, var(--lp-bg) 0%, transparent 62%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    #000 16%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to right, #000 0%, #000 16%, transparent 100%);
+}
+
+.lp-marquee-edge--right {
+  right: 0;
+  background: linear-gradient(to left, var(--lp-bg) 0%, transparent 62%);
+  -webkit-mask-image: linear-gradient(
+    to left,
+    #000 0%,
+    #000 16%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to left, #000 0%, #000 16%, transparent 100%);
+}
+
+/* ── Testimonial card ──────────────────────────────────────── */
+.lp-t-card {
+  flex: 0 0 auto;
+  width: clamp(280px, 78vw, 360px);
+  margin-inline-end: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: var(--lp-r-lg);
+  box-shadow: var(--lp-shadow-xs);
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.lp-t-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--lp-violet-400);
+  box-shadow: var(--lp-shadow-lg);
+}
+
+/* On a narrow screen the default edges would be wider than the gap
+   between them, so a card would never fully come into focus at the
+   centre. Pull both in until one whole card fits sharply. */
+@media (max-width: 640px) {
+  .lp-marquee-edge {
+    width: 32px;
+  }
+
+  .lp-t-card {
+    width: 74vw;
+    padding: 22px;
+    margin-inline-end: 14px;
+  }
+}
+
+/* ── How-it-works timeline ───────────────────────────────────
+   A sticky intro on the left, a scroll-tracked rail on the right.
+   The active step is driven by whichever card is nearest the middle
+   of the viewport, which the section reports as `data-active` on the
+   row plus a pixel height for the rail's progress fill. */
+.lp-tl {
+  position: relative;
+  display: grid;
+  gap: 14px;
+}
+
+/* Rail + the brand-coloured fill that runs down to the current step.
+   Both sit at the marker's centre line (16px = half of a 32px dot). */
+.lp-tl::before,
+.lp-tl::after {
+  content: "";
+  position: absolute;
+  left: 15px;
+  width: 2px;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.lp-tl::before {
+  top: 8px;
+  bottom: 8px;
+  background: var(--lp-border);
+}
+
+.lp-tl::after {
+  top: 8px;
+  height: var(--lp-tl-progress, 0px);
+  background: var(--lp-grad);
+  transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lp-tl-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+/* The numbered dot. Its own opaque background is what punches a hole
+   in the rail behind it. */
+.lp-tl-marker {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background-color: var(--lp-surface);
+  background-image: linear-gradient(
+    to bottom,
+    #fff 0%,
+    #fff 40%,
+    var(--lp-tint) 100%
+  );
+  border: 1px solid var(--lp-border);
+  color: var(--lp-ink-faint);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  transition:
+    color 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.lp-tl-row[data-active="true"] .lp-tl-marker {
+  color: #fff;
+  border-color: transparent;
+  background-color: transparent;
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0.5) 2px,
+      rgba(255, 255, 255, 0.15) 46%,
+      rgba(255, 255, 255, 0) 62%
+    ),
+    var(--lp-grad);
+  box-shadow: 0 0 0 4px rgba(109, 61, 245, 0.14);
+}
+
+/* Each card carries its own accent via --lp-tl-accent. The plain
+   accent is declared first as the fallback for browsers without
+   color-mix(). */
+.lp-tl-card {
+  position: relative;
+  overflow: hidden;
+  padding: 16px 18px 18px;
+  border-radius: 12px;
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-tl-accent);
+  border-color: color-mix(in srgb, var(--lp-tl-accent) 32%, var(--lp-border));
+  box-shadow: var(--lp-shadow-xs);
+  transition:
+    border-color 0.4s ease,
+    box-shadow 0.4s ease,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The accent wash lives on a pseudo-element so it can deepen for the
+   active step without disturbing the card's own surface colour. */
+.lp-tl-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 38%, var(--lp-tl-accent));
+  opacity: 0.05;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.lp-tl-row[data-active="true"] .lp-tl-card {
+  border-color: var(--lp-tl-accent);
+  box-shadow: var(--lp-shadow-md);
+  transform: translateX(2px);
+}
+
+.lp-tl-row[data-active="true"] .lp-tl-card::before {
+  opacity: 0.11;
+}
+
+.lp-tl-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--lp-bg);
+  border: 1px solid var(--lp-border);
+  color: var(--lp-ink-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* Step counter under the sticky heading. */
+.lp-tl-count {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.lp-tl-count-now {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.lp-tl-count-total {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--lp-ink-faint);
+}
+
+@media (max-width: 640px) {
+  .lp-tl-row {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .lp-tl::before,
+  .lp-tl::after {
+    left: 13px;
+  }
+
+  .lp-tl-marker {
+    width: 28px;
+    height: 28px;
+    margin-top: 10px;
+  }
+}
+
+/* ── Feature cards ──────────────────────────────────────────
+   The four "Everything You Need" cards get a richer reveal than the
+   plain fade-up every other .lp-reveal uses: the card itself pops in
+   with a little overshoot, then its icon, heading, copy and
+   illustration cascade in one after another rather than arriving as
+   one flat block. Hover work (card tilt, icon spin, per-illustration
+   gestures) lives as plain Tailwind utility classes in
+   FeatureSection.tsx — only the load-time cascade needs real CSS,
+   since it has to stay in sync with Reveal's per-card stagger
+   (--lp-delay, set inline by the component) and its
+   IntersectionObserver-driven .is-visible class. */
+@keyframes lp-feat-card-kf {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.95);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-3px) scale(1.012);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.lp-feat-reveal.is-visible {
+  animation: lp-feat-card-kf 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--lp-delay, 0ms);
+}
+
+@keyframes lp-feat-child-kf {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.lp-feat-icon,
+.lp-feat-title,
+.lp-feat-desc,
+.lp-feat-illustration {
+  opacity: 0;
+}
+
+/* Each child's delay stacks on top of its card's own --lp-delay, so
+   the cascade both staggers across the four cards (Reveal's job) and
+   staggers down each card (this rule's job) using one shared clock. */
+.lp-feat-reveal.is-visible .lp-feat-icon {
+  animation: lp-feat-child-kf 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--lp-delay, 0ms) + 140ms);
+}
+
+.lp-feat-reveal.is-visible .lp-feat-title {
+  animation: lp-feat-child-kf 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--lp-delay, 0ms) + 210ms);
+}
+
+.lp-feat-reveal.is-visible .lp-feat-desc {
+  animation: lp-feat-child-kf 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--lp-delay, 0ms) + 270ms);
+}
+
+.lp-feat-reveal.is-visible .lp-feat-illustration {
+  animation: lp-feat-child-kf 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--lp-delay, 0ms) + 340ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lp-reveal,
   .lp-reveal.is-visible {
     opacity: 1;
     animation: none;
+  }
+  /* Matched to the exact descendant selectors the animated rules above
+     use (".lp-feat-reveal.is-visible .lp-feat-icon", not just
+     ".lp-feat-icon") — the flat single-class form loses to those on
+     specificity regardless of source order, which is why the cascade
+     still ran under reduced motion until this was corrected. */
+  .lp-feat-reveal.is-visible,
+  .lp-feat-icon,
+  .lp-feat-title,
+  .lp-feat-desc,
+  .lp-feat-illustration,
+  .lp-feat-reveal.is-visible .lp-feat-icon,
+  .lp-feat-reveal.is-visible .lp-feat-title,
+  .lp-feat-reveal.is-visible .lp-feat-desc,
+  .lp-feat-reveal.is-visible .lp-feat-illustration {
+    opacity: 1;
+    animation: none;
+    transform: none;
   }
   .lp-float,
   .lp-float-slow,
@@ -345,6 +809,23 @@
     animation: none;
   }
   .lp-btn:hover {
+    transform: none;
+  }
+  /* No auto-scroll: the marquee becomes a plain swipeable row, so the
+     testimonials past the fold are still reachable. */
+  .lp-marquee {
+    overflow-x: auto;
+  }
+  .lp-marquee-track {
+    animation: none;
+  }
+  .lp-t-card:hover {
+    transform: none;
+  }
+  .lp-tl::after {
+    transition: none;
+  }
+  .lp-tl-row[data-active="true"] .lp-tl-card {
     transform: none;
   }
 }

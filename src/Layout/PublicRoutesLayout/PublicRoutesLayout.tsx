@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import DevMateLogo from "../../Images/devmateLogo.avif";
 import { useAppSelector } from "../../redux/store/store";
 import ResponsiveLayout from "../ResponsiveLayout/ResponsiveLayout";
+import { scrollToSection } from "../../utils/scrollToSection";
 import "../../CSS/Landing.css";
 
 /* Nav items either route somewhere real or scroll to a landing-page
@@ -43,22 +44,11 @@ const PublicRoutesLayout = () => {
   const goTo = (item: NavItem) => {
     setMenuOpen(false);
     if (item.anchor) {
-      if (pathname === "/") {
-        document
-          .getElementById(item.anchor)
-          ?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        // Section only exists on the landing page — go there, then scroll
-        // once the route has painted.
-        navigate("/");
-        setTimeout(
-          () =>
-            document
-              .getElementById(item.anchor!)
-              ?.scrollIntoView({ behavior: "smooth" }),
-          150,
-        );
-      }
+      // Sections only exist on the landing page — from anywhere else, route
+      // there first. scrollToSection waits for the target to mount, which
+      // it must: Home is lazy-loaded, so it isn't there on the next tick.
+      if (pathname !== "/") navigate("/");
+      scrollToSection(item.anchor);
       return;
     }
     if (item.to) navigate(item.to);

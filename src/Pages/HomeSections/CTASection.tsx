@@ -62,7 +62,7 @@ const CTASection = () => {
                 <div className="relative grid place-items-center w-40 h-40">
                   <span className="absolute inset-0 rounded-full bg-white/12" />
                   <span className="absolute inset-5 rounded-full bg-white/12" />
-                  <span className="relative grid place-items-center w-20 h-20 rounded-[26px] bg-white/95 text-[color:var(--lp-violet-600)] shadow-[0_16px_34px_-14px_rgba(9,12,30,.6)] lp-float">
+                  <span className="lp-glossy--on-light relative grid place-items-center w-20 h-20 rounded-[26px] bg-white/95 text-[color:var(--lp-violet-600)] shadow-[0_16px_34px_-14px_rgba(9,12,30,.6)] lp-float">
                     <Rocket size={34} strokeWidth={2.1} />
                   </span>
                 </div>

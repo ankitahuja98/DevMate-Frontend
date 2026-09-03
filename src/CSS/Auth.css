@@ -1,0 +1,716 @@
+/* ============================================================
+   DEVMATE AUTH — design system
+   ============================================================
+   The sign-in / sign-up / reset screens share one visual
+   language: a deep indigo brand panel on the left, a light
+   lavender form panel on the right.
+
+   Tokens are scoped to `.au` (the auth shell) for the same
+   reason Landing.css scopes to `.lp` — the authenticated app
+   has its own palette in index.css and neither should leak
+   into the other. The violet, the ink ramp and the elevation
+   values are deliberately the same numbers the marketing page
+   uses, so /login and / look like one product.
+   ============================================================ */
+
+.au {
+  /* Brand */
+  --au-violet: #6d3df5;
+  --au-violet-strong: #5b2fe0;
+  --au-violet-soft: #9a7bff;
+  --au-blue: #4f7cfa;
+  --au-grad: linear-gradient(120deg, #6d3df5 0%, #7c4dff 45%, #4f7cfa 100%);
+
+  /* Ink (light panel) */
+  --au-ink: #10182c;
+  --au-ink-soft: #566080;
+  --au-ink-faint: #8b93a8;
+
+  /* Light surfaces */
+  --au-surface: #ffffff;
+  --au-tint: #f5f2ff;
+  --au-border: #e8e6f5;
+  --au-border-strong: #ddd8f2;
+  --au-field-bg: #fdfcff;
+
+  /* Dark panel */
+  --au-navy: #080d28;
+  --au-navy-soft: #0f1640;
+  --au-on-dark: rgba(255, 255, 255, 0.72);
+  --au-on-dark-faint: rgba(255, 255, 255, 0.58);
+  --au-hairline: rgba(255, 255, 255, 0.1);
+
+  /* Feedback */
+  --au-danger: #dc2b52;
+
+  --au-radius: 14px;
+
+  --au-shadow-card: 0 32px 64px -32px rgba(41, 26, 92, 0.3),
+    0 2px 6px rgba(16, 24, 44, 0.04);
+  --au-shadow-brand: 0 14px 30px -10px rgba(109, 61, 245, 0.45);
+
+  /* ── Vertical rhythm ──────────────────────────────────────
+     The screen is one viewport tall and must not scroll, so every
+     vertical measurement that would otherwise push the card past the
+     fold is a clamp against dvh rather than a fixed number: roomy on a
+     27" display, tight on a 720px laptop, and never overflowing in
+     between. dvh (not vh) because mobile browser chrome changes the
+     visible height mid-session and vh keeps lying about it. */
+  --au-field-h: clamp(42px, 5.4dvh, 52px);
+  --au-card-pad: clamp(18px, 3.1dvh, 32px);
+  --au-stack: clamp(9px, 1.7dvh, 16px);
+  --au-head-gap: clamp(14px, 2.8dvh, 28px);
+  --au-rule-gap: clamp(10px, 2.1dvh, 20px);
+  --au-micro-gap: clamp(6px, 1.2dvh, 12px);
+
+  color: var(--au-ink);
+  /* Exactly one viewport, never more: the page is a fixed app screen,
+     not a document. The form panel keeps an auto overflow as a safety
+     valve (see .au-form-panel) so a phone with the keyboard open can
+     still reach the field it's typing into. */
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* The scrolling container of last resort. At every viewport this
+   design targets there is nothing to scroll — content is measured to
+   fit — but a 560px-tall window, or a soft keyboard eating half the
+   screen, must not put the password field out of reach. */
+.au-form-panel {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* ── Type ────────────────────────────────────────────────────
+   Fluid, so the brand headline never wraps mid-word between the
+   lg breakpoint and a 1920px display. */
+.au-display {
+  font-size: min(clamp(2.25rem, 1.5rem + 2.2vw, 3.5rem), 8.4dvh);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+
+.au-h1 {
+  font-size: min(clamp(1.5rem, 1.3rem + 0.7vw, 1.875rem), 3.7dvh);
+  line-height: 1.2;
+  letter-spacing: -0.028em;
+  font-weight: 700;
+}
+
+.au-gradient-text {
+  background: linear-gradient(100deg, #a98bff 0%, #7c6bff 50%, #6aa8ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Fields ──────────────────────────────────────────────────
+   52px tall — comfortable for a thumb on mobile and generous
+   enough on desktop that the form reads as the page's subject.
+   The icon sits in the padding, not in a separate adornment
+   box, so the text baseline is unaffected by it. */
+.au-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.au-field-icon {
+  position: absolute;
+  left: 15px;
+  display: grid;
+  place-items: center;
+  color: var(--au-ink-faint);
+  pointer-events: none;
+  transition: color 0.18s ease;
+}
+
+.au-input {
+  width: 100%;
+  height: var(--au-field-h);
+  padding: 0 16px 0 46px;
+  border-radius: var(--au-radius);
+  border: 1px solid var(--au-border-strong);
+  background: var(--au-field-bg);
+  color: var(--au-ink);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  outline: none;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease;
+}
+
+/* Room for the show/hide toggle. */
+.au-input--trailing {
+  padding-right: 48px;
+}
+
+.au-input::placeholder {
+  color: var(--au-ink-faint);
+  font-weight: 400;
+}
+
+@media (hover: hover) {
+  .au-input:hover:not(:disabled) {
+    border-color: var(--au-border-strong);
+    background: var(--au-surface);
+  }
+}
+
+.au-input:focus {
+  border-color: var(--au-violet);
+  background: var(--au-surface);
+  box-shadow: 0 0 0 4px rgba(109, 61, 245, 0.13);
+}
+
+.au-field:focus-within .au-field-icon {
+  color: var(--au-violet);
+}
+
+.au-input:disabled {
+  background: #f4f4f8;
+  color: var(--au-ink-faint);
+  cursor: not-allowed;
+}
+
+/* Chrome paints autofilled inputs a hard yellow that fights the
+   lavender field. A long inset shadow is the only way to repaint
+   it without losing the autofill behaviour itself. */
+.au-input:-webkit-autofill,
+.au-input:-webkit-autofill:hover,
+.au-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--au-ink);
+  -webkit-box-shadow: 0 0 0 1000px var(--au-surface) inset;
+  caret-color: var(--au-ink);
+}
+
+.au-input[aria-invalid="true"] {
+  border-color: var(--au-danger);
+}
+
+.au-input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 4px rgba(220, 43, 82, 0.12);
+}
+
+.au-label {
+  display: block;
+  margin-bottom: clamp(4px, 0.8dvh, 7px);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--au-ink);
+}
+
+.au-error {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--au-danger);
+}
+
+/* Show/hide password. A real button, so it's reachable by keyboard
+   between the field and the submit. */
+.au-eye {
+  position: absolute;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  color: var(--au-ink-faint);
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease;
+}
+
+@media (hover: hover) {
+  .au-eye:hover {
+    color: var(--au-ink-soft);
+    background: var(--au-tint);
+  }
+}
+
+/* ── Buttons ─────────────────────────────────────────────────
+   Two weights only: the gradient primary and the bordered
+   secondary. Anything else on these screens is a text link. */
+.au-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  height: var(--au-field-h);
+  padding-inline: 22px;
+  border: 1px solid transparent;
+  border-radius: var(--au-radius);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition:
+    transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.au-btn-primary {
+  background: var(--au-grad);
+  color: #fff;
+  box-shadow: var(--au-shadow-brand);
+}
+
+@media (hover: hover) {
+  .au-btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 38px -12px rgba(109, 61, 245, 0.6);
+  }
+}
+
+.au-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.au-btn-secondary {
+  background: var(--au-surface);
+  color: var(--au-ink);
+  border-color: var(--au-border-strong);
+  box-shadow: 0 1px 2px rgba(16, 24, 44, 0.04);
+}
+
+@media (hover: hover) {
+  .au-btn-secondary:hover:not(:disabled) {
+    border-color: var(--au-violet-soft);
+    background: #fdfcff;
+    transform: translateY(-1px);
+  }
+}
+
+.au-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Focus rings — one violet ring everywhere on light, white on dark. */
+.au-focus:focus-visible,
+.au-btn:focus-visible,
+.au-eye:focus-visible,
+.au-input:focus-visible {
+  outline: 2px solid var(--au-violet);
+  outline-offset: 2px;
+}
+
+.au-on-dark:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* Text links — Forgot password, Back to sign in, mode switches. */
+.au-link {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--au-violet);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color 0.18s ease;
+}
+
+@media (hover: hover) {
+  .au-link:hover {
+    color: var(--au-violet-strong);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+/* ── Remember-me checkbox ────────────────────────────────────
+   The native box is kept (it carries the semantics and the
+   keyboard behaviour) and visually replaced by the sibling
+   square, which is what actually gets painted. */
+.au-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.au-check input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.au-check-box {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 1.5px solid var(--au-border-strong);
+  background: var(--au-surface);
+  color: transparent;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease;
+}
+
+.au-check input:checked + .au-check-box {
+  background: var(--au-grad);
+  border-color: transparent;
+  color: #fff;
+}
+
+.au-check input:focus-visible + .au-check-box {
+  outline: 2px solid var(--au-violet);
+  outline-offset: 2px;
+}
+
+/* ── Card & form rhythm ──────────────────────────────────────
+   One padding, one field gap, one heading gap — set here rather than
+   as utilities on each of the three forms, so sign in, sign up and
+   reset shrink by exactly the same amount on a short screen. */
+.au-card {
+  padding: var(--au-card-pad);
+}
+
+.au-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--au-stack);
+  margin-top: var(--au-head-gap);
+}
+
+/* The gradient rule under a card heading, and the lead below it. */
+.au-rule,
+.au-lead {
+  margin-top: var(--au-micro-gap);
+}
+
+/* ── Divider ─────────────────────────────────────────────── */
+.au-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-block: var(--au-rule-gap);
+  color: var(--au-ink-faint);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.au-divider::before,
+.au-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--au-border);
+}
+
+/* ── Decoration ──────────────────────────────────────────────
+   Blurred blobs and CSS dot fields — no image weight, and they
+   sit below content so they can never intercept a click. */
+.au-blob {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.au-dots {
+  background-image: radial-gradient(currentColor 1.3px, transparent 1.3px);
+  background-size: 15px 15px;
+  pointer-events: none;
+}
+
+/* The dark panel's ground: navy base, two violet light sources, and a
+   faint grid that fades out before it reaches the content column. */
+.au-brand-bg {
+  background:
+    radial-gradient(
+      120% 90% at 88% 12%,
+      rgba(124, 77, 255, 0.32) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      95% 75% at 8% 96%,
+      rgba(79, 124, 250, 0.24) 0%,
+      transparent 58%
+    ),
+    linear-gradient(160deg, #080d28 0%, #131a4a 55%, #251a6b 100%);
+}
+
+.au-grid-lines {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 54px 54px;
+  -webkit-mask-image: radial-gradient(
+    75% 65% at 50% 40%,
+    #000 0%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(75% 65% at 50% 40%, #000 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* The light panel's ground: near-white lavender wash plus two very
+   low-saturation blooms, kept faint enough that 14px label text on
+   top still clears AA comfortably. */
+.au-form-bg {
+  background:
+    radial-gradient(
+      100% 70% at 85% 0%,
+      rgba(124, 77, 255, 0.09) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      80% 60% at 0% 100%,
+      rgba(79, 124, 250, 0.08) 0%,
+      transparent 60%
+    ),
+    linear-gradient(180deg, #fbfaff 0%, #f6f4ff 100%);
+}
+
+/* ── Glass cards on the dark panel ───────────────────────────
+   The floating product vignettes (editor, chat, connections).
+   One border colour and one blur for all of them, so they read
+   as the same material seen at different depths. */
+.au-glass {
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+  border: 1px solid var(--au-hairline);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 24px 60px -24px rgba(3, 6, 24, 0.85);
+}
+
+/* ── Motion ──────────────────────────────────────────────────
+   Three cues, all slow: an entrance, a drift for the floating
+   cards, and the button spinner. Nothing loops fast enough to
+   pull the eye off the form. */
+@keyframes au-rise-kf {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.au-rise {
+  animation: au-rise-kf 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--au-delay, 0ms);
+}
+
+@keyframes au-float-kf {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+.au-float {
+  animation: au-float-kf 9s ease-in-out infinite;
+  animation-delay: var(--au-delay, 0ms);
+}
+
+@keyframes au-spin-kf {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.au-spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  animation: au-spin-kf 0.7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .au-rise,
+  .au-float {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .au-btn:hover,
+  .au-btn-primary:hover:not(:disabled),
+  .au-btn-secondary:hover:not(:disabled) {
+    transform: none;
+  }
+  .au-spinner {
+    animation-duration: 2s;
+  }
+}
+
+/* ── Stacked layout ──────────────────────────────────────────
+   Below lg the banner and the card share one viewport instead of
+   sitting side by side, so the same dvh buys roughly half as much
+   room. The rhythm tightens to match — on a phone this is the
+   difference between the Google button being on screen and being
+   just below it. */
+@media (max-width: 1023.98px) {
+  .au {
+    --au-field-h: clamp(42px, 5dvh, 48px);
+    --au-card-pad: clamp(16px, 2.6dvh, 24px);
+    --au-stack: clamp(9px, 1.5dvh, 13px);
+    --au-head-gap: clamp(12px, 2.2dvh, 20px);
+    --au-rule-gap: clamp(9px, 1.7dvh, 15px);
+    --au-micro-gap: clamp(5px, 1dvh, 9px);
+  }
+}
+
+/* ── Tall viewports ──────────────────────────────────────────
+   The clamps above are sized so the tightest case still fits, which
+   leaves a laptop or a desktop with slack above and below the card —
+   the form ends up smaller than the room it has. This tier spends
+   that slack: taller fields, more padding, more air between groups.
+
+   Two guards keep it from reintroducing a scrollbar. min-width:1024px
+   limits it to the split layout, where the card has the panel to
+   itself — stacked layouts share their viewport with the banner and
+   stay on the tighter rhythm above. min-height:860px leaves every
+   shorter viewport byte-identical to the layout already measured to
+   fit. The growth is deliberately gentle at 900px and only opens up
+   on genuinely tall screens, because sign-up — three fields rather
+   than two — is the case with the least room to give. */
+@media (min-width: 1024px) and (min-height: 860px) {
+  .au {
+    --au-field-h: clamp(52px, 5.9dvh, 60px);
+    --au-card-pad: clamp(32px, 3.7dvh, 40px);
+    --au-stack: clamp(16px, 1.9dvh, 20px);
+    --au-head-gap: clamp(28px, 3.2dvh, 34px);
+    --au-rule-gap: clamp(20px, 2.3dvh, 24px);
+    --au-micro-gap: clamp(12px, 1.35dvh, 14px);
+  }
+
+  .au-label {
+    margin-bottom: clamp(7px, 0.9dvh, 9px);
+  }
+}
+
+/* Above 940px there is materially more room, and sign-up — the case
+   with the least of it — measures 59px of spare height at 950 and
+   108px at 1080 under the tier above. This spends most of that, held
+   back about 15px so a scrollbar never appears from a rounding
+   difference or a font that loads a hair taller. */
+@media (min-width: 1024px) and (min-height: 940px) {
+  .au {
+    --au-field-h: clamp(56px, 5.95dvh, 66px);
+    --au-card-pad: clamp(34px, 3.8dvh, 44px);
+    --au-stack: clamp(18px, 1.95dvh, 24px);
+    --au-head-gap: clamp(30px, 3.4dvh, 38px);
+    --au-rule-gap: clamp(22px, 2.4dvh, 28px);
+    --au-micro-gap: clamp(13px, 1.4dvh, 16px);
+  }
+
+  .au-label {
+    margin-bottom: clamp(8px, 0.95dvh, 11px);
+  }
+}
+
+/* ── Height tiers ────────────────────────────────────────────
+   The clamps above absorb most of a short viewport, but below
+   ~820px the fixed-height parts (labels, buttons, the "or" rule)
+   stop yielding and something has to go. It is never the form:
+   what drops, in order, is decoration and then text the screen
+   already says somewhere else.
+
+   Nothing here is load-bearing — every tier removes a duplicate
+   or an elaboration, never an input, a button or a way out of
+   the current state. */
+
+/* 1. The trust strip loses its second lines and tightens up.
+      The icon and title still carry the claim. */
+@media (max-height: 820px) {
+  .au-trust-copy {
+    display: none;
+  }
+
+  .au-trust-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* 2. The in-card "New here? / Already have an account?" line goes.
+      The header (desktop) and the banner (mobile) both still offer
+      the switch, so this is a third copy of the same control. */
+@media (max-height: 800px) {
+  .au-card-switch {
+    display: none;
+  }
+}
+
+/* 3. The banner's supporting line goes; the headline above it and
+      the card below it already say what the page is. And the rhythm
+      drops to its floor, which is still a 40px field — comfortably
+      above the 24px WCAG target minimum and a legible tap target. */
+@media (max-height: 700px) {
+  .au-band-lead {
+    display: none;
+  }
+
+  .au {
+    --au-field-h: 40px;
+    --au-card-pad: 16px;
+    --au-stack: 9px;
+    --au-head-gap: 12px;
+    --au-rule-gap: 9px;
+    --au-micro-gap: 5px;
+  }
+}
+
+/* 4. Short *and* stacked — a small phone in portrait, the tightest
+      case this design has to hold. Only spacing moves here; every
+      field, button and link from the roomy layout is still present
+      and still a comfortable tap target. */
+@media (max-height: 700px) and (max-width: 1023.98px) {
+  .au {
+    --au-card-pad: 14px;
+    --au-stack: 8px;
+    --au-head-gap: 10px;
+    --au-rule-gap: 8px;
+  }
+
+  .au-band {
+    padding-top: 12px;
+    padding-bottom: 26px;
+  }
+
+  .au-main {
+    margin-top: -38px;
+  }
+
+  .au-label {
+    font-size: 12px;
+    margin-bottom: 3px;
+  }
+}

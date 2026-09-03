@@ -53,8 +53,13 @@ const MainLayout = ({
         {/* Top bar */}
         <Topbar editorRef={editorRef} />
 
-        {/* Page content */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden">
+        {/* Page content. `data-scroll-root` marks this as a scroll
+            container that ScrollToTop resets on navigation — it outlives
+            the route change, so it would otherwise keep its offset. */}
+        <div
+          data-scroll-root
+          className="flex-1 overflow-y-auto overflow-x-hidden"
+        >
           {children || <Outlet />}
           <EditProfile />
         </div>

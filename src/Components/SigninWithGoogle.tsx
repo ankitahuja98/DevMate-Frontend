@@ -4,7 +4,11 @@ import { googleLoginApi } from "../redux/actions/authAction";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../redux/store/store";
 
-const SigninWithGoogle = () => {
+const SigninWithGoogle = ({
+  label = "Continue with Google",
+}: {
+  label?: string;
+}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const responseGoogle = async (authResult: any) => {
@@ -24,9 +28,13 @@ const SigninWithGoogle = () => {
   });
 
   return (
-    <button className="googleBtn" onClick={googleLogin}>
-      <img src={googleLogo} alt="Google" className="w-8 h-4 sm:w-10 sm:h-5" />
-      <span className="text-gray-700 font-medium">Sign in with Google</span>
+    <button
+      type="button"
+      className="au-btn au-btn-secondary"
+      onClick={() => googleLogin()}
+    >
+      <img src={googleLogo} alt="" aria-hidden="true" className="w-5 h-5 object-contain" />
+      {label}
     </button>
   );
 };

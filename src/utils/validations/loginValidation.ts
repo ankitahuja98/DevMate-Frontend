@@ -42,7 +42,7 @@ export const validateLogin = (data: logindata) => {
   }
 
   if (!data.password || data.password.trim().length < 1) {
-    errors.password = "Enter a Password";
+    errors.password = "Enter your password";
   }
 
   return errors;

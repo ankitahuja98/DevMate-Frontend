@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../redux/store/store";
+import { useAppSelector, type AppDispatch } from "../redux/store/store";
 
 type VerifyOtpProps = {
   email: string;
@@ -30,6 +30,7 @@ const VerifyEmail = ({
   const [resendTimer, setResendTimer] = useState<number>(60);
   const inputref = useRef<(HTMLInputElement | null)[]>([]);
   const dispatch = useDispatch<AppDispatch>();
+  const { verifyOtpIsLoading } = useAppSelector((store) => store.auth.verifyOtp);
 
   const handleOtpChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -137,7 +138,7 @@ const VerifyEmail = ({
 
   return (
     <div className="w-full flex justify-center items-center px-4">
-      <div className="w-full max-w-md bg-white p-2 rounded-2xl flex flex-col items-center gap-6">
+      <div className="w-full max-w-md rounded-2xl flex flex-col items-center gap-6">
         {/* Header */}
         <div className="text-center">
           <p className="text-xl sm:text-2xl font-semibold text-gray-800">
@@ -155,12 +156,18 @@ const VerifyEmail = ({
                   inputref.current[ind] = refInput;
                 }}
                 className="
-                  w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9
-                  text-center text-base sm:text-lg
-                  border border-gray-300 rounded-lg
-                  focus:outline-none focus:ring-2 focus:ring-[#6d3df5]
+                  w-10 h-12 sm:w-11 sm:h-13
+                  text-center text-lg font-semibold
+                  border border-[color:var(--au-border-strong,#ddd8f2)] rounded-xl
+                  bg-[color:var(--au-field-bg,#fdfcff)] text-[color:var(--au-ink,#10182c)]
+                  transition-shadow duration-150
+                  focus:outline-none focus:border-[#6d3df5]
+                  focus:ring-4 focus:ring-[#6d3df5]/13
                 "
                 type="text"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                aria-label={`Digit ${ind + 1} of 6`}
                 value={val}
                 onChange={(e) => handleOtpChange(e, ind)}
                 maxLength={1}
@@ -190,11 +197,19 @@ const VerifyEmail = ({
         {/* Button */}
         <button
           type="button"
-          className="signinBtn mt-2"
-          disabled={!isOtpComplete}
+          className="au-btn au-btn-primary mt-2"
+          disabled={!isOtpComplete || verifyOtpIsLoading}
+          aria-busy={verifyOtpIsLoading || undefined}
           onClick={handleVerifyOtp}
         >
-          Verify Email
+          {verifyOtpIsLoading ? (
+            <>
+              <span className="au-spinner" aria-hidden="true" />
+              Verifying…
+            </>
+          ) : (
+            "Verify Email"
+          )}
         </button>
       </div>
     </div>

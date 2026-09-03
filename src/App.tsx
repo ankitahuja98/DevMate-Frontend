@@ -9,12 +9,11 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 // ─── Eagerly loaded layouts ────
 import PublicRoutesLayout from "./Layout/PublicRoutesLayout/PublicRoutesLayout";
+import ScrollToTop from "./Components/ScrollToTop";
 import ProtectedRoutes from "./Layout/Auth/ProtectedRoutes";
 
 // ─── Auth & Layouts (loaded only when route is hit) ───────
-const ResponsiveLogin = lazy(
-  () => import("./Layout/ResponsiveLogin/ResponsiveLogin"),
-);
+const AuthPage = lazy(() => import("./Layout/AuthPage"));
 const ResponsiveLayout = lazy(
   () => import("./Layout/ResponsiveLayout/ResponsiveLayout"),
 );
@@ -76,13 +75,14 @@ function App() {
   const GoogleAuthWrapper = () => {
     return (
       <GoogleOAuthProvider clientId={import.meta.env.VITE_OAUTH_CLIENTID}>
-        <ResponsiveLogin />
+        <AuthPage />
       </GoogleOAuthProvider>
     );
   };
 
   return (
     <FullscreenProvider>
+      <ScrollToTop />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* TEMPORARY debug route — remove before finishing */}

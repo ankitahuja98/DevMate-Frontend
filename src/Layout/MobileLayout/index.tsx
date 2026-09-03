@@ -19,7 +19,10 @@ const index = ({
       {/* Right Section (Topbar + Page Content) */}
       <div className="flex flex-col flex-1 overflow-hidden bg-white">
         <MobileTopbar />
+        {/* `data-scroll-root`: see MainLayout — ScrollToTop resets this
+            pane on navigation. */}
         <div
+          data-scroll-root
           className={`flex-1 overflow-y-auto overflow-x-hidden ${
             needsBottomPadding ? "pb-[60px]" : ""
           }`}

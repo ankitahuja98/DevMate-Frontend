@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { scrollToSection } from "../utils/scrollToSection";
 import { Github, Linkedin } from "lucide-react";
 import DevMateLogoWhite from "../Images/devmateLogo-white.avif";
 import "../CSS/Landing.css";
@@ -65,45 +66,23 @@ const socials = [
   },
 ];
 
-/* React Router keeps the scroll position across navigations, and the
-   footer is by definition at the bottom of the page — so without this
-   every footer click lands you at the bottom of the *next* page. #root
-   is the scroll container in this app (see App.css), not the window. */
-const scrollToTop = () => {
-  const root = document.getElementById("root");
-  if (root) root.scrollTop = 0;
-  window.scrollTo(0, 0);
-};
-
 const Footer = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  /* Navigate, then start the new page from the top. Deferred a frame so
-     the reset lands after the incoming route has rendered. */
-  const goToRoute = (to: string) => {
-    navigate(to);
-    requestAnimationFrame(scrollToTop);
-  };
-
+  /* Landing at the top of the destination is handled globally by
+     <ScrollToTop /> (src/Components/ScrollToTop.tsx) — which matters most
+     here, since the footer is by definition at the bottom of the page. */
   const go = (link: FooterLink) => {
     if (link.anchor) {
-      const scrollToAnchor = () =>
-        document
-          .getElementById(link.anchor!)
-          ?.scrollIntoView({ behavior: "smooth" });
-
       // Anchored sections only exist on the landing page — from anywhere
-      // else, route there first and scroll once it has painted.
-      if (pathname === "/") {
-        scrollToAnchor();
-      } else {
-        navigate("/");
-        setTimeout(scrollToAnchor, 150);
-      }
+      // else, route there first. scrollToSection waits for the target to
+      // mount, since Home arrives with its lazy chunk.
+      if (pathname !== "/") navigate("/");
+      scrollToSection(link.anchor);
       return;
     }
-    if (link.to) goToRoute(link.to);
+    if (link.to) navigate(link.to);
   };
 
   return (
@@ -167,19 +146,19 @@ const Footer = () => {
           </p>
           <div className="flex items-center gap-7 text-[13px]">
             <button
-              onClick={() => goToRoute("/privacy-policy")}
+              onClick={() => navigate("/privacy-policy")}
               className="lp-focus text-slate-400 hover:text-white transition-colors cursor-pointer"
             >
               Privacy
             </button>
             <button
-              onClick={() => goToRoute("/terms")}
+              onClick={() => navigate("/terms")}
               className="lp-focus text-slate-400 hover:text-white transition-colors cursor-pointer"
             >
               Terms
             </button>
             <button
-              onClick={() => goToRoute("/contact")}
+              onClick={() => navigate("/contact")}
               className="lp-focus text-slate-400 hover:text-white transition-colors cursor-pointer"
             >
               Support

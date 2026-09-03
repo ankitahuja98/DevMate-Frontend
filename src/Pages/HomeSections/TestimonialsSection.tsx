@@ -20,7 +20,69 @@ const testimonials = [
     name: "Sarah Wilson",
     role: "UI/UX Designer",
   },
+  {
+    quote:
+      "I was the only backend dev at my company. Two weeks in I had three people to review my architecture with.",
+    name: "Rohan Verma",
+    role: "Backend Engineer",
+  },
+  {
+    quote:
+      "Filtering by stack meant no wasted conversations. Every match already knew React and shipped side projects.",
+    name: "Meera Nair",
+    role: "Frontend Developer",
+  },
 ];
+
+/* The track is rendered twice so it can loop seamlessly: the animation
+   travels exactly -50%, which puts copy two where copy one began. Only
+   the first pass is exposed to assistive tech — the rest is decoration. */
+const marqueeCards = [...testimonials, ...testimonials];
+
+type Testimonial = (typeof testimonials)[number];
+
+const TestimonialCard = ({
+  quote,
+  name,
+  role,
+  duplicate,
+}: Testimonial & { duplicate?: boolean }) => (
+  /* The card is the flex item itself — no wrapper — so it can size and
+     stretch to the track's row height. */
+  <figure className="lp-t-card" aria-hidden={duplicate || undefined}>
+    <Quote
+      size={26}
+      strokeWidth={2}
+      className="text-[color:var(--lp-violet-400)]"
+      aria-hidden="true"
+    />
+
+    <blockquote className="mt-4 text-[15px] leading-[1.7] text-[color:var(--lp-ink)]">
+      {quote}
+    </blockquote>
+
+    <div className="flex gap-0.5 mt-5" aria-label="Rated 5 out of 5" role="img">
+      {Array.from({ length: 5 }).map((_, s) => (
+        <Star
+          key={s}
+          size={14}
+          className="fill-amber-400 text-amber-400"
+          aria-hidden="true"
+        />
+      ))}
+    </div>
+
+    <figcaption className="mt-auto pt-6 flex items-center gap-3">
+      <Avatar name={name} size={40} />
+      <div>
+        <p className="text-[14px] font-semibold text-[color:var(--lp-ink)]">
+          {name}
+        </p>
+        <p className="text-[12.5px] text-[color:var(--lp-ink-soft)]">{role}</p>
+      </div>
+    </figcaption>
+  </figure>
+);
 
 const TestimonialsSection = () => (
   <section className="lp-section">
@@ -29,59 +91,40 @@ const TestimonialsSection = () => (
         eyebrow={
           <>
             <Star size={14} strokeWidth={2.6} />
-            Loved by Developers
+            Testimonials
           </>
         }
-        titleTop="What Developers Say"
+        titleTop="Reviews From Our"
+        titleAccent="Developer Community"
         lead="Real teams, side projects and startups that started with a connection on Devmate."
       />
-
-      <div className="grid md:grid-cols-3 gap-5 mt-14">
-        {testimonials.map(({ quote, name, role }, i) => (
-          <Reveal key={name} delay={i * 100} as="article" className="h-full">
-            <figure className="group h-full flex flex-col p-7 bg-white rounded-[20px] border border-[color:var(--lp-border)] shadow-[var(--lp-shadow-xs)] transition-all duration-300 hover:-translate-y-1.5 hover:border-[color:var(--lp-violet-400)] hover:shadow-[var(--lp-shadow-md)]">
-              <Quote
-                size={26}
-                strokeWidth={2}
-                className="text-[color:var(--lp-violet-400)]"
-                aria-hidden="true"
-              />
-
-              <blockquote className="mt-4 text-[15px] leading-[1.7] text-[color:var(--lp-ink)]">
-                {quote}
-              </blockquote>
-
-              <div
-                className="flex gap-0.5 mt-5"
-                aria-label="Rated 5 out of 5"
-                role="img"
-              >
-                {Array.from({ length: 5 }).map((_, s) => (
-                  <Star
-                    key={s}
-                    size={14}
-                    className="fill-amber-400 text-amber-400"
-                    aria-hidden="true"
-                  />
-                ))}
-              </div>
-
-              <figcaption className="mt-auto pt-6 flex items-center gap-3">
-                <Avatar name={name} size={40} />
-                <div>
-                  <p className="text-[14px] font-semibold text-[color:var(--lp-ink)]">
-                    {name}
-                  </p>
-                  <p className="text-[12.5px] text-[color:var(--lp-ink-soft)]">
-                    {role}
-                  </p>
-                </div>
-              </figcaption>
-            </figure>
-          </Reveal>
-        ))}
-      </div>
     </div>
+
+    {/* Full-bleed on purpose: the strip has to run past both edges of the
+        container for cards to blur in and out of frame rather than
+        appearing at a visible boundary. */}
+    <Reveal className="mt-14">
+      <div className="lp-marquee">
+        <div className="lp-marquee-track">
+          {marqueeCards.map((testimonial, i) => (
+            <TestimonialCard
+              key={`${testimonial.name}-${i}`}
+              {...testimonial}
+              duplicate={i >= testimonials.length}
+            />
+          ))}
+        </div>
+
+        <div
+          className="lp-marquee-edge lp-marquee-edge--left"
+          aria-hidden="true"
+        />
+        <div
+          className="lp-marquee-edge lp-marquee-edge--right"
+          aria-hidden="true"
+        />
+      </div>
+    </Reveal>
   </section>
 );
 

@@ -91,9 +91,19 @@ const AVATAR_GRADIENTS = [
 
 const avatarGradient = (seed: string) => {
   let hash = 0;
-  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) | 0;
+  for (let i = 0; i < seed.length; i++)
+    hash = (hash * 31 + seed.charCodeAt(i)) | 0;
   return AVATAR_GRADIENTS[Math.abs(hash) % AVATAR_GRADIENTS.length];
 };
+
+/* A macOS-style specular cap layered on top of the avatar's own
+   gradient — the same glossy cue as the icon badges elsewhere on the
+   page, but avatars set their background inline (it's per-name), so
+   the sheen has to be part of that same string rather than a
+   reusable class: an inline style always wins over a class, so a
+   `.lp-glossy` class here would just get silently discarded. */
+const glossyAvatarBackground = (seed: string) =>
+  `linear-gradient(to bottom, rgba(255,255,255,.55) 0%, rgba(255,255,255,.55) 2px, rgba(255,255,255,.18) 42%, rgba(255,255,255,0) 60%), ${avatarGradient(seed)}`;
 
 const initialsOf = (name: string) =>
   name
@@ -123,10 +133,12 @@ export const Avatar = ({
       width: size,
       height: size,
       borderRadius: 999,
-      background: avatarGradient(name),
+      background: glossyAvatarBackground(name),
       fontSize: Math.round(size * 0.36),
       letterSpacing: "-0.02em",
-      boxShadow: ring ? "0 0 0 2.5px #fff, 0 2px 6px rgba(16,24,44,.14)" : "none",
+      boxShadow: ring
+        ? "0 0 0 2.5px #fff, 0 2px 6px rgba(16,24,44,.14)"
+        : "none",
     }}
   >
     {initialsOf(name)}
@@ -189,8 +201,16 @@ export const SectionHeading = ({
 );
 
 /* ── Skill chip ─────────────────────────────────────────────── */
-export const SkillChip = ({ label }: { label: string }) => (
-  <span className="px-2.5 py-1 rounded-lg bg-[color:var(--lp-tint)] border border-[color:var(--lp-border)] text-[11px] font-semibold text-[color:var(--lp-violet-600)] leading-none">
+export const SkillChip = ({
+  label,
+  className = "",
+}: {
+  label: string;
+  className?: string;
+}) => (
+  <span
+    className={`px-2.5 py-1 rounded-lg bg-[color:var(--lp-tint)] border border-[color:var(--lp-border)] text-[11px] font-semibold text-[color:var(--lp-violet-600)] leading-none ${className}`}
+  >
     {label}
   </span>
 );
